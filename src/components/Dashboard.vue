@@ -23,7 +23,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-                  <v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>
+                  <v-btn color="blue darken-1" flat @click.native="addElection">Add</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -54,6 +54,8 @@
 <script>
 import axios from 'axios'
 import wrapper from './wrapper'
+import * as config from '../config'
+
 export default {
   components: {
     'app-wrapper': wrapper
@@ -106,19 +108,21 @@ export default {
     initialize () {
       let payload = {
         ReturnConsumedCapacity: 'TOTAL',
-        TableName: 'vue-election-app-dev-election-app'
+        TableName: config.databaseName
       }
       axios.post('/scanitems', payload)
         .then(res => {
-          console.log('Response:')
+          this.items = []
           for (var key in res.data.Items) {
-            this.readItem.electionId = res.data.Items[key].electionId.S
-            this.readItem.creationDate = res.data.Items[key].creationDate.S
-            this.readItem.electionName = res.data.Items[key].electionName.S
-            this.readItem.totalVotes = res.data.Items[key].totalVotes.N
-            this.readItem.registeredVoters = res.data.Items[key].registeredVoters.N
-            this.readItem.status = res.data.Items[key].status.S
-            this.items.push(this.readItem)
+            let item = {
+              electionId: res.data.Items[key].electionId.S,
+              creationDate: res.data.Items[key].creationDate.S,
+              electionName: res.data.Items[key].electionName.S,
+              totalVotes: res.data.Items[key].totalVotes.N,
+              registeredVoters: res.data.Items[key].registeredVoters.N,
+              status: res.data.Items[key].status.S
+            }
+            this.items.push(item)
           }
         })
         .catch(err => {
@@ -126,33 +130,6 @@ export default {
           console.log(err)
           this.response = 'error!'
         })
-        /*
-      this.items = [
-        {
-          electionId: 'Frozen Yogurt',
-          creationDate: '',
-          electionName: '',
-          totalVotes: 99,
-          registeredVoters: 1000,
-          status: 'Not Started'
-        },
-        {
-          electionId: 'Ice cream sandwich',
-          creationDate: '',
-          electionName: '',
-          totalVotes: 167,
-          registeredVoters: 1000,
-          status: 'Not Started'
-        },
-        {
-          electionId: 'Eclair',
-          creationDate: '',
-          electionName: '',
-          totalVotes: 134,
-          registeredVoters: 1000,
-          status: 'Not Started'
-        }
-      ] */
     },
     editItem (item) {
       this.editedIndex = this.items.indexOf(item)
@@ -167,12 +144,44 @@ export default {
       this.dialog = false
       this.addItem = Object.assign({}, this.defaultItem)
     },
-    save () {
-      if (this.editedIndex > -1) {
-        Object.assign(this.items[this.editedIndex], this.editedItem)
-      } else {
-        this.items.push(this.editedItem)
+    addElection () {
+      console.log('Creating new election')
+      this.addItem.electionId = Math.random().toString(36).substring(7) + Date.now().toString()
+      this.addItem.creationDate = Date.now().toString()
+      let payload = {
+        Item: {
+          electionId: {
+            S: this.addItem.electionId
+          },
+          creationDate: {
+            S: this.addItem.creationDate
+          },
+          electionName: {
+            S: this.addItem.electionName
+          },
+          totalVotes: {
+            N: '0'
+          },
+          registeredVoters: {
+            N: '0'
+          },
+          status: {
+            S: 'Draft'
+          }
+        },
+        ReturnConsumedCapacity: 'TOTAL',
+        TableName: config.databaseName
       }
+      axios.post('/additem', payload)
+        .then(res => {
+          console.log('Response:')
+          console.log(res)
+          this.initialize()
+        })
+        .catch(err => {
+          console.log('Error:')
+          console.log(err)
+        })
       this.close()
     }
   }
