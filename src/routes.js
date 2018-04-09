@@ -8,7 +8,7 @@ import Forgot from '@/components/Forgot'
 import Confirm from '@/components/Confirm'
 import Changed from '@/components/Changed'
 import Profile from '@/components/Profile/Index'
-import Dashboard from '@/components/Dashboard'
+import Dashboard from '@/components/Dashboard/Index'
 
 Vue.use(Router)
 

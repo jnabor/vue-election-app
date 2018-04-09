@@ -53,8 +53,8 @@
 </template>
 <script>
 import axios from 'axios'
-import wrapper from './wrapper'
-import * as config from '../config'
+import wrapper from '../wrapper'
+import * as config from '../../config'
 
 export default {
   components: {
