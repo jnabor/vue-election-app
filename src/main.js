@@ -14,10 +14,11 @@ import AppConfirm from './components/Confirm.vue'
 import AppChanged from './components/Changed.vue'
 import AppProfile from './components/Profile/Index.vue'
 import { store } from './store/store'
+import axios from 'axios'
+import * as config from './config'
+import 'vuetify/dist/vuetify.min.css'
 
-// index.js or main.js
-import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
-
+axios.defaults.baseURL = config.apiBaseUrl
 Vue.use(Vuetify, {
   theme: {
     primary: '#512DA8',

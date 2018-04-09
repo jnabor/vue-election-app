@@ -27,7 +27,7 @@
                     <v-text-field
                       label="E-mail"
                       v-model="email"
-                      :rules="emailRules"
+                      :rules="[emailrules.required, emailrules.email]"
                       required>
                     </v-text-field>
                     <v-text-field
@@ -81,11 +81,13 @@ export default {
       username: '',
       valid: false,
       email: '',
-      emailRules: [
-        (v) => !!v || 'E-mail is required',
-        // eslint-disable-next-line
-        (v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
-      ],
+      emailrules: {
+        required: (value) => !!value || 'E-mail is required',
+        email: (value) => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          return pattern.test(value) || 'E-mail must be valid'
+        }
+      },
       password: '',
       passRules: [
         (v) => !!v || 'Password is required',

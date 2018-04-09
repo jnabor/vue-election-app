@@ -1,0 +1,78 @@
+# refer to https://serverless.com/framework/docs/providers/aws/guide/serverless.yml/
+
+service: vue-election-app
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: ${opt:stage}
+  region: ap-southeast-1
+  role: ${file(config.js):config.iamrole}
+  iamManagedPolicies:
+    - ${file(config.js):config.dynamodbpolicy}
+    - ${file(config.js):config.cloudwatchlogspolicy}
+
+functions:
+  AddItem:
+    handler: AddItem.handler
+    events:
+      - http:
+          path: table/additem
+          method: post
+          cors: true
+  EditItem:
+    handler: EditItem.handler
+    events:
+      - http:
+          path: table/edititem
+          method: post
+          cors: true
+  DeleteItem:
+    handler: DeleteItem.handler
+    events:
+      - http:
+          path: table/deleteitem
+          method: post
+          cors: true
+  GetItem:
+    handler: GetItem.handler
+    events:
+      - http:
+          path: table/getitem
+          method: post
+          cors: true
+  QueryItems:
+    handler: QueryItems.handler
+    events:
+      - http:
+          path: table/queryitems
+          method: post
+          cors: true
+  ScanItems:
+    handler: ScanItems.handler
+    events:
+      - http:
+          path: table/scanitems
+          method: post
+          cors: true
+
+# only add table in first deploy
+resources:
+  Resources:
+    SampleTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-${opt:stage}-election-app
+        AttributeDefinitions:
+          - AttributeName: electionId
+            AttributeType: S
+          - AttributeName: creationDate
+            AttributeType: S
+        KeySchema:
+          - AttributeName: electionId
+            KeyType: HASH
+          - AttributeName: creationDate
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5

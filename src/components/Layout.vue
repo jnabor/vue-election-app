@@ -3,7 +3,7 @@
 
   <v-toolbar color="primary">
     <i class="material-icons white--text ml-2 ml-4">fingerprint</i>
-    <v-toolbar-title class="white--text hidden-xs-only">Auth</v-toolbar-title>
+    <v-toolbar-title class="white--text hidden-xs-only">Election App</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-btn icon @click="navigate('home')">
       <v-icon class="white--text">home</v-icon>
