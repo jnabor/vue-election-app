@@ -36,6 +36,7 @@
         </v-list-tile>
       </v-list>
     </v-menu>
+    <v-btn class="hidden-xs-only white--text" @click="navigate('dashboard')" flat>Dashboard</v-btn>
     <v-btn v-if="!$store.state.authenticated" class="hidden-xs-only white--text" @click="navigate('signin')" flat>Sign In</v-btn>
     <v-btn v-if="!$store.state.authenticated" class="hidden-xs-only white--text mr-4" @click="navigate('register')" flat>Register</v-btn>
     <v-menu v-if="!$store.state.authenticated" bottom left class="hidden-sm-and-up">
@@ -89,6 +90,8 @@ export default {
       if (path === 'signout') {
         this.$store.commit('signOut')
         router.push('/home')
+      } else if (path === 'dashboard') {
+        router.push('/dashboard')
       } else {
         router.push('/' + path)
       }

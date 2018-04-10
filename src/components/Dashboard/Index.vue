@@ -3,11 +3,10 @@
   <v-content>
     <section>
       <app-wrapper>
-        <v-card class="mt-5">
-          <div>
+        <div class="mt-5">
             <v-dialog v-model="dialog" max-width="500px">
-              <v-btn color="accent" slot="activator" class="mb-2">Create New</v-btn>
-              <v-card>
+              <v-btn color="accent" slot="activator" class="mb-3">Create New</v-btn>
+              <v-card >
                 <v-card-title>
                   <span class="headline">New Election</span>
                 </v-card-title>
@@ -44,8 +43,7 @@
                 <v-btn color="primary" @click="initialize">Reset</v-btn>
               </template>
             </v-data-table>
-          </div>
-        </v-card>
+        </div>
       </app-wrapper>
     </section>
   </v-content>
@@ -55,10 +53,12 @@
 import axios from 'axios'
 import wrapper from '../wrapper'
 import * as config from '../../config'
+import election from './election'
 
 export default {
   components: {
-    'app-wrapper': wrapper
+    'app-wrapper': wrapper,
+    'app-election': election
   },
   data: () => ({
     dialog: false,
