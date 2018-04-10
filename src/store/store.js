@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'Vuex'
+import router from '../routes'
 
 Vue.use(Vuex)
 
@@ -11,12 +12,26 @@ export const store = new Vuex.Store({
     authenticated: false
   },
   mutations: {
-    signOut (state) {
+    authUser (state) {
+
+    },
+    storeUser (state) {
+
+    },
+    clearAuthData (state) {
       state.authenticated = false
       state.username = ''
       state.cognitoUser = ''
       state.userPool = []
-      console.log('store: signed out')
     }
+  },
+  actions: {
+    signOut ({commit}) {
+      commit('clearAuthData')
+      router.push('/home')
+    }
+  },
+  getters: {
+
   }
 })

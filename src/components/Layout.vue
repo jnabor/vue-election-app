@@ -9,7 +9,7 @@
       <v-icon class="white--text">home</v-icon>
     </v-btn>
 
-    <v-menu  v-if="$store.state.authenticated" bottom left class="mr-4 hidden-sm-and-up">
+    <v-menu  v-if="isAuthenticated" bottom left class="mr-4 hidden-sm-and-up">
       <v-btn icon slot="activator">
         <v-icon class="white--text">person</v-icon>
       </v-btn>
@@ -22,7 +22,7 @@
         </v-list-tile>
       </v-list>
     </v-menu>
-    <v-menu  v-if="$store.state.authenticated" bottom left class="mr-4 hidden-xs-only">
+    <v-menu  v-if="isAuthenticated" bottom left class="mr-4 hidden-xs-only">
       <v-btn depressed small color="primary" slot="activator">
         {{ username }}
         <v-icon class="white--text">arrow_drop_down</v-icon>
@@ -37,22 +37,22 @@
       </v-list>
     </v-menu>
     <v-btn class="hidden-xs-only white--text" @click="navigate('dashboard')" flat>Dashboard</v-btn>
-    <v-btn v-if="!$store.state.authenticated" class="hidden-xs-only white--text" @click="navigate('signin')" flat>Sign In</v-btn>
-    <v-btn v-if="!$store.state.authenticated" class="hidden-xs-only white--text mr-4" @click="navigate('register')" flat>Register</v-btn>
-    <v-menu v-if="!$store.state.authenticated" bottom left class="hidden-sm-and-up">
+    <v-btn v-if="!isAuthenticated" class="hidden-xs-only white--text" @click="navigate('signin')" flat>Sign In</v-btn>
+    <v-btn v-if="!isAuthenticated" class="hidden-xs-only white--text mr-4" @click="navigate('register')" flat>Register</v-btn>
+    <v-menu v-if="!isAuthenticated" bottom left class="hidden-sm-and-up">
       <v-btn icon slot="activator" >
         <v-icon class="white--text">more_vert</v-icon>
       </v-btn>
       <v-list>
         <v-list-tile
-          v-if="!$store.state.authenticated"
+          v-if="!isAuthenticated"
           @click="navigate('signin')">
           <v-list-tile-title >
             Sign In
           </v-list-tile-title>
         </v-list-tile>
         <v-list-tile
-          v-if="!$store.state.authenticated"
+          v-if="!isAuthenticated"
           @click="navigate('register')">
           <v-list-tile-title>
             Register
@@ -84,12 +84,16 @@ export default {
   data: () => ({
     username: ''
   }),
+  computed: {
+    isAuthenticated: function () {
+      return this.$store.state.authenticated
+    }
+  },
   methods: {
     navigate: function (path) {
       console.log('navigating to ' + path)
       if (path === 'signout') {
-        this.$store.commit('signOut')
-        router.push('/home')
+        this.$store.dispatch('signOut')
       } else if (path === 'dashboard') {
         router.push('/dashboard')
       } else {
