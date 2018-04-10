@@ -68,8 +68,6 @@
 
 <script>
 import router from '../routes'
-import * as config from './config'
-var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
 
 export default {
   data: function () {
@@ -103,13 +101,9 @@ export default {
       this.loader = 'loading'
       const l = this.loader
       this[l] = !this[l]
-
-      console.log('sign in with: ' + this.email + ' ' + this.password)
-      var authenticationData = {
-        Username: this.email,
-        Password: this.password
-      }
-      console.log('auth data: ' + authenticationData.Username + ' ' + authenticationData.Password)
+      let authData = { Username: this.email, Password: this.password }
+      this.$store.dispatch('signIn', authData)
+      /*
       var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData)
 
       this.$store.state.userPool = new AmazonCognitoIdentity.CognitoUserPool(config.poolData)
@@ -140,6 +134,9 @@ export default {
           }
         }
       })
+      */
+      this[l] = false
+      this.loader = null
     },
     navRreset: function () {
       router.push('/forgot')
