@@ -68,15 +68,12 @@
 
 <script>
 import router from '../routes'
-import * as config from './config'
-var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
 
 export default {
   data: function () {
     return {
       callback: false,
       showerr: false,
-      errcode: '',
       errmsg: '',
       username: '',
       valid: false,
@@ -98,48 +95,22 @@ export default {
       loading: false
     }
   },
+  computed: {
+    errcode: function () {
+      return this.$store.state.errcode
+    }
+  },
   methods: {
     onSubmit () {
       this.loader = 'loading'
       const l = this.loader
       this[l] = !this[l]
-
       console.log('sign in with: ' + this.email + ' ' + this.password)
-      var authenticationData = {
+      var authData = {
         Username: this.email,
         Password: this.password
       }
-      console.log('auth data: ' + authenticationData.Username + ' ' + authenticationData.Password)
-      var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData)
-
-      this.$store.state.userPool = new AmazonCognitoIdentity.CognitoUserPool(config.poolData)
-      var userData = {
-        Username: this.email,
-        Pool: this.$store.state.userPool
-      }
-      this.$store.state.cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
-      this.$store.state.cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: (result) => {
-          if (!this.callback) {
-            this.callback = true
-            console.log('sign in success')
-            this.$store.state.authenticated = true
-            this.$store.state.username = this.email
-            this.username = this.email
-            this[l] = false
-            this.loader = null
-            router.push('/profile')
-          }
-        },
-        onFailure: (err) => {
-          if (!this.callback) {
-            console.log('sign in failure')
-            this.errcode = JSON.stringify(err.code)
-            this[l] = false
-            this.loader = null
-          }
-        }
-      })
+      this.$store.dispatch('signIn', authData)
     },
     navRreset: function () {
       router.push('/forgot')
@@ -150,6 +121,9 @@ export default {
   },
   watch: {
     errcode () {
+      this.loader = 'loading'
+      const l = this.loader
+      this[l] = !this[l]
       console.log('watched error code: ' + this.errcode)
       if (this.errcode !== '') {
         if (this.errcode === '"NotAuthorizedException"') {
@@ -167,10 +141,11 @@ export default {
       } else {
         this.showerr = false
       }
+      this[l] = false
+      this.loader = null
     }
   }
 }
-
 </script>
 
 <style scoped>
