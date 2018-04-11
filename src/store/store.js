@@ -11,13 +11,35 @@ export const store = new Vuex.Store({
     userPool: [],
     cognitoUser: '',
     username: '',
+    errcode: '',
     authenticated: false
   },
   mutations: {
-    authUser (state, authData) {
-      var authDetails = new AmazonCognitoIdentity.AuthenticationDetails(authData)
+    signOut (state) {
+      state.cognitoUser.signOut()
+      state.authenticated = false
+      state.username = ''
+      state.userPool = []
+    }
+  },
+  actions: {
+    setLogoutTimer ({ commit }, expirationTime) {
+      setTimeout(() => {
+        commit('signOut')
+      }, expirationTime)
+    },
+    signOut ({ commit }) {
+      commit('signOut')
+      router.push('/home')
+    },
+    getAuthenticatedUser (state) {
+      return state.userPool.getCurrentUser()
+    },
+    signIn ({ commit, state }, authData) {
+      state.errcode = ''
       state.userPool = new AmazonCognitoIdentity.CognitoUserPool(config.poolData)
-      var userData = {
+      let authDetails = new AmazonCognitoIdentity.AuthenticationDetails(authData)
+      let userData = {
         Username: authData.Username,
         Pool: state.userPool
       }
@@ -31,30 +53,9 @@ export const store = new Vuex.Store({
         },
         onFailure: (err) => {
           console.log('sign in failure')
-          console.log(err.code)
+          state.errcode = JSON.stringify(err.code)
         }
       })
-    },
-    storeUser (state) {
-
-    },
-    clearAuthData (state) {
-      state.authenticated = false
-      state.username = ''
-      state.cognitoUser = ''
-      state.userPool = []
     }
-  },
-  actions: {
-    signIn ({commit}, authData) {
-      commit('authUser', authData)
-    },
-    signOut ({commit}) {
-      commit('clearAuthData')
-      router.push('/home')
-    }
-  },
-  getters: {
-
   }
 })
