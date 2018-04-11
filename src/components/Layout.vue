@@ -87,6 +87,9 @@ export default {
   computed: {
     isAuthenticated: function () {
       return this.$store.state.authenticated
+    },
+    email: function () {
+      return this.$store.state.username
     }
   },
   methods: {
@@ -101,11 +104,13 @@ export default {
       }
     }
   },
-  beforeUpdate () {
-    console.log('store.username: ' + this.$store.state.username)
-    var str = this.$store.state.username
-    var index = str.indexOf('@')
-    this.username = str.substring(0, index)
+  watch: {
+    email () {
+      console.log('username: ' + this.email)
+      var str = this.email
+      var index = str.indexOf('@')
+      this.username = str.substring(0, index)
+    }
   }
 }
 </script>
