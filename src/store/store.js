@@ -23,10 +23,10 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
-    setLogoutTimer ({ commit }, expirationTime) {
+    setLogoutTimer ({ commit, state }, expirationTime) {
       setTimeout(() => {
-        commit('signOut')
-      }, expirationTime)
+        store.dispatch('signOut')
+      }, expirationTime * 1000)
     },
     signOut ({ commit }) {
       commit('signOut')
@@ -50,6 +50,7 @@ export const store = new Vuex.Store({
           state.authenticated = true
           state.username = authData.Username
           router.push('/profile')
+          store.dispatch('setLogoutTimer', 3600)
         },
         onFailure: (err) => {
           console.log('sign in failure')
