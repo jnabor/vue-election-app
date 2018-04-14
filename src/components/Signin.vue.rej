@@ -1,0 +1,10 @@
+diff a/src/components/Signin.vue b/src/components/Signin.vue	(rejected hunks)
+@@ -97,7 +97,7 @@
+   },
+   computed: {
+     errcode: function () {
+-      return this.$store.state.errcode
++      return this.$store.state.auth.errcode
+     }
+   },
+   methods: {

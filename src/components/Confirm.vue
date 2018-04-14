@@ -89,7 +89,7 @@ export default {
 
       userPool = new AmazonCognitoIdentity.CognitoUserPool(config.poolData)
       var userData = {
-        Username: this.$store.state.auth.username,
+        Username: this.$store.state.username,
         Pool: userPool
       }
       console.log('confirmation code for ' + userData.Username + ': ' + this.code)

@@ -10,7 +10,7 @@
 export default {
   name: 'App',
   created () {
-    this.$store.dispatch('auth/tryAutoSignIn')
+    this.$store.dispatch('tryAutoSignIn')
   }
 }
 </script>

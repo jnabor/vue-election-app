@@ -136,7 +136,7 @@ export default {
             this.message = JSON.stringify(result.message)
             console.log('user name is ' + result.user.getUsername())
             this.username = result.user.getUsername()
-            this.$store.commit('auth/setUsername', this.username)
+            this.$store.commit('setUsername', this.username)
             router.push('/confirm')
           }
           this[l] = false

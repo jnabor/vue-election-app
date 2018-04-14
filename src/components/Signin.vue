@@ -97,7 +97,7 @@ export default {
   },
   computed: {
     errcode: function () {
-      return this.$store.state.auth.errcode
+      return this.$store.state.errcode
     }
   },
   methods: {
@@ -110,7 +110,7 @@ export default {
         Username: this.email,
         Password: this.password
       }
-      this.$store.dispatch('auth/signIn', authData)
+      this.$store.dispatch('signIn', authData)
     },
     navRreset: function () {
       router.push('/forgot')
