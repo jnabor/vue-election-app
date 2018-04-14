@@ -32,7 +32,7 @@ export default {
       router.push('/register')
     },
     navSignOut: function () {
-      this.$store.dispatch('signOut')
+      this.$store.dispatch('auth/signOut')
     }
   }
 }

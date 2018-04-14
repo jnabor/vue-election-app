@@ -98,7 +98,7 @@ export default {
     navigate: function (path) {
       console.log('navigating to ' + path)
       if (path === 'signout') {
-        this.$store.dispatch('signOut')
+        this.$store.dispatch('auth/signOut')
       } else if (path === 'dashboard') {
         router.push('/dashboard')
       } else {
