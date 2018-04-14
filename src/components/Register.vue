@@ -67,7 +67,7 @@
 
 <script>
 import router from '../routes'
-import * as config from '../config'
+import config from '../config'
 var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
 
 var userPool = []

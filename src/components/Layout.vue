@@ -88,10 +88,10 @@ export default {
   },
   computed: {
     isAuthenticated: function () {
-      return this.$store.state.authenticated
+      return this.$store.state.auth.authenticated
     },
     email: function () {
-      return this.$store.state.username
+      return this.$store.state.auth.username
     }
   },
   methods: {

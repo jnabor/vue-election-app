@@ -97,7 +97,7 @@ export default {
   },
   computed: {
     errcode: function () {
-      return this.$store.state.errcode
+      return this.$store.state.auth.errcode
     }
   },
   methods: {

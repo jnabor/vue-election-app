@@ -124,7 +124,7 @@ export default {
   methods: {
     getAttributes: function () {
       console.log('getting attributes from server...')
-      this.$store.state.cognitoUser.getUserAttributes((err, result) => {
+      this.$store.state.auth.cognitoUser.getUserAttributes((err, result) => {
         if (err) {
           console.log('get attribute error: ' + err)
           return
@@ -169,7 +169,7 @@ export default {
       attributeList.push(firstName)
       attributeList.push(middleName)
       attributeList.push(lastName)
-      this.$store.state.cognitoUser.updateAttributes(attributeList, (err, result) => {
+      this.$store.state.auth.cognitoUser.updateAttributes(attributeList, (err, result) => {
         if (err) {
           console.log('error: ' + err)
           return
@@ -187,7 +187,7 @@ export default {
       let birthDate = new AmazonCognitoIdentity.CognitoUserAttribute(attributeBirthDate)
       console.log(birthDate)
       attributeList.push(birthDate)
-      this.$store.state.cognitoUser.updateAttributes(attributeList, (err, result) => {
+      this.$store.state.auth.cognitoUser.updateAttributes(attributeList, (err, result) => {
         if (err) {
           console.log('error: ' + err)
           return
@@ -204,7 +204,7 @@ export default {
       var attributePhoneNumber = { Name: 'custom:phone_numbers', Value: phoneNumbers }
       var phoneNumber = new AmazonCognitoIdentity.CognitoUserAttribute(attributePhoneNumber)
       attributeList.push(phoneNumber)
-      this.$store.state.cognitoUser.updateAttributes(attributeList, (err, result) => {
+      this.$store.state.auth.cognitoUser.updateAttributes(attributeList, (err, result) => {
         if (err) {
           console.log('error: ' + JSON.stringify(err))
           return
@@ -227,7 +227,7 @@ export default {
       var attributeAddress = { Name: 'custom:' + type + '_address', Value: addressJSON }
       var address = new AmazonCognitoIdentity.CognitoUserAttribute(attributeAddress)
       attributeList.push(address)
-      this.$store.state.cognitoUser.updateAttributes(attributeList, (err, result) => {
+      this.$store.state.auth.cognitoUser.updateAttributes(attributeList, (err, result) => {
         if (err) {
           console.log('error: ' + JSON.stringify(err))
           return
@@ -267,7 +267,7 @@ export default {
       let attribute = { Name: 'custom:custom_attribute', Value: JSON.stringify(customAttribute) }
       var newAttribute = new AmazonCognitoIdentity.CognitoUserAttribute(attribute)
       attributeList.push(newAttribute)
-      this.$store.state.cognitoUser.updateAttributes(attributeList, (err, result) => {
+      this.$store.state.auth.cognitoUser.updateAttributes(attributeList, (err, result) => {
         if (err) {
           console.log('error: ' + JSON.stringify(err))
           return
@@ -280,7 +280,7 @@ export default {
     }
   },
   beforeMount: function () {
-    if (this.$store.state.authenticated === true) {
+    if (this.$store.state.auth.authenticated === true) {
       this.getAttributes()
     }
   }

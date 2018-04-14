@@ -15,7 +15,7 @@ import AppChanged from './components/Changed.vue'
 import AppProfile from './components/Profile/Index.vue'
 import { store } from './store/index'
 import axios from 'axios'
-import * as config from './config'
+import config from './config'
 import 'vuetify/dist/vuetify.min.css'
 
 axios.defaults.baseURL = config.apiBaseUrl

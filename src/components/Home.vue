@@ -23,7 +23,7 @@ import router from '../routes'
 export default {
   computed: {
     isAuthenticated: function () {
-      return this.$store.state.authenticated
+      return this.$store.state.auth.authenticated
     }
   },
   methods: {
@@ -32,7 +32,7 @@ export default {
       router.push('/register')
     },
     navSignOut: function () {
-      this.$store.dispatch('auth/signOut')
+      this.$store.dispatch('signOut')
     }
   }
 }

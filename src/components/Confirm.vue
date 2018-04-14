@@ -58,7 +58,7 @@
 
 <script>
 import router from '../routes'
-import * as config from '../config'
+import config from '../config'
 var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
 var userPool = []
 
@@ -89,7 +89,7 @@ export default {
 
       userPool = new AmazonCognitoIdentity.CognitoUserPool(config.poolData)
       var userData = {
-        Username: this.$store.state.username,
+        Username: this.$store.state.auth.username,
         Pool: userPool
       }
       console.log('confirmation code for ' + userData.Username + ': ' + this.code)

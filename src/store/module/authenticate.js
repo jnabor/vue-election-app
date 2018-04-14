@@ -1,4 +1,4 @@
-import * as config from '../../config'
+import config from '../../config'
 import router from '../../routes'
 var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
 
