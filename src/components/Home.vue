@@ -19,7 +19,6 @@
 
 <script>
 import router from '../routes'
-import * as config from '../config'
 
 export default {
   computed: {
@@ -29,7 +28,7 @@ export default {
   },
   methods: {
     navRegister: function () {
-      config.log('navigatig to sign up')
+      console.log('navigatig to sign up')
       router.push('/register')
     },
     navSignOut: function () {

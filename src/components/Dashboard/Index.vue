@@ -62,43 +62,45 @@ export default {
     'app-wrapper': wrapper,
     'app-election': election
   },
-  data: () => ({
-    loading: true,
-    dialog: false,
-    headers: [
-      { text: 'Election ID', value: 'electionId' },
-      { text: 'Creation Date', value: 'creationDate' },
-      { text: 'Election Name', value: 'electionName' },
-      { text: 'Votes', value: 'totalVotes' },
-      { text: 'Registered', value: 'registeredVoters' },
-      { text: 'Status', value: ' ' }
-    ],
-    items: [],
-    addItem: {
-      electionId: '',
-      creationDate: '',
-      electionName: '',
-      totalVotes: '',
-      registeredVoters: '',
-      status: ''
-    },
-    defaultItem: {
-      electionId: '',
-      creationDate: '',
-      electionName: '',
-      totalVotes: '',
-      registeredVoters: '',
-      status: ''
-    },
-    readItem: {
-      electionId: '',
-      creationDate: '',
-      electionName: '',
-      totalVotes: '',
-      registeredVoters: '',
-      status: ''
+  data: () => {
+    return {
+      loading: true,
+      dialog: false,
+      headers: [
+        { text: 'Election ID', value: 'electionId' },
+        { text: 'Creation Date', value: 'creationDate' },
+        { text: 'Election Name', value: 'electionName' },
+        { text: 'Votes', value: 'totalVotes' },
+        { text: 'Registered', value: 'registeredVoters' },
+        { text: 'Status', value: ' ' }
+      ],
+      items: [],
+      addItem: {
+        electionId: '',
+        creationDate: '',
+        electionName: '',
+        totalVotes: '',
+        registeredVoters: '',
+        status: ''
+      },
+      defaultItem: {
+        electionId: '',
+        creationDate: '',
+        electionName: '',
+        totalVotes: '',
+        registeredVoters: '',
+        status: ''
+      },
+      readItem: {
+        electionId: '',
+        creationDate: '',
+        electionName: '',
+        totalVotes: '',
+        registeredVoters: '',
+        status: ''
+      }
     }
-  }),
+  },
   watch: {
     dialog (val) {
       val || this.close()
@@ -134,8 +136,8 @@ export default {
           }
         })
         .catch(err => {
-          config.log('Error:')
-          config.log(err)
+          console.log('Error:')
+          console.log(err)
           this.response = 'error!'
         })
     },
@@ -153,7 +155,7 @@ export default {
       this.addItem = Object.assign({}, this.defaultItem)
     },
     addElection () {
-      config.log('Creating new election')
+      console.log('Creating new election')
       this.addItem.electionId = Math.random().toString(36).substring(7) + Date.now().toString()
       this.addItem.creationDate = Date.now().toString()
       let payload = {
@@ -182,13 +184,13 @@ export default {
       }
       axios.post('/additem', payload)
         .then(res => {
-          config.log('Response:')
-          config.log(res)
+          console.log('Response:')
+          console.log(res)
           this.initialize()
         })
         .catch(err => {
-          config.log('Error:')
-          config.log(err)
+          console.log('Error:')
+          console.log(err)
         })
       this.close()
     }

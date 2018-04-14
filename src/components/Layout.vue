@@ -79,12 +79,13 @@
 
 <script>
 import router from '../routes'
-import * as config from '../config'
 
 export default {
-  data: () => ({
-    username: ''
-  }),
+  data: () => {
+    return {
+      username: ''
+    }
+  },
   computed: {
     isAuthenticated: function () {
       return this.$store.state.authenticated
@@ -95,7 +96,7 @@ export default {
   },
   methods: {
     navigate: function (path) {
-      config.log('navigating to ' + path)
+      console.log('navigating to ' + path)
       if (path === 'signout') {
         this.$store.dispatch('signOut')
       } else if (path === 'dashboard') {
@@ -107,7 +108,7 @@ export default {
   },
   watch: {
     email () {
-      config.log('username: ' + this.email)
+      console.log('username: ' + this.email)
       var str = this.email
       var index = str.indexOf('@')
       this.username = str.substring(0, index)

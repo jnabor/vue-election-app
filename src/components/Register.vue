@@ -117,9 +117,9 @@ export default {
       dataEmail.Value = this.email
       var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail)
       attributeList.push(attributeEmail)
-      config.log('attribute list: ' + attributeList)
+      console.log('attribute list: ' + attributeList)
       userPool = new AmazonCognitoIdentity.CognitoUserPool(config.poolData)
-      config.log('sign up with: ' + this.email + ' ' + this.password)
+      console.log('sign up with: ' + this.email + ' ' + this.password)
       this.callback = false
       this.errcode = ''
       this.username = ''
@@ -127,14 +127,14 @@ export default {
       userPool.signUp(this.email, this.password, attributeList, null, (err, result) => {
         if (!this.callback) {
           this.callback = true
-          config.log('register callback')
+          console.log('register callback')
           if (err) {
-            config.log('registration error: ' + JSON.stringify(err))
+            console.log('registration error: ' + JSON.stringify(err))
             this.errcode = JSON.stringify(err.code)
           } else {
-            config.log('registration success: ' + JSON.stringify(result))
+            console.log('registration success: ' + JSON.stringify(result))
             this.message = JSON.stringify(result.message)
-            config.log('user name is ' + result.user.getUsername())
+            console.log('user name is ' + result.user.getUsername())
             this.username = result.user.getUsername()
             this.$store.commit('setUsername', this.username)
             router.push('/confirm')
@@ -153,7 +153,7 @@ export default {
   },
   watch: {
     errcode () {
-      config.log('watched error code: ' + this.errcode)
+      console.log('watched error code: ' + this.errcode)
       if (this.errcode !== '') {
         if (this.errcode === '"UsernameExistsException"') {
           this.errmsg = 'An account with the given email already exists!'

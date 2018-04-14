@@ -17,12 +17,11 @@
 
 <script>
 import router from '../routes'
-import * as config from '../config'
 
 export default {
   methods: {
     navSignIn: function () {
-      config.log('navigating to sign in')
+      console.log('navigating to sign in')
       router.push('/signin')
     }
   }

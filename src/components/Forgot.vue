@@ -110,36 +110,38 @@ var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
 var userPool = []
 
 export default {
-  data: () => ({
-    codesent: false,
-    callback: false,
-    showerr: false,
-    errcode: '',
-    errmsg: '',
-    valid: false,
-    email: '',
-    emailRules: [
-      (v) => !!v || 'E-mail is required',
-      // eslint-disable-next-line
-      (v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
-    ],
-    password: '',
-    passRules: [
-      (v) => !!v || 'Password is required',
-      (v) => v.length >= 8 || 'Password must be 8-20 characters',
-      (v) => /^(?=.*[0-9])/.test(v) || 'Password must contain at least 1 number',
-      (v) => /^(?=.*[a-z])/.test(v) || 'Password must contain at least 1 lower case letter',
-      (v) => /^(?=.*[A-Z])/.test(v) || 'Password must contain at least 1 upper case letter',
-      (v) => /^(?=.*[!@#$%^&*"])/.test(v) || 'Password must contain at least 1 special character (!@#$%^&*")'
-    ],
-    code: '',
-    codeRules: [
-      (v) => !!v || 'Code is required'
-    ],
-    hidepw: true,
-    loader: false,
-    loading: false
-  }),
+  data: () => {
+    return {
+      codesent: false,
+      callback: false,
+      showerr: false,
+      errcode: '',
+      errmsg: '',
+      valid: false,
+      email: '',
+      emailRules: [
+        (v) => !!v || 'E-mail is required',
+        // eslint-disable-next-line
+        (v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+      ],
+      password: '',
+      passRules: [
+        (v) => !!v || 'Password is required',
+        (v) => v.length >= 8 || 'Password must be 8-20 characters',
+        (v) => /^(?=.*[0-9])/.test(v) || 'Password must contain at least 1 number',
+        (v) => /^(?=.*[a-z])/.test(v) || 'Password must contain at least 1 lower case letter',
+        (v) => /^(?=.*[A-Z])/.test(v) || 'Password must contain at least 1 upper case letter',
+        (v) => /^(?=.*[!@#$%^&*"])/.test(v) || 'Password must contain at least 1 special character (!@#$%^&*")'
+      ],
+      code: '',
+      codeRules: [
+        (v) => !!v || 'Code is required'
+      ],
+      hidepw: true,
+      loader: false,
+      loading: false
+    }
+  },
   methods: {
     onSubmit () {
       this.loader = 'loading'
@@ -151,7 +153,7 @@ export default {
         Username: this.email,
         Pool: userPool
       }
-      config.log('password change for ' + userData.Username)
+      console.log('password change for ' + userData.Username)
       var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
       this.showerr = false
       this.errcode = ''
@@ -159,14 +161,14 @@ export default {
       cognitoUser.confirmPassword(this.code, this.password, {
         onSuccess: (data) => {
           // successfully initiated reset password request
-          config.log('forgot password confirmed: ' + JSON.stringify(data))
+          console.log('forgot password confirmed: ' + JSON.stringify(data))
           this[l] = false
           this.loader = null
           router.push('/changed')
         },
         onFailure: (err) => {
           var code = JSON.stringify(err.code)
-          config.log('forgot password confirm error: ' + code)
+          console.log('forgot password confirm error: ' + code)
           this.errcode = code
           this[l] = false
           this.loader = null
@@ -183,7 +185,7 @@ export default {
         Username: this.email,
         Pool: userPool
       }
-      config.log('password forgot for ' + userData.Username)
+      console.log('password forgot for ' + userData.Username)
       var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
       this.showerr = false
       this.errcode = ''
@@ -191,13 +193,13 @@ export default {
       cognitoUser.forgotPassword({
         onSuccess: (data) => {
           // successfully initiated reset password request
-          config.log('forgot password initiated: ' + JSON.stringify(data))
+          console.log('forgot password initiated: ' + JSON.stringify(data))
           this[l] = false
           this.loader = null
         },
         onFailure: (err) => {
           var code = JSON.stringify(err.code)
-          config.log('forgot password error: ' + code)
+          console.log('forgot password error: ' + code)
           this.errcode = code
           this[l] = false
           this.loader = null
@@ -205,7 +207,7 @@ export default {
         // Optional automatic callback
         inputVerificationCode: (data) => {
           var result = JSON.stringify(data)
-          config.log('Code sent to: ' + result)
+          console.log('Code sent to: ' + result)
           this.codesent = true
           this[l] = false
           this.loader = null
@@ -215,7 +217,7 @@ export default {
   },
   watch: {
     errcode () {
-      config.log('watched error code: ' + this.errcode)
+      console.log('watched error code: ' + this.errcode)
       if (this.errcode !== '') {
         if (this.errcode === '"CodeMismatchException"') {
           this.errmsg = 'Invalid verification code provided'

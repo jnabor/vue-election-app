@@ -56,14 +56,14 @@ export const store = new Vuex.Store({
       commit('setCognitoDetails', authData)
       state.cognitoUser.authenticateUser(state.authDetails, {
         onSuccess: (result) => {
-          config.log('sign in success')
+          console.log('sign in success')
           commit('signIn')
           commit('setUsername', authData.Username)
           router.push('/profile')
           dispatch('setLogoutTimer', 3600)
         },
         onFailure: (err) => {
-          config.log('sign in failure')
+          console.log('sign in failure')
           commit('setError', JSON.stringify(err.code))
         }
       })
@@ -75,14 +75,14 @@ export const store = new Vuex.Store({
         commit('setCognitoUser', cognitoUser)
         state.cognitoUser.getSession(function (err, session) {
           if (err) {
-            config.log(JSON.stringify(err))
+            console.log(JSON.stringify(err))
           } else {
             commit('signIn')
             state.cognitoUser.getUserAttributes(function (err, attributes) {
               if (err) {
-                config.log(JSON.stringify(err))
+                console.log(JSON.stringify(err))
               } else {
-                config.log(attributes)
+                console.log(attributes)
                 for (let attribute of attributes) {
                   if (attribute.Name === 'email') {
                     commit('setUsername', attribute.Value)

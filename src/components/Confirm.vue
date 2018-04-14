@@ -82,24 +82,28 @@ export default {
       this.loader = 'loading'
       const l = this.loader
       this[l] = !this[l]
+      this.errcode = ''
+      this.errmsg = ''
+      this.showerr = false
+      this.callback = false
 
       userPool = new AmazonCognitoIdentity.CognitoUserPool(config.poolData)
       var userData = {
         Username: this.$store.state.username,
         Pool: userPool
       }
-      config.log('confirmation code for ' + userData.Username + ': ' + this.code)
+      console.log('confirmation code for ' + userData.Username + ': ' + this.code)
       var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
 
       cognitoUser.confirmRegistration(this.code, true, (err, result) => {
         if (!this.callback) {
           this.callback = true
-          config.log('confirm callback')
+          console.log('confirm callback')
           if (err) {
-            config.log('confirmation error: ' + JSON.stringify(err))
+            console.log('confirmation error: ' + JSON.stringify(err))
             this.errcode = JSON.stringify(err.code)
           } else {
-            config.log('confirmation success: ' + JSON.stringify(result))
+            console.log('confirmation success: ' + JSON.stringify(result))
             this.confirmed = true
           }
           this[l] = false
@@ -115,7 +119,7 @@ export default {
       }
     },
     errcode () {
-      config.log('watched error code: ' + this.errcode)
+      console.log('watched error code: ' + this.errcode)
       if (this.errcode !== '') {
         if (this.errcode === '"CodeMismatchException"') {
           this.errmsg = 'Invalid verification code provided'
