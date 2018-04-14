@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'Vuex'
 import router from '../routes'
-import * as config from '../components/config'
+import * as config from '../config'
 var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
 
 Vue.use(Vuex)
@@ -9,10 +9,14 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state: {
     userPool: [],
+    authDetails: '',
+    userData: '',
     cognitoUser: '',
     username: '',
     errcode: '',
     authenticated: false
+  },
+  getters: {
   },
   mutations: {
     signOut (state) {
@@ -20,49 +24,68 @@ export const store = new Vuex.Store({
       state.authenticated = false
       state.username = ''
       state.userPool = []
+    },
+    signIn (state) {
+      state.authenticated = true
+    },
+    setUserPool (state) {
+      state.userPool = new AmazonCognitoIdentity.CognitoUserPool(config.poolData)
+    },
+    setCognitoUser (state, payload) {
+      state.cognitoUser = payload
+    },
+    setCognitoDetails (state, authData) {
+      state.authDetails = new AmazonCognitoIdentity.AuthenticationDetails(authData)
+      state.userData = { Username: authData.Username, Pool: state.userPool }
+      state.cognitoUser = new AmazonCognitoIdentity.CognitoUser(state.userData)
+    },
+    setUsername (state, payload) {
+      state.username = payload
+    },
+    setError (state, payload) {
+      state.errcode = payload
+    },
+    clearError (state) {
+      state.errcode = ''
     }
   },
   actions: {
     signIn ({ commit, state, dispatch }, authData) {
-      state.errcode = ''
-      state.userPool = new AmazonCognitoIdentity.CognitoUserPool(config.poolData)
-      let authDetails = new AmazonCognitoIdentity.AuthenticationDetails(authData)
-      let userData = {
-        Username: authData.Username,
-        Pool: state.userPool
-      }
-      state.cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
-      state.cognitoUser.authenticateUser(authDetails, {
+      commit('clearError')
+      commit('setUserPool')
+      commit('setCognitoDetails', authData)
+      state.cognitoUser.authenticateUser(state.authDetails, {
         onSuccess: (result) => {
-          console.log('sign in success')
-          state.authenticated = true
-          state.username = authData.Username
+          config.log('sign in success')
+          commit('signIn')
+          commit('setUsername', authData.Username)
           router.push('/profile')
           dispatch('setLogoutTimer', 3600)
         },
         onFailure: (err) => {
-          console.log('sign in failure')
-          state.errcode = JSON.stringify(err.code)
+          config.log('sign in failure')
+          commit('setError', JSON.stringify(err.code))
         }
       })
     },
-    tryAutoSignIn ({ state, dispatch }) {
-      state.userPool = new AmazonCognitoIdentity.CognitoUserPool(config.poolData)
-      state.cognitoUser = state.userPool.getCurrentUser()
-      if (state.cognitoUser != null) {
+    tryAutoSignIn ({ commit, state, dispatch }) {
+      commit('setUserPool')
+      let cognitoUser = state.userPool.getCurrentUser()
+      if (cognitoUser != null) {
+        commit('setCognitoUser', cognitoUser)
         state.cognitoUser.getSession(function (err, session) {
           if (err) {
-            console.log(JSON.stringify(err))
+            config.log(JSON.stringify(err))
           } else {
-            state.authenticated = true
+            commit('signIn')
             state.cognitoUser.getUserAttributes(function (err, attributes) {
               if (err) {
-                console.log(JSON.stringify(err))
+                config.log(JSON.stringify(err))
               } else {
-                console.log(attributes)
+                config.log(attributes)
                 for (let attribute of attributes) {
                   if (attribute.Name === 'email') {
-                    state.username = attribute.Value
+                    commit('setUsername', attribute.Value)
                   }
                 }
               }

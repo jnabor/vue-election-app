@@ -79,6 +79,7 @@
 
 <script>
 import router from '../routes'
+import * as config from '../config'
 
 export default {
   data: () => ({
@@ -94,7 +95,7 @@ export default {
   },
   methods: {
     navigate: function (path) {
-      console.log('navigating to ' + path)
+      config.log('navigating to ' + path)
       if (path === 'signout') {
         this.$store.dispatch('signOut')
       } else if (path === 'dashboard') {
@@ -106,7 +107,7 @@ export default {
   },
   watch: {
     email () {
-      console.log('username: ' + this.email)
+      config.log('username: ' + this.email)
       var str = this.email
       var index = str.indexOf('@')
       this.username = str.substring(0, index)
@@ -114,7 +115,5 @@ export default {
   }
 }
 </script>
-
 <style>
-
 </style>

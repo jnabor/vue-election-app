@@ -68,6 +68,7 @@
 
 <script>
 import router from '../routes'
+import * as config from '../config'
 
 export default {
   data: function () {
@@ -105,7 +106,7 @@ export default {
       this.loader = 'loading'
       const l = this.loader
       this[l] = !this[l]
-      console.log('sign in with: ' + this.email + ' ' + this.password)
+      config.log('sign in with: ' + this.email + ' ' + this.password)
       var authData = {
         Username: this.email,
         Password: this.password
@@ -124,7 +125,7 @@ export default {
       this.loader = 'loading'
       const l = this.loader
       this[l] = !this[l]
-      console.log('watched error code: ' + this.errcode)
+      config.log('watched error code: ' + this.errcode)
       if (this.errcode !== '') {
         if (this.errcode === '"NotAuthorizedException"') {
           this.errmsg = 'Incorrect username or password'

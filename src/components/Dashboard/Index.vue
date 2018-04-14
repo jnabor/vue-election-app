@@ -29,16 +29,18 @@
             <v-data-table
               :headers="headers"
               :items="items"
+              :loading="loading"
               hide-actions
               class="elevation-1">
-              <template slot="items" slot-scope="props">
+              <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+              <template v-if="!loading" slot="items" slot-scope="props">
                 <td class="text-xs-left">{{ props.item.electionId       }}</td>
                 <td class="text-xs-left">{{ props.item.creationDate     }}</td>
                 <td class="text-xs-left">{{ props.item.electionName     }}</td>
                 <td class="text-xs-left">{{ props.item.totalVotes       }}</td>
                 <td class="text-xs-left">{{ props.item.registeredVoters }}</td>
                 <td class="text-xs-left">{{ props.item.status }}</td>
-                </template>
+              </template>
               <template slot="no-data">
                 <v-btn color="primary" @click="initialize">Reset</v-btn>
               </template>
@@ -61,6 +63,7 @@ export default {
     'app-election': election
   },
   data: () => ({
+    loading: true,
     dialog: false,
     headers: [
       { text: 'Election ID', value: 'electionId' },
@@ -102,7 +105,12 @@ export default {
     }
   },
   created () {
-    this.initialize()
+    if (this.items.length > 0) {
+
+    } else {
+      this.initialize()
+      setTimeout(() => { this.loading = false }, 1000)
+    }
   },
   methods: {
     initialize () {
@@ -126,8 +134,8 @@ export default {
           }
         })
         .catch(err => {
-          console.log('Error:')
-          console.log(err)
+          config.log('Error:')
+          config.log(err)
           this.response = 'error!'
         })
     },
@@ -145,7 +153,7 @@ export default {
       this.addItem = Object.assign({}, this.defaultItem)
     },
     addElection () {
-      console.log('Creating new election')
+      config.log('Creating new election')
       this.addItem.electionId = Math.random().toString(36).substring(7) + Date.now().toString()
       this.addItem.creationDate = Date.now().toString()
       let payload = {
@@ -174,22 +182,18 @@ export default {
       }
       axios.post('/additem', payload)
         .then(res => {
-          console.log('Response:')
-          console.log(res)
+          config.log('Response:')
+          config.log(res)
           this.initialize()
         })
         .catch(err => {
-          console.log('Error:')
-          console.log(err)
+          config.log('Error:')
+          config.log(err)
         })
       this.close()
     }
   }
 }
 </script>
-
 <style>
-.aws-logo {
-  max-height: 80px;
-}
 </style>

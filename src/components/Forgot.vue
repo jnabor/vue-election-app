@@ -105,7 +105,7 @@
 
 <script>
 import router from '../routes'
-import * as config from './config'
+import * as config from '../config'
 var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
 var userPool = []
 
@@ -151,7 +151,7 @@ export default {
         Username: this.email,
         Pool: userPool
       }
-      console.log('password change for ' + userData.Username)
+      config.log('password change for ' + userData.Username)
       var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
       this.showerr = false
       this.errcode = ''
@@ -159,14 +159,14 @@ export default {
       cognitoUser.confirmPassword(this.code, this.password, {
         onSuccess: (data) => {
           // successfully initiated reset password request
-          console.log('forgot password confirmed: ' + JSON.stringify(data))
+          config.log('forgot password confirmed: ' + JSON.stringify(data))
           this[l] = false
           this.loader = null
           router.push('/changed')
         },
         onFailure: (err) => {
           var code = JSON.stringify(err.code)
-          console.log('forgot password confirm error: ' + code)
+          config.log('forgot password confirm error: ' + code)
           this.errcode = code
           this[l] = false
           this.loader = null
@@ -183,7 +183,7 @@ export default {
         Username: this.email,
         Pool: userPool
       }
-      console.log('password forgot for ' + userData.Username)
+      config.log('password forgot for ' + userData.Username)
       var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
       this.showerr = false
       this.errcode = ''
@@ -191,13 +191,13 @@ export default {
       cognitoUser.forgotPassword({
         onSuccess: (data) => {
           // successfully initiated reset password request
-          console.log('forgot password initiated: ' + JSON.stringify(data))
+          config.log('forgot password initiated: ' + JSON.stringify(data))
           this[l] = false
           this.loader = null
         },
         onFailure: (err) => {
           var code = JSON.stringify(err.code)
-          console.log('forgot password error: ' + code)
+          config.log('forgot password error: ' + code)
           this.errcode = code
           this[l] = false
           this.loader = null
@@ -205,7 +205,7 @@ export default {
         // Optional automatic callback
         inputVerificationCode: (data) => {
           var result = JSON.stringify(data)
-          console.log('Code sent to: ' + result)
+          config.log('Code sent to: ' + result)
           this.codesent = true
           this[l] = false
           this.loader = null
@@ -215,7 +215,7 @@ export default {
   },
   watch: {
     errcode () {
-      console.log('watched error code: ' + this.errcode)
+      config.log('watched error code: ' + this.errcode)
       if (this.errcode !== '') {
         if (this.errcode === '"CodeMismatchException"') {
           this.errmsg = 'Invalid verification code provided'
@@ -235,9 +235,7 @@ export default {
     }
   }
 }
-
 </script>
-
 <style scoped>
 .aws-logo {
   width: 100%;

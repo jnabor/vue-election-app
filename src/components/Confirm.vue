@@ -58,7 +58,7 @@
 
 <script>
 import router from '../routes'
-import * as config from './config'
+import * as config from '../config'
 var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
 var userPool = []
 
@@ -88,18 +88,18 @@ export default {
         Username: this.$store.state.username,
         Pool: userPool
       }
-      console.log('confirmation code for ' + userData.Username + ': ' + this.code)
+      config.log('confirmation code for ' + userData.Username + ': ' + this.code)
       var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData)
 
       cognitoUser.confirmRegistration(this.code, true, (err, result) => {
         if (!this.callback) {
           this.callback = true
-          console.log('confirm callback')
+          config.log('confirm callback')
           if (err) {
-            console.log('confirmation error: ' + JSON.stringify(err))
+            config.log('confirmation error: ' + JSON.stringify(err))
             this.errcode = JSON.stringify(err.code)
           } else {
-            console.log('confirmation success: ' + JSON.stringify(result))
+            config.log('confirmation success: ' + JSON.stringify(result))
             this.confirmed = true
           }
           this[l] = false
@@ -115,7 +115,7 @@ export default {
       }
     },
     errcode () {
-      console.log('watched error code: ' + this.errcode)
+      config.log('watched error code: ' + this.errcode)
       if (this.errcode !== '') {
         if (this.errcode === '"CodeMismatchException"') {
           this.errmsg = 'Invalid verification code provided'

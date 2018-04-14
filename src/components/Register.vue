@@ -67,7 +67,7 @@
 
 <script>
 import router from '../routes'
-import * as config from './config'
+import * as config from '../config'
 var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
 
 var userPool = []
@@ -117,9 +117,9 @@ export default {
       dataEmail.Value = this.email
       var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail)
       attributeList.push(attributeEmail)
-      console.log('attribute list: ' + attributeList)
+      config.log('attribute list: ' + attributeList)
       userPool = new AmazonCognitoIdentity.CognitoUserPool(config.poolData)
-      console.log('sign up with: ' + this.email + ' ' + this.password)
+      config.log('sign up with: ' + this.email + ' ' + this.password)
       this.callback = false
       this.errcode = ''
       this.username = ''
@@ -127,16 +127,16 @@ export default {
       userPool.signUp(this.email, this.password, attributeList, null, (err, result) => {
         if (!this.callback) {
           this.callback = true
-          console.log('register callback')
+          config.log('register callback')
           if (err) {
-            console.log('registration error: ' + JSON.stringify(err))
+            config.log('registration error: ' + JSON.stringify(err))
             this.errcode = JSON.stringify(err.code)
           } else {
-            console.log('registration success: ' + JSON.stringify(result))
+            config.log('registration success: ' + JSON.stringify(result))
             this.message = JSON.stringify(result.message)
-            console.log('user name is ' + result.user.getUsername())
+            config.log('user name is ' + result.user.getUsername())
             this.username = result.user.getUsername()
-            this.$store.state.username = this.username
+            this.$store.commit('setUsername', this.username)
             router.push('/confirm')
           }
           this[l] = false
@@ -153,7 +153,7 @@ export default {
   },
   watch: {
     errcode () {
-      console.log('watched error code: ' + this.errcode)
+      config.log('watched error code: ' + this.errcode)
       if (this.errcode !== '') {
         if (this.errcode === '"UsernameExistsException"') {
           this.errmsg = 'An account with the given email already exists!'
