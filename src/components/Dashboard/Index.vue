@@ -14,7 +14,7 @@
                   <v-container grid-list-md>
                     <v-layout wrap>
                       <v-flex xs12 sm8 md8>
-                        <v-text-field label="Election Name" v-model="addItem.electionName"></v-text-field>
+                        <v-text-field label="Election Name" v-model="electionName"></v-text-field>
                       </v-flex>
                     </v-layout>
                   </v-container>
@@ -28,12 +28,12 @@
             </v-dialog>
             <v-data-table
               :headers="headers"
-              :items="items"
-              :loading="loading"
+              :items="elections"
+              :loading="loadingElections"
               hide-actions
               class="elevation-1">
               <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
-              <template v-if="!loading" slot="items" slot-scope="props">
+              <template slot="items" slot-scope="props">
                 <td class="text-xs-left">{{ props.item.electionId       }}</td>
                 <td class="text-xs-left">{{ props.item.creationDate     }}</td>
                 <td class="text-xs-left">{{ props.item.electionName     }}</td>
@@ -52,9 +52,7 @@
 </div>
 </template>
 <script>
-import axios from 'axios'
 import wrapper from '../wrapper'
-import config from '../../config'
 import election from './election'
 
 export default {
@@ -64,7 +62,6 @@ export default {
   },
   data: () => {
     return {
-      loading: true,
       dialog: false,
       headers: [
         { text: 'Election ID', value: 'electionId' },
@@ -73,32 +70,15 @@ export default {
         { text: 'Votes', value: 'totalVotes' },
         { text: 'Registered', value: 'registeredVoters' },
         { text: 'Status', value: ' ' }
-      ],
-      items: [],
-      addItem: {
-        electionId: '',
-        creationDate: '',
-        electionName: '',
-        totalVotes: '',
-        registeredVoters: '',
-        status: ''
-      },
-      defaultItem: {
-        electionId: '',
-        creationDate: '',
-        electionName: '',
-        totalVotes: '',
-        registeredVoters: '',
-        status: ''
-      },
-      readItem: {
-        electionId: '',
-        creationDate: '',
-        electionName: '',
-        totalVotes: '',
-        registeredVoters: '',
-        status: ''
-      }
+      ]
+    }
+  },
+  computed: {
+    loadingElections () {
+      return this.$store.getters.getElectionsLoadingState
+    },
+    elections () {
+      return this.$store.getters.getElections
     }
   },
   watch: {
@@ -106,93 +86,27 @@ export default {
       val || this.close()
     }
   },
-  created () {
-    if (this.items.length > 0) {
-
-    } else {
-      this.initialize()
-      setTimeout(() => { this.loading = false }, 1000)
-    }
-  },
   methods: {
     initialize () {
-      let payload = {
-        ReturnConsumedCapacity: 'TOTAL',
-        TableName: config.databaseName
-      }
-      axios.post('/scanitems', payload)
-        .then(res => {
-          this.items = []
-          for (var key in res.data.Items) {
-            let item = {
-              electionId: res.data.Items[key].electionId.S,
-              creationDate: res.data.Items[key].creationDate.S,
-              electionName: res.data.Items[key].electionName.S,
-              totalVotes: res.data.Items[key].totalVotes.N,
-              registeredVoters: res.data.Items[key].registeredVoters.N,
-              status: res.data.Items[key].status.S
-            }
-            this.items.push(item)
-          }
-        })
-        .catch(err => {
-          console.log('Error:')
-          console.log(err)
-          this.response = 'error!'
-        })
-    },
-    editItem (item) {
-      this.editedIndex = this.items.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
-    deleteItem (item) {
-      const index = this.items.indexOf(item)
-      confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
+      console.log('fetcing elections')
+      this.$store.dispatch('fetchElections')
     },
     close () {
       this.dialog = false
-      this.addItem = Object.assign({}, this.defaultItem)
+      this.electionName = ''
     },
     addElection () {
       console.log('Creating new election')
-      this.addItem.electionId = Math.random().toString(36).substring(7) + Date.now().toString()
-      this.addItem.creationDate = Date.now().toString()
       let payload = {
-        Item: {
-          electionId: {
-            S: this.addItem.electionId
-          },
-          creationDate: {
-            S: this.addItem.creationDate
-          },
-          electionName: {
-            S: this.addItem.electionName
-          },
-          totalVotes: {
-            N: '0'
-          },
-          registeredVoters: {
-            N: '0'
-          },
-          status: {
-            S: 'Draft'
-          }
-        },
-        ReturnConsumedCapacity: 'TOTAL',
-        TableName: config.databaseName
+        electionName: this.electionName
       }
-      axios.post('/additem', payload)
-        .then(res => {
-          console.log('Response:')
-          console.log(res)
-          this.initialize()
-        })
-        .catch(err => {
-          console.log('Error:')
-          console.log(err)
-        })
+      this.$store.dispatch('addElection', payload)
       this.close()
+    }
+  },
+  created () {
+    if (this.elections.length === 0) {
+      this.initialize()
     }
   }
 }
