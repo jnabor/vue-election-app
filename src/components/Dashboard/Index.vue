@@ -55,10 +55,10 @@
             class="elevation-1">
             <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
             <template slot="items" slot-scope="props">
-              <td class="text-xs-left">{{ props.item.candidateUserId }}</td>
+              <td class="text-xs-left">{{ props.item.electionId      }}</td>
               <td class="text-xs-left">{{ props.item.positionName    }}</td>
               <td class="text-xs-left">{{ props.item.voteCount       }}</td>
-              <td class="text-xs-left">{{ props.item.electionId      }}</td>
+              <td class="text-xs-left">{{ props.item.candidateUserId }}</td>
             </template>
             <template slot="no-data">
               <v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -91,10 +91,10 @@ export default {
         { text: 'Status', value: ' ' }
       ],
       headersCandidate: [
-        { text: 'Candidate', value: 'candidateUserId' },
+        { text: 'Election ID', value: 'electionId' },
         { text: 'Position', value: 'positionName' },
         { text: 'Votes', value: 'voteCount' },
-        { text: 'Election ID', value: 'electionId' }
+        { text: 'Candidate', value: 'candidateUserId' }
       ],
       electionName: ''
     }

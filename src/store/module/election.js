@@ -77,10 +77,14 @@ const actions = {
       .then(res => {
         state.items = []
         for (var key in res.data.Items) {
+          let candidateUserId = ''
+          if ('candidateUserId' in res.data.Items[key]) {
+            candidateUserId = res.data.Items[key].candidateUserId.S
+          }
           let item = {
             electionId: res.data.Items[key].electionId.S,
             positionName: res.data.Items[key].positionName.S,
-            candidateUserId: res.data.Items[key].candidateUserId.S,
+            candidateUserId: candidateUserId,
             voteCount: res.data.Items[key].voteCount.N
           }
           console.log(item)
@@ -125,12 +129,52 @@ const actions = {
       .then(res => {
         console.log(res)
         dispatch('fetchElections')
+        dispatch('addDefaultPositions', electionId)
       })
       .catch(err => {
         console.log(err)
       })
   },
-  addCandidates ({ state, commit, dispatch }, payload) {
+  addDefaultPositions ({ state, commit, dispatch }, electionId) {
+    let payload = {
+      Items: [
+        {
+          'positionName': { 'S': 'President' },
+          'electionId': { 'S': electionId },
+          'voteCount': { 'N': '0' }
+        },
+        {
+          'positionName': { 'S': 'VP Internal' },
+          'electionId': { 'S': electionId },
+          'voteCount': { 'N': '0' }
+        },
+        {
+          'positionName': { 'S': 'VP External' },
+          'electionId': { 'S': electionId },
+          'voteCount': { 'N': '0' }
+        },
+        {
+          'positionName': { 'S': 'Secretary' },
+          'electionId': { 'S': electionId },
+          'voteCount': { 'N': '0' }
+        },
+        {
+          'positionName': { 'S': 'Treasurer' },
+          'electionId': { 'S': electionId },
+          'voteCount': { 'N': '0' }
+        }
+      ],
+      ReturnConsumedCapacity: 'TOTAL',
+      TableName: config.databaseName + config.candidateTable
+    }
+    axios.post('/additems', payload)
+      .then(res => {
+        console.log(res)
+        dispatch('fetchCandidates')
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 }
 
