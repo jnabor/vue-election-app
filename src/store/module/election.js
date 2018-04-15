@@ -30,7 +30,7 @@ const actions = {
     state.loadingElections = true
     let payload = {
       ReturnConsumedCapacity: 'TOTAL',
-      TableName: config.databaseName
+      TableName: config.databaseName + config.electionTable
     }
     axios.post('/scanitems', payload)
       .then(res => {
@@ -64,7 +64,7 @@ const actions = {
         electionId: {
           S: electionId
         },
-        creationDate: {
+        creationTimeStamp: {
           S: creationDate
         },
         electionName: {
@@ -81,7 +81,7 @@ const actions = {
         }
       },
       ReturnConsumedCapacity: 'TOTAL',
-      TableName: config.databaseName
+      TableName: config.databaseName + config.electionTable
     }
     axios.post('/additem', payloaddb)
       .then(res => {

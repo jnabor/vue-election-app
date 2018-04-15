@@ -56,22 +56,98 @@ functions:
           method: post
           cors: true
 
-# only add table in first deploy
 resources:
   Resources:
-    SampleTable:
+    ElectionTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:service}-${opt:stage}-election-app
+        TableName: ${self:service}-${opt:stage}-election-tbl
         AttributeDefinitions:
           - AttributeName: electionId
             AttributeType: S
-          - AttributeName: creationDate
+          - AttributeName: creationTimeStamp
             AttributeType: S
+#          - AttributeName: electionName
+#            AttributeType: S
+#          - AttributeName: startDate
+#            AttributeType: S
+#          - AttributeName: endDate
+#            AttributeType: S
+#          - AttributeName: status
+#            AttributeType: S
+#          - AttributeName: registeredVoters
+#            AttributeType: N
+#          - AttributeName: totalVotes
+#            AttributeType: N
         KeySchema:
           - AttributeName: electionId
             KeyType: HASH
-          - AttributeName: creationDate
+          - AttributeName: creationTimeStamp
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+    CandidatesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-${opt:stage}-candidates-tbl
+        AttributeDefinitions:
+          - AttributeName: electionId
+            AttributeType: S
+          - AttributeName: positionName
+            AttributeType: S
+#           - AttributeName: candidateUserId
+#             AttributeType: S
+        KeySchema:
+          - AttributeName: electionId
+            KeyType: HASH
+          - AttributeName: positionName
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+    RegisteredVotersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-${opt:stage}-registered-voters-tbl
+        AttributeDefinitions:
+          - AttributeName: electionId
+            AttributeType: S
+          - AttributeName: votersId
+            AttributeType: S
+#           - AttributeName: registrationTimeStamp
+#             AttributeType: S
+#           - AttributeName: logs
+#             AttributeType: S
+        KeySchema:
+          - AttributeName: electionId
+            KeyType: HASH
+          - AttributeName: votersId
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+    VotesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-${opt:stage}-votes-tbl
+        AttributeDefinitions:
+          - AttributeName: electionId
+            AttributeType: S
+          - AttributeName: positionName
+            AttributeType: S
+#           - AttributeName: votersId
+#             AttributeType: S
+#           - AttributeName: candidateUserId
+#             AttributeType: S
+#           - AttributeName: submitTimeStamp
+#             AttributeType: S
+#           - AttributeName: validation
+#             AttributeType: S
+        KeySchema:
+          - AttributeName: electionId
+            KeyType: HASH
+          - AttributeName: positionName
             KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 5

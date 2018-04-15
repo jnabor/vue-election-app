@@ -4,10 +4,12 @@ const poolData = {
 }
 
 const apiBaseUrl = 'https://tsp5k90zpd.execute-api.ap-southeast-1.amazonaws.com/dev/table'
-const databaseName = 'vue-election-app-dev-election-app'
+const databaseName = 'vue-election-app-dev-'
+const electionTable = 'election-tbl'
 
 export default {
   poolData,
   apiBaseUrl,
-  databaseName
+  databaseName,
+  electionTable
 }
