@@ -3,13 +3,19 @@ const poolData = {
   ClientId: '7f32v6qaf7j6gskb59qe2pc1ct'
 }
 
-const apiBaseUrl = 'https://tsp5k90zpd.execute-api.ap-southeast-1.amazonaws.com/dev/table'
+const apiBaseUrl = 'https://9io2xeo8hd.execute-api.ap-southeast-1.amazonaws.com/dev/table/'
 const databaseName = 'vue-election-app-dev-'
 const electionTable = 'election-tbl'
+const candidateTable = 'candidates-tbl'
+const registrationTable = 'registered-voters-tbl'
+const votesTable = 'votes-tbl'
 
 export default {
   poolData,
   apiBaseUrl,
   databaseName,
-  electionTable
+  electionTable,
+  candidateTable,
+  registrationTable,
+  votesTable
 }
