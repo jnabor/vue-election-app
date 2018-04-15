@@ -2,8 +2,10 @@ import axios from 'axios'
 import config from '../../config'
 
 const state = {
-  response: '',
+  responseElections: '',
+  responseCandidates: '',
   loadingElections: true,
+  loadingCandidates: true,
   elections: [],
   candidates: [],
   votes: []
@@ -15,12 +17,21 @@ const getters = {
   },
   getElectionsLoadingState (state) {
     return state.loadingElections
+  },
+  getCandidates (state) {
+    return state.candidates
+  },
+  getCandidatesLoadingState (state) {
+    return state.loadingCandidates
   }
 }
 
 const mutations = {
   pushElection (state, payload) {
     state.elections.push(payload)
+  },
+  pushCandidate (state, payload) {
+    state.candidates.push(payload)
   }
 }
 
@@ -38,7 +49,7 @@ const actions = {
         for (var key in res.data.Items) {
           let item = {
             electionId: res.data.Items[key].electionId.S,
-            creationDate: res.data.Items[key].creationTimeStamp.S,
+            creationTimeStamp: res.data.Items[key].creationTimeStamp.S,
             electionName: res.data.Items[key].electionName.S,
             totalVotes: res.data.Items[key].totalVotes.N,
             registeredVoters: res.data.Items[key].registeredVoters.N,
@@ -51,8 +62,36 @@ const actions = {
       })
       .catch(err => {
         console.log(err)
-        state.response = 'error!'
+        state.responseElections = 'error!'
         state.loadingElections = false
+      })
+  },
+  fetchCandidates ({ state, commit }) {
+    state.candidates = []
+    state.loadingCandidates = true
+    let payload = {
+      ReturnConsumedCapacity: 'TOTAL',
+      TableName: config.databaseName + config.candidateTable
+    }
+    axios.post('/scanitems', payload)
+      .then(res => {
+        state.items = []
+        for (var key in res.data.Items) {
+          let item = {
+            electionId: res.data.Items[key].electionId.S,
+            positionName: res.data.Items[key].positionName.S,
+            candidateUserId: res.data.Items[key].candidateUserId.S,
+            voteCount: res.data.Items[key].voteCount.N
+          }
+          console.log(item)
+          commit('pushCandidate', item)
+        }
+        state.loadingCandidates = false
+      })
+      .catch(err => {
+        console.log(err)
+        state.responseCandidates = 'error!'
+        state.loadingCandidates = false
       })
   },
   addElection ({ state, commit, dispatch }, payload) {
@@ -92,8 +131,6 @@ const actions = {
       })
   },
   addCandidates ({ state, commit, dispatch }, payload) {
-  },
-  addCandidate ({ state, commit, dispatch }, payload) {
   }
 }
 

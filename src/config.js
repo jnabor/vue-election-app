@@ -1,8 +1,4 @@
-const poolData = {
-  UserPoolId: 'ap-southeast-1_YgiG63bOV',
-  ClientId: '7f32v6qaf7j6gskb59qe2pc1ct'
-}
-
+const poolData = { UserPoolId: 'ap-southeast-1_YgiG63bOV', ClientId: '7f32v6qaf7j6gskb59qe2pc1ct' }
 const apiBaseUrl = 'https://9io2xeo8hd.execute-api.ap-southeast-1.amazonaws.com/dev/table/'
 const databaseName = 'vue-election-app-dev-'
 const electionTable = 'election-tbl'

@@ -4,21 +4,21 @@ var dynamodb = new AWS.DynamoDB({region: 'ap-southeast-1', apiVersion: '2012-08-
 module.exports.handler = (event, context, callback) => {
   let body = JSON.parse(event.body)
   let requests = []
-  for (var key in body.Requests) {
+  for (var key in body.Items) {
     let request = {
       PutRequest: {
-        Item: body.Requests[key]
+        Item: body.Items[key]
       }
     }
     requests.push(request)
   }
   const params = {
     RequestItems: {
-      'body.TableName': requests
+      [body.TableName]: requests
     },
-    ReturnConsumedCapacity: body.ReturnConsumedCapacity,
-    TableName: body.TableName
+    ReturnConsumedCapacity: body.ReturnConsumedCapacity
   }
+  console.log('params: ' + JSON.stringify(params))
   dynamodb.batchWriteItem(params, (err, data) => {
     if (err) {
       console.log(err, err.stack)
@@ -42,3 +42,47 @@ module.response = (responseBody) => {
   }
   return response
 }
+
+/*
+{
+  "body": {
+    "Items": [
+      {
+        "electionId": {
+          "S": "gdgoih1234567890"
+        },
+        "positionName": {
+          "S": "President"
+        },
+        "voteCount": {
+          "N": "0"
+        }
+      },
+      {
+        "electionId": {
+          "S": "gdgoih1234567890"
+        },
+        "positionName": {
+          "S": "Vice-President"
+        },
+        "voteCount": {
+          "N": "0"
+        }
+      },
+      {
+        "electionId": {
+          "S": "gdgoih1234567890"
+        },
+        "positionName": {
+          "S": "Secretary"
+        },
+        "voteCount": {
+          "N": "0"
+        }
+      }
+    ],
+    "ReturnConsumedCapacity": "TOTAL",
+    "TableName": "vue-election-app-dev-candidates-tbl"
+  }
+}
+*/

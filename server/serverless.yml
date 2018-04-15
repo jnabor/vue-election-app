@@ -104,10 +104,10 @@ resources:
             AttributeType: S
           - AttributeName: positionName
             AttributeType: S
-#           - AttributeName: "candidateUserId"
-#             AttributeType: "S"
-#           - AttributeName: "voteCount"
-#             AttributeType: "N"
+#           - AttributeName: candidateUserId
+#             AttributeType: S
+#           - AttributeName: voteCount
+#             AttributeType: N
         KeySchema:
           - AttributeName: electionId
             KeyType: HASH

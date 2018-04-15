@@ -16,14 +16,15 @@ import AppProfile from './components/Profile/Index.vue'
 import { store } from './store/index'
 import axios from 'axios'
 import config from './config'
+import colors from 'vuetify/es5/util/colors'
 import 'vuetify/dist/vuetify.min.css'
 
 axios.defaults.baseURL = config.apiBaseUrl
 Vue.use(Vuetify, {
   theme: {
-    primary: '#512DA8',
-    secondary: '#D1C4E9',
-    accent: '#FFC107',
+    primary: colors.deepPurple.darken1,
+    secondary: colors.amber.lighten3,
+    accent: colors.amber.lighten2,
     error: '#f44336',
     info: '#2196F3',
     success: '#4CAF50',
