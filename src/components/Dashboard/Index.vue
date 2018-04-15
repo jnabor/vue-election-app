@@ -34,11 +34,11 @@
               class="elevation-1">
               <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
               <template slot="items" slot-scope="props">
-                <td class="text-xs-left">{{ props.item.electionId       }}</td>
-                <td class="text-xs-left">{{ props.item.creationDate     }}</td>
-                <td class="text-xs-left">{{ props.item.electionName     }}</td>
-                <td class="text-xs-left">{{ props.item.totalVotes       }}</td>
-                <td class="text-xs-left">{{ props.item.registeredVoters }}</td>
+                <td class="text-xs-left">{{ props.item.electionId        }}</td>
+                <td class="text-xs-left">{{ props.item.creationTimeStamp }}</td>
+                <td class="text-xs-left">{{ props.item.electionName      }}</td>
+                <td class="text-xs-left">{{ props.item.registeredVoters  }}</td>
+                <td class="text-xs-left">{{ props.item.totalVotes        }}</td>
                 <td class="text-xs-left">{{ props.item.status }}</td>
               </template>
               <template slot="no-data">
@@ -50,11 +50,11 @@
     </section>
   </v-content>
 </div>
+
 </template>
 <script>
 import wrapper from '../wrapper'
 import election from './election'
-
 export default {
   components: {
     'app-wrapper': wrapper,
@@ -70,7 +70,8 @@ export default {
         { text: 'Votes', value: 'totalVotes' },
         { text: 'Registered', value: 'registeredVoters' },
         { text: 'Status', value: ' ' }
-      ]
+      ],
+      electionName: ''
     }
   },
   computed: {

@@ -14,7 +14,7 @@ module.exports.handler = (event, context, callback) => {
       callback(err, err.stack)
     } else {
       console.log(data)
-      callback(null, module.response({"message": "Item Deleted"}))
+      callback(null, module.response({'message': 'Item Deleted'}))
     }
   })
 }

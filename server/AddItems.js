@@ -3,22 +3,29 @@ var dynamodb = new AWS.DynamoDB({region: 'ap-southeast-1', apiVersion: '2012-08-
 
 module.exports.handler = (event, context, callback) => {
   let body = JSON.parse(event.body)
-  const params = {
-    ExpressionAttributeNames: body.ExpressionAttributeNames,
-    ExpressionAttributeValues: body.ExpressionAttributeValues,
-    Key: body.Key,
-    ReturnValues: body.ReturnValues,
-    ReturnConsumedCapacity: body.ReturnConsumedCapacity,
-    TableName: body.TableName,
-    UpdateExpression: body.UpdateExpression
+  let requests = []
+  for (var key in body.Requests) {
+    let request = {
+      PutRequest: {
+        Item: body.Requests[key]
+      }
+    }
+    requests.push(request)
   }
-  dynamodb.updateItem(params, (err, data) => {
+  const params = {
+    RequestItems: {
+      'body.TableName': requests
+    },
+    ReturnConsumedCapacity: body.ReturnConsumedCapacity,
+    TableName: body.TableName
+  }
+  dynamodb.batchWriteItem(params, (err, data) => {
     if (err) {
       console.log(err, err.stack)
       callback(null, module.response(event))
     } else {
       console.log(data)
-      callback(null, module.response({'message': 'Item Updated'}))
+      callback(null, module.response({'message': 'Items Added'}))
     }
   })
 }

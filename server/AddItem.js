@@ -14,7 +14,7 @@ module.exports.handler = (event, context, callback) => {
       callback(null, module.response(event))
     } else {
       console.log(data)
-      callback(null, module.response({"message": "Item Added"}))
+      callback(null, module.response({'message': 'Item Added'}))
     }
   })
 }

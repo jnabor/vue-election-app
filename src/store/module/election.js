@@ -38,7 +38,7 @@ const actions = {
         for (var key in res.data.Items) {
           let item = {
             electionId: res.data.Items[key].electionId.S,
-            creationDate: res.data.Items[key].creationDate.S,
+            creationDate: res.data.Items[key].creationTimeStamp.S,
             electionName: res.data.Items[key].electionName.S,
             totalVotes: res.data.Items[key].totalVotes.N,
             registeredVoters: res.data.Items[key].registeredVoters.N,
@@ -50,7 +50,6 @@ const actions = {
         state.loadingElections = false
       })
       .catch(err => {
-        console.log('Error:')
         console.log(err)
         state.response = 'error!'
         state.loadingElections = false
@@ -58,14 +57,14 @@ const actions = {
   },
   addElection ({ state, commit, dispatch }, payload) {
     let electionId = Math.random().toString(36).substring(7) + Date.now().toString()
-    let creationDate = Date.now().toString()
+    let creationTimeStamp = Date.now().toString()
     let payloaddb = {
       Item: {
         electionId: {
           S: electionId
         },
         creationTimeStamp: {
-          S: creationDate
+          S: creationTimeStamp
         },
         electionName: {
           S: payload.electionName
@@ -85,14 +84,16 @@ const actions = {
     }
     axios.post('/additem', payloaddb)
       .then(res => {
-        console.log('Response:')
         console.log(res)
         dispatch('fetchElections')
       })
       .catch(err => {
-        console.log('Error:')
         console.log(err)
       })
+  },
+  addCandidates ({ state, commit, dispatch }, payload) {
+  },
+  addCandidate ({ state, commit, dispatch }, payload) {
   }
 }
 
