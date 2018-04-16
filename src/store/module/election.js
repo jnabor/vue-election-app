@@ -61,7 +61,7 @@ const actions = {
         state.loadingElections = false
       })
       .catch(err => {
-        console.log(err)
+        console.err(err)
         state.responseElections = 'error!'
         state.loadingElections = false
       })
@@ -93,7 +93,7 @@ const actions = {
         state.loadingCandidates = false
       })
       .catch(err => {
-        console.log(err)
+        console.err(err)
         state.responseCandidates = 'error!'
         state.loadingCandidates = false
       })
@@ -120,6 +120,9 @@ const actions = {
         },
         status: {
           S: 'Draft'
+        },
+        positions: {
+          SS: ['President', 'VP Internal', 'VP External', 'Secretary', 'Treasurer']
         }
       },
       ReturnConsumedCapacity: 'TOTAL',
@@ -129,38 +132,42 @@ const actions = {
       .then(res => {
         console.log(res)
         dispatch('fetchElections')
-        dispatch('addDefaultPositions', electionId)
       })
       .catch(err => {
-        console.log(err)
+        console.err(err)
       })
   },
-  addDefaultPositions ({ state, commit, dispatch }, electionId) {
+  addDefaultPositions ({ dispatch }, electionId) {
     let payload = {
       Items: [
         {
           'positionName': { 'S': 'President' },
           'electionId': { 'S': electionId },
+          'candidateUserId': { 'S': 'sampleUserId' },
           'voteCount': { 'N': '0' }
         },
         {
           'positionName': { 'S': 'VP Internal' },
           'electionId': { 'S': electionId },
+          'candidateUserId': { 'S': 'sampleUserId' },
           'voteCount': { 'N': '0' }
         },
         {
           'positionName': { 'S': 'VP External' },
           'electionId': { 'S': electionId },
+          'candidateUserId': { 'S': 'sampleUserId' },
           'voteCount': { 'N': '0' }
         },
         {
           'positionName': { 'S': 'Secretary' },
           'electionId': { 'S': electionId },
+          'candidateUserId': { 'S': 'sampleUserId' },
           'voteCount': { 'N': '0' }
         },
         {
           'positionName': { 'S': 'Treasurer' },
           'electionId': { 'S': electionId },
+          'candidateUserId': { 'S': 'sampleUserId' },
           'voteCount': { 'N': '0' }
         }
       ],
@@ -173,8 +180,11 @@ const actions = {
         dispatch('fetchCandidates')
       })
       .catch(err => {
-        console.log(err)
+        console.err(err)
       })
+  },
+  addCandidate ({ dispatch }, payload) {
+
   }
 }
 
