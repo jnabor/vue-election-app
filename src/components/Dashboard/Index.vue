@@ -1,33 +1,42 @@
 <template>
-<div>
+  <v-tabs centered>
+    <v-tabs-slider></v-tabs-slider>
+    <v-tab href="#tab-1">Elections</v-tab>
+    <v-tab href="#tab-2">Candidates</v-tab>
+    <v-tab href="#tab-3">Registered Voters</v-tab>
+    <v-tab href="#tab-4">Votes</v-tab>
+    <v-tab-item id="tab-1">
   <v-content>
     <section>
       <app-wrapper>
         <div class="mt-5">
-            <v-dialog v-model="dialog" max-width="500px">
-              <v-btn color="accent" slot="activator" class="mb-3" light>Create New</v-btn>
-              <v-card >
-                <v-card-title>
-                  <span class="headline">New Election</span>
-                </v-card-title>
-                <v-card-text>
-                  <v-container grid-list-md>
-                    <v-layout wrap>
-                      <v-flex xs12 sm8 md8>
-                        <v-text-field label="Election Name" v-model="electionName"></v-text-field>
-                      </v-flex>
-                    </v-layout>
-                  </v-container>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-                  <v-btn color="blue darken-1" flat @click.native="addElection">Add</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+          <v-dialog v-if="!detailed" v-model="dialog" max-width="500px">
+            <v-btn color="accent" slot="activator" class="mb-3" light>Create New</v-btn>
+            <v-card >
+              <v-card-title>
+                <span class="headline">New Election</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container grid-list-md>
+                  <v-layout wrap>
+                    <v-flex xs12 sm8 md8>
+                      <v-text-field label="Election Name" v-model="electionName"></v-text-field>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
+                <v-btn color="blue darken-1" flat @click.native="addElection">Add</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
+        <div class="cardcontainer mt-1 pa-1">
+          <div :class="cardleftview">
             <v-data-table
-              v-if="detailed"
+              v-if="!detailed"
               :headers="headersElectionDetailed"
               :items="elections"
               :loading="loadingElections"
@@ -35,7 +44,7 @@
               class="elevation-1">
               <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
               <template slot="items" slot-scope="props">
-                <tr @click="detailed = !detailed">
+                <tr @click="viewDetails(props.index)">
                   <td class="text-xs-left">{{ props.item.electionId        }}</td>
                   <td class="text-xs-left">{{ props.item.creationTimeStamp }}</td>
                   <td class="text-xs-left">{{ props.item.electionName      }}</td>
@@ -45,44 +54,59 @@
                 </tr>
               </template>
             </v-data-table>
-            <v-data-table
-              v-if="!detailed"
-              :headers="headersElection"
-              :items="elections"
-              :loading="loadingElections"
-              hide-actions
-              class="elevation-1">
-              <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
-              <template slot="items" slot-scope="props">
-                <tr @click="detailed = !detailed">
-                  <td class="text-xs-left">{{ props.item.electionId        }}</td>
-                </tr>
-              </template>
-            </v-data-table>
-            <v-card v-if="!detailed">
-              asdasdas
-              asdasdasd
-              asdasdasdadasda
-              adadasd
-
-            </v-card>
+            <app-sidemenu
+                :header="'Election Name'"
+                :current="viewindex"
+                :links="sidelinks"
+                @click="viewindex = $event">
+            </app-sidemenu>
+          </div>
+          <div v-if="detailed" :class="cardrightview">
+            <app-election
+              :election="elections[viewindex]"
+              @close="closeDetails()">
+            </app-election>
+          </div>
         </div>
       </app-wrapper>
     </section>
   </v-content>
-</div>
-
+    </v-tab-item>
+    <v-tab-item id="tab-2">
+      <v-card flat>
+        <app-candidates></app-candidates>
+      </v-card>
+    </v-tab-item>
+    <v-tab-item id="tab-3">
+      <v-card flat>
+        3
+      </v-card>
+    </v-tab-item>
+    <v-tab-item id="tab-4">
+      <v-card flat>
+        4
+      </v-card>
+    </v-tab-item>
+  </v-tabs>
 </template>
 <script>
 import wrapper from '../wrapper'
 import election from './election'
+import candidates from './candidates'
+import sidemenu from './sidemenu'
+
 export default {
   components: {
     'app-wrapper': wrapper,
-    'app-election': election
+    'app-election': election,
+    'app-candidates': candidates,
+    'app-sidemenu': sidemenu
   },
   data: () => {
     return {
+      viewindex: 0,
+      cardleftview: 'cardleft',
+      cardrightview: 'cardright',
       detailed: true,
       dialog: false,
       headersElectionDetailed: [
@@ -91,12 +115,9 @@ export default {
         { text: 'Election Name', value: 'electionName' },
         { text: 'Total Votes', value: 'totalVotes' },
         { text: 'Registered', value: 'registeredVoters' },
-        { text: 'Status', value: ' ' }
+        { text: 'Status', value: 'status' }
       ],
-      headersElection: [
-        { text: 'Election ID', value: 'electionId', sortable: false }
-      ],
-      electionName: ''
+      sidelinks: []
     }
   },
   computed: {
@@ -110,9 +131,28 @@ export default {
   watch: {
     dialog (val) {
       val || this.close()
+    },
+    elections () {
+      this.sidelinks = []
+      for (var key in this.elections) {
+        this.sidelinks.push({ 'title': this.elections[key].electionName })
+      }
+      console.log(this.sidelinks)
     }
   },
   methods: {
+    viewDetails (params) {
+      this.cardleftview = 'cardleft'
+      this.cardrightview = 'cardright'
+      this.detailed = true
+      this.viewindex = params
+      console.log(params)
+    },
+    closeDetails () {
+      this.cardleftview = ''
+      this.cardrightview = ''
+      this.detailed = false
+    },
     close () {
       this.dialog = false
       this.electionName = ''
@@ -134,5 +174,16 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
+.cardcontainer {
+  overflow: auto;
+}
+.cardleft {
+  float: left;
+  width: 30%;
+}
+.cardright {
+  float: right;
+  width: 70%;
+}
 </style>

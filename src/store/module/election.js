@@ -53,7 +53,8 @@ const actions = {
             electionName: res.data.Items[key].electionName.S,
             totalVotes: res.data.Items[key].totalVotes.N,
             registeredVoters: res.data.Items[key].registeredVoters.N,
-            status: res.data.Items[key].status.S
+            status: res.data.Items[key].status.S,
+            positions: res.data.Items[key].positions.SS
           }
           console.log(item)
           commit('pushElection', item)

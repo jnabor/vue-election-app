@@ -89,6 +89,8 @@ resources:
 #            AttributeType: N
 #          - AttributeName: positions
 #            AttributeType: SS
+#          - AttributeName: results
+#            AttributeType: M
         KeySchema:
           - AttributeName: electionId
             KeyType: HASH
