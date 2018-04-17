@@ -27,6 +27,26 @@
               </v-card>
             </v-dialog>
             <v-data-table
+              v-if="detailed"
+              :headers="headersElectionDetailed"
+              :items="elections"
+              :loading="loadingElections"
+              hide-actions
+              class="elevation-1">
+              <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+              <template slot="items" slot-scope="props">
+                <tr @click="detailed = !detailed">
+                  <td class="text-xs-left">{{ props.item.electionId        }}</td>
+                  <td class="text-xs-left">{{ props.item.creationTimeStamp }}</td>
+                  <td class="text-xs-left">{{ props.item.electionName      }}</td>
+                  <td class="text-xs-left">{{ props.item.registeredVoters  }}</td>
+                  <td class="text-xs-left">{{ props.item.totalVotes        }}</td>
+                  <td class="text-xs-left">{{ props.item.status }}</td>
+                </tr>
+              </template>
+            </v-data-table>
+            <v-data-table
+              v-if="!detailed"
               :headers="headersElection"
               :items="elections"
               :loading="loadingElections"
@@ -34,37 +54,19 @@
               class="elevation-1">
               <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
               <template slot="items" slot-scope="props">
-                <td class="text-xs-left">{{ props.item.electionId        }}</td>
-                <td class="text-xs-left">{{ props.item.creationTimeStamp }}</td>
-                <td class="text-xs-left">{{ props.item.electionName      }}</td>
-                <td class="text-xs-left">{{ props.item.registeredVoters  }}</td>
-                <td class="text-xs-left">{{ props.item.totalVotes        }}</td>
-                <td class="text-xs-left">{{ props.item.status }}</td>
-              </template>
-              <template slot="no-data">
-                <v-btn color="primary" @click="initialize">Reset</v-btn>
+                <tr @click="detailed = !detailed">
+                  <td class="text-xs-left">{{ props.item.electionId        }}</td>
+                </tr>
               </template>
             </v-data-table>
+            <v-card v-if="!detailed">
+              asdasdas
+              asdasdasd
+              asdasdasdadasda
+              adadasd
+
+            </v-card>
         </div>
-        <v-card class="mt-5">
-          <v-data-table
-            :headers="headersCandidate"
-            :items="candidates"
-            :loading="loadingCandidates"
-            hide-actions
-            class="elevation-1">
-            <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
-            <template slot="items" slot-scope="props">
-              <td class="text-xs-left">{{ props.item.electionId      }}</td>
-              <td class="text-xs-left">{{ props.item.positionName    }}</td>
-              <td class="text-xs-left">{{ props.item.voteCount       }}</td>
-              <td class="text-xs-left">{{ props.item.candidateUserId }}</td>
-            </template>
-            <template slot="no-data">
-              <v-btn color="primary" @click="initialize">Reset</v-btn>
-            </template>
-          </v-data-table>
-        </v-card>
       </app-wrapper>
     </section>
   </v-content>
@@ -81,8 +83,9 @@ export default {
   },
   data: () => {
     return {
+      detailed: true,
       dialog: false,
-      headersElection: [
+      headersElectionDetailed: [
         { text: 'Election ID', value: 'electionId' },
         { text: 'Created', value: 'creationTimeStamp' },
         { text: 'Election Name', value: 'electionName' },
@@ -90,11 +93,8 @@ export default {
         { text: 'Registered', value: 'registeredVoters' },
         { text: 'Status', value: ' ' }
       ],
-      headersCandidate: [
-        { text: 'Election ID', value: 'electionId' },
-        { text: 'Position', value: 'positionName' },
-        { text: 'Votes', value: 'voteCount' },
-        { text: 'Candidate', value: 'candidateUserId' }
+      headersElection: [
+        { text: 'Election ID', value: 'electionId', sortable: false }
       ],
       electionName: ''
     }
@@ -103,14 +103,8 @@ export default {
     loadingElections () {
       return this.$store.getters.getElectionsLoadingState
     },
-    loadingCandidates () {
-      return this.$store.getters.getCandidatesLoadingState
-    },
     elections () {
       return this.$store.getters.getElections
-    },
-    candidates () {
-      return this.$store.getters.getCandidates
     }
   },
   watch: {
@@ -136,10 +130,6 @@ export default {
     if (this.elections.length === 0) {
       console.log('fetcing election data')
       this.$store.dispatch('fetchElections')
-    }
-    if (this.elections.length === 0) {
-      console.log('fetcing candidates data')
-      this.$store.dispatch('fetchCandidates')
     }
   }
 }

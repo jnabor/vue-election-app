@@ -122,7 +122,7 @@ const actions = {
           S: 'Draft'
         },
         positions: {
-          SS: ['President', 'VP Internal', 'VP External', 'Secretary', 'Treasurer']
+          SS: ['President', 'Vice President', 'Secretary', 'Treasurer']
         }
       },
       ReturnConsumedCapacity: 'TOTAL',
