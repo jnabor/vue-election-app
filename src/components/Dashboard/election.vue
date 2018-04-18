@@ -1,18 +1,16 @@
 <template>
 <v-card height="800">
-  <v-toolbar flat color="amber lighten-3>">
-    <v-list>
-      <v-list-tile>
-        <v-list-tile-title class="subheading text-xs-center">
-          Election Details
-        </v-list-tile-title>
-      </v-list-tile>
-    </v-list>
+  <v-toolbar flat dense>
+    <v-toolbar-title>Election Details</v-toolbar-title>
+    <v-spacer></v-spacer>
+    <v-btn icon  @click="close()">
+      <v-icon>close</v-icon>
+    </v-btn>
   </v-toolbar>
   <v-divider></v-divider>
   <div class="ma-5">
     <v-data-table
-      :items="details"
+      :items="fields"
       class="elevation-1"
       hide-actions
       hide-headers>
@@ -27,33 +25,31 @@
 <script>
 export default {
   props: {
-    election: Object
+    details: Object
   },
   data () {
     return {
-      details: [
-        { label: 'Election ID', value: this.election.electionId },
-        { label: 'Creation Date', value: this.election.creationTimeStamp },
-        { label: 'Election Name', value: this.election.electionName },
-        { label: 'Total Votes', value: this.election.totalVotes },
-        { label: 'Registered Voters', value: this.election.registeredVoters },
-        { label: 'Status', value: this.election.status }
+      fields: [
+        { label: 'Election ID', value: this.details.electionId },
+        { label: 'Creation Date', value: this.details.creationTimeStamp },
+        { label: 'Election Name', value: this.details.electionName },
+        { label: 'Total Votes', value: this.details.totalVotes },
+        { label: 'Registered Voters', value: this.details.registeredVoters },
+        { label: 'Status', value: this.details.status }
       ]
     }
   },
-  watched: {
-    datetime () {
-      this.date = this.datetime.getDate()
-      this.time = this.datetime
+  watch: {
+    details () {
+      this.fields[0].value = this.details.electionId
+      this.fields[1].value = this.details.creationTimeStamp
+      this.fields[2].value = this.details.electionName
+      this.fields[4].value = this.details.totalVotes
+      this.fields[4].value = this.details.registeredVoters
+      this.fields[5].value = this.details.status
     }
   },
-  computed: {
-    datetime () {
-      // return this.election.creationTimeStamp
-      return Date.now()
-    }
-  },
-  method: {
+  methods: {
     close: function () {
       this.$emit('close')
     }

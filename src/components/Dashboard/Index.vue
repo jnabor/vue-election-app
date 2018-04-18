@@ -10,11 +10,11 @@
     <section>
       <app-wrapper>
         <div class="mt-5">
-          <v-dialog v-if="master" v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="500px">
             <v-btn color="accent" slot="activator" class="mb-3" light>Create New</v-btn>
             <v-card >
               <v-card-title>
-                <span class="headline">New Election</span>
+                <span class="headline">New Election {{ viewindex }}</span>
               </v-card-title>
               <v-card-text>
                 <v-container grid-list-md>
@@ -59,12 +59,12 @@
               :header="'Election Name'"
               :current="viewindex"
               :links="sidelinks"
-              @click="viewindex = $event">
+              @click="changeViewDetails($event)">
             </app-sidemenu>
           </div>
           <div v-if="detail" :class="cardrightview">
             <app-election
-              :election="elections[viewindex]"
+              :details="electionProp"
               @close="closeDetails()">
             </app-election>
           </div>
@@ -128,6 +128,9 @@ export default {
     },
     elections () {
       return this.$store.getters.getElections
+    },
+    electionProp () {
+      return this.elections[this.viewindex]
     }
   },
   watch: {
@@ -147,6 +150,9 @@ export default {
       this.cardrightview = 'cardright'
       this.detail = true
       this.master = false
+      this.changeViewDetails(params)
+    },
+    changeViewDetails (params) {
       this.viewindex = params
     },
     closeDetails () {
