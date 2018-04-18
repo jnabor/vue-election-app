@@ -10,7 +10,7 @@
     <section>
       <app-wrapper>
         <div class="mt-5">
-          <v-dialog v-if="!detailed" v-model="dialog" max-width="500px">
+          <v-dialog v-if="master" v-model="dialog" max-width="500px">
             <v-btn color="accent" slot="activator" class="mb-3" light>Create New</v-btn>
             <v-card >
               <v-card-title>
@@ -20,7 +20,7 @@
                 <v-container grid-list-md>
                   <v-layout wrap>
                     <v-flex xs12 sm8 md8>
-                      <v-text-field label="Election Name" v-model="electionName"></v-text-field>
+                      <v-text-field label="Election Name" v-model="elections.electionName"></v-text-field>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -36,7 +36,7 @@
         <div class="cardcontainer mt-1 pa-1">
           <div :class="cardleftview">
             <v-data-table
-              v-if="!detailed"
+              v-if="master"
               :headers="headersElectionDetailed"
               :items="elections"
               :loading="loadingElections"
@@ -55,13 +55,14 @@
               </template>
             </v-data-table>
             <app-sidemenu
-                :header="'Election Name'"
-                :current="viewindex"
-                :links="sidelinks"
-                @click="viewindex = $event">
+              v-if="detail"
+              :header="'Election Name'"
+              :current="viewindex"
+              :links="sidelinks"
+              @click="viewindex = $event">
             </app-sidemenu>
           </div>
-          <div v-if="detailed" :class="cardrightview">
+          <div v-if="detail" :class="cardrightview">
             <app-election
               :election="elections[viewindex]"
               @close="closeDetails()">
@@ -105,9 +106,10 @@ export default {
   data: () => {
     return {
       viewindex: 0,
-      cardleftview: 'cardleft',
+      cardleftview: '',
       cardrightview: 'cardright',
-      detailed: true,
+      detail: false,
+      master: true,
       dialog: false,
       headersElectionDetailed: [
         { text: 'Election ID', value: 'electionId' },
@@ -137,28 +139,27 @@ export default {
       for (var key in this.elections) {
         this.sidelinks.push({ 'title': this.elections[key].electionName })
       }
-      console.log(this.sidelinks)
     }
   },
   methods: {
     viewDetails (params) {
       this.cardleftview = 'cardleft'
       this.cardrightview = 'cardright'
-      this.detailed = true
+      this.detail = true
+      this.master = false
       this.viewindex = params
-      console.log(params)
     },
     closeDetails () {
       this.cardleftview = ''
       this.cardrightview = ''
-      this.detailed = false
+      this.detail = false
+      this.master = true
     },
     close () {
       this.dialog = false
       this.electionName = ''
     },
     addElection () {
-      console.log('Creating new election')
       let payload = {
         electionName: this.electionName
       }
@@ -168,7 +169,6 @@ export default {
   },
   created () {
     if (this.elections.length === 0) {
-      console.log('fetcing election data')
       this.$store.dispatch('fetchElections')
     }
   }

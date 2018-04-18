@@ -45,7 +45,6 @@ const actions = {
     }
     axios.post('/scanitems', payload)
       .then(res => {
-        state.items = []
         for (var key in res.data.Items) {
           let item = {
             electionId: res.data.Items[key].electionId.S,
@@ -56,7 +55,6 @@ const actions = {
             status: res.data.Items[key].status.S,
             positions: res.data.Items[key].positions.SS
           }
-          console.log(item)
           commit('pushElection', item)
         }
         state.loadingElections = false
@@ -88,7 +86,6 @@ const actions = {
             candidateUserId: candidateUserId,
             voteCount: res.data.Items[key].voteCount.N
           }
-          console.log(item)
           commit('pushCandidate', item)
         }
         state.loadingCandidates = false

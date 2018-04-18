@@ -17,9 +17,6 @@
               <td class="text-xs-left">{{ props.item.voteCount       }}</td>
               <td class="text-xs-left">{{ props.item.candidateUserId }}</td>
             </template>
-            <template slot="no-data">
-              <v-btn color="primary" @click="initialize">Reset</v-btn>
-            </template>
           </v-data-table>
         </v-card>
       </app-wrapper>

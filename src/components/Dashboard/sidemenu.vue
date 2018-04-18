@@ -1,6 +1,6 @@
 <template>
-  <v-navigation-drawer permanent floating>
-    <v-toolbar flat>
+  <v-navigation-drawer permanent floating height="800" width="350" class="ma-0 pa-0 elevation-1">
+    <v-toolbar flat color="grey lighten-4">
       <v-list>
         <v-list-tile>
           <v-list-tile-title class="subheading">
@@ -36,5 +36,8 @@ export default {
 <style scoped>
 .highlight {
   border-right: 2px solid #FFCA28;
+}
+.fullwidth {
+  width: 100%;
 }
 </style>
