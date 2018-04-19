@@ -8,17 +8,41 @@
     </v-btn>
   </v-toolbar>
   <v-divider></v-divider>
-  <div class="ma-5">
+  <div class="mt-5 ml-5 mr-5">
     <v-data-table
       :items="fields"
       class="elevation-1"
       hide-actions
       hide-headers>
       <template slot="items" slot-scope="props">
-        <td>{{ props.item.label }}</td>
+        <td class="labelstyle">{{ props.item.label }}</td>
         <td>{{ props.item.value }}</td>
       </template>
     </v-data-table>
+  </div>
+  <div class="mt-4 ml-5 mr-5">
+    <v-card>
+    <v-toolbar tabs dense class="elevation-0">
+      <v-toolbar-title class="subheading">Positions and Candidates</v-toolbar-title>
+      <v-tabs
+        slot="extension"
+        v-model="tab"
+        show-arrows >
+        <v-tabs-slider></v-tabs-slider>
+        <v-tab v-for="item in positions" :key="item">
+          {{ item }}
+        </v-tab>
+      </v-tabs>
+    </v-toolbar>
+    <v-card-text>
+    <v-tabs-items v-model="tab">
+      <v-tab-item v-for="item in positions" :key="item">
+        {{ text }}
+      </v-tab-item>
+    </v-tabs-items>
+    </v-card-text>
+
+    </v-card>
   </div>
 </v-card>
 </template>
@@ -29,6 +53,7 @@ export default {
   },
   data () {
     return {
+      tab: null,
       fields: [
         { label: 'Election ID', value: this.details.electionId },
         { label: 'Creation Date', value: this.details.creationTimeStamp },
@@ -36,7 +61,9 @@ export default {
         { label: 'Total Votes', value: this.details.totalVotes },
         { label: 'Registered Voters', value: this.details.registeredVoters },
         { label: 'Status', value: this.details.status }
-      ]
+      ],
+      positions: this.details.positions,
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     }
   },
   watch: {
@@ -47,6 +74,7 @@ export default {
       this.fields[4].value = this.details.totalVotes
       this.fields[4].value = this.details.registeredVoters
       this.fields[5].value = this.details.status
+      this.positions = this.details.positions
     }
   },
   methods: {
@@ -58,4 +86,8 @@ export default {
 </script>
 
 <style scoped>
+.labelstyle {
+  width: 40%;
+  font-weight: bold;
+}
 </style>

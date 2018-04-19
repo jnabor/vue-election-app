@@ -1,14 +1,19 @@
 <template>
-  <v-tabs centered>
+<div>
+  <v-tabs
+    v-model="tab"
+    centered>
     <v-tabs-slider></v-tabs-slider>
-    <v-tab href="#tab-1">Elections</v-tab>
-    <v-tab href="#tab-2">Candidates</v-tab>
-    <v-tab href="#tab-3">Registered Voters</v-tab>
-    <v-tab href="#tab-4">Votes</v-tab>
-    <v-tab-item id="tab-1">
-  <v-content>
-    <section>
-      <app-wrapper>
+    <v-tab>Elections</v-tab>
+    <v-tab>Candidates</v-tab>
+    <v-tab>Registered Voters</v-tab>
+    <v-tab>Votes</v-tab>
+  </v-tabs>
+  <v-tabs-items v-model="tab">
+    <v-tab-item>
+      <v-content>
+        <section>
+        <app-wrapper>
         <div class="mt-5">
           <v-dialog v-model="dialog" max-width="500px">
             <v-btn color="accent" slot="activator" class="mb-3" light>Create New</v-btn>
@@ -69,26 +74,27 @@
             </app-election>
           </div>
         </div>
-      </app-wrapper>
-    </section>
-  </v-content>
+        </app-wrapper>
+        </section>
+      </v-content>
     </v-tab-item>
-    <v-tab-item id="tab-2">
+    <v-tab-item>
       <v-card flat>
         <app-candidates></app-candidates>
       </v-card>
     </v-tab-item>
-    <v-tab-item id="tab-3">
+    <v-tab-item>
       <v-card flat>
         3
       </v-card>
     </v-tab-item>
-    <v-tab-item id="tab-4">
+    <v-tab-item>
       <v-card flat>
         4
       </v-card>
     </v-tab-item>
-  </v-tabs>
+  </v-tabs-items>
+</div>
 </template>
 <script>
 import wrapper from '../wrapper'
@@ -105,6 +111,7 @@ export default {
   },
   data: () => {
     return {
+      tab: null,
       viewindex: 0,
       cardleftview: '',
       cardrightview: 'cardright',
