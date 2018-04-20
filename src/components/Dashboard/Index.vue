@@ -19,7 +19,7 @@
             <v-btn color="accent" slot="activator" class="mb-3" light>Create New</v-btn>
             <v-card >
               <v-card-title>
-                <span class="headline">New Election {{ viewindex }}</span>
+                <span class="headline">New Election</span>
               </v-card-title>
               <v-card-text>
                 <v-container grid-list-md>
@@ -49,7 +49,7 @@
               class="elevation-1">
               <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
               <template slot="items" slot-scope="props">
-                <tr @click="viewDetails(props.index)">
+                <tr @click="viewDetails(props.item.electionId)">
                   <td class="text-xs-left">{{ props.item.electionId        }}</td>
                   <td class="text-xs-left">{{ props.item.creationTimeStamp }}</td>
                   <td class="text-xs-left">{{ props.item.electionName      }}</td>
@@ -152,21 +152,25 @@ export default {
     }
   },
   methods: {
-    viewDetails (params) {
+    viewDetails (param) {
+      let index = this.elections.findIndex(x => x.electionId === param)
       this.cardleftview = 'cardleft'
       this.cardrightview = 'cardright'
       this.detail = true
       this.master = false
-      this.changeViewDetails(params)
+      this.changeViewDetails(index)
     },
     changeViewDetails (params) {
+      console.log('changed to index: ' + params)
       this.viewindex = params
+      console.log('changed to election id: ' + this.elections[this.viewindex].electionName)
     },
     closeDetails () {
       this.cardleftview = ''
       this.cardrightview = ''
       this.detail = false
       this.master = true
+      this.viewindex = 0
     },
     close () {
       this.dialog = false
