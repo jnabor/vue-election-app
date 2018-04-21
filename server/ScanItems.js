@@ -5,7 +5,8 @@ module.exports.handler = (event, context, callback) => {
   let body = JSON.parse(event.body)
   const params = {
     ReturnConsumedCapacity: body.ReturnConsumedCapacity,
-    TableName: body.TableName
+    TableName: body.TableName,
+    IndexName: body.IndexName
   }
   dynamodb.scan(params, function (err, data) {
     if (err) {

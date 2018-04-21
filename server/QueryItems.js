@@ -7,7 +7,8 @@ module.exports.handler = (event, context, callback) => {
     ExpressionAttributeValues: body.ExpressionAttributeValues,
     KeyConditionExpression: body.KeyConditionExpression,
     ReturnConsumedCapacity: body.ReturnConsumedCapacity,
-    TableName: body.TableName
+    TableName: body.TableName,
+    IndexName: body.IndexName
   }
   dynamodb.query(params, function (err, data) {
     if (err) {

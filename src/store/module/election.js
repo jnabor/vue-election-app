@@ -41,26 +41,27 @@ const actions = {
     state.loadingElections = true
     let payload = {
       ReturnConsumedCapacity: 'TOTAL',
-      TableName: config.databaseName + config.electionTable
+      TableName: config.databaseName + config.electionTable,
+      IndexName: 'nameLSI'
     }
     axios.post('/scanitems', payload)
       .then(res => {
         for (var key in res.data.Items) {
           let item = {
-            electionId: res.data.Items[key].electionId.S,
-            creationTimeStamp: res.data.Items[key].creationTimeStamp.S,
             electionName: res.data.Items[key].electionName.S,
+            creationTimeStamp: res.data.Items[key].creationTimeStamp.S,
+            electionId: res.data.Items[key].electionId.S,
             totalVotes: res.data.Items[key].totalVotes.N,
             registeredVoters: res.data.Items[key].registeredVoters.N,
             status: res.data.Items[key].status.S,
-            positions: res.data.Items[key].positions.SS
+            positions: res.data.Items[key].positions.S
           }
           commit('pushElection', item)
         }
         state.loadingElections = false
       })
       .catch(err => {
-        console.err(err)
+        console.error(err)
         state.responseElections = 'error!'
         state.loadingElections = false
       })
@@ -91,12 +92,13 @@ const actions = {
         state.loadingCandidates = false
       })
       .catch(err => {
-        console.err(err)
+        console.error(err)
         state.responseCandidates = 'error!'
         state.loadingCandidates = false
       })
   },
   addElection ({ state, commit, dispatch }, payload) {
+    console.log(payload)
     let electionId = Math.random().toString(36).substring(7) + Date.now().toString()
     let creationTimeStamp = Date.now().toString()
     let payloaddb = {
@@ -120,7 +122,7 @@ const actions = {
           S: 'Draft'
         },
         positions: {
-          SS: ['President', 'Vice President', 'Secretary', 'Treasurer']
+          S: '{"positions": ["President", "Vice-President", "Secretary", "Treasurer"]}'
         }
       },
       ReturnConsumedCapacity: 'TOTAL',
@@ -132,7 +134,7 @@ const actions = {
         dispatch('fetchElections')
       })
       .catch(err => {
-        console.err(err)
+        console.error(err)
       })
   },
   addDefaultPositions ({ dispatch }, electionId) {
@@ -178,7 +180,7 @@ const actions = {
         dispatch('fetchCandidates')
       })
       .catch(err => {
-        console.err(err)
+        console.error(err)
       })
   },
   addCandidate ({ dispatch }, payload) {

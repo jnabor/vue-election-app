@@ -25,7 +25,7 @@
                 <v-container grid-list-md>
                   <v-layout wrap>
                     <v-flex xs12 sm8 md8>
-                      <v-text-field label="Election Name" v-model="elections.electionName"></v-text-field>
+                      <v-text-field label="Election Name" v-model="electionName"></v-text-field>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -45,14 +45,13 @@
               :headers="headersElectionDetailed"
               :items="elections"
               :loading="loadingElections"
-              hide-actions
               class="elevation-1">
               <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
               <template slot="items" slot-scope="props">
                 <tr @click="viewDetails(props.item.electionId)">
-                  <td class="text-xs-left">{{ props.item.electionId        }}</td>
-                  <td class="text-xs-left">{{ props.item.creationTimeStamp }}</td>
                   <td class="text-xs-left">{{ props.item.electionName      }}</td>
+                  <td class="text-xs-left">{{ props.item.creationTimeStamp }}</td>
+                  <td class="text-xs-left">{{ props.item.electionId        }}</td>
                   <td class="text-xs-left">{{ props.item.registeredVoters  }}</td>
                   <td class="text-xs-left">{{ props.item.totalVotes        }}</td>
                   <td class="text-xs-left">{{ props.item.status }}</td>
@@ -118,10 +117,11 @@ export default {
       detail: false,
       master: true,
       dialog: false,
+      electionName: '',
       headersElectionDetailed: [
-        { text: 'Election ID', value: 'electionId' },
-        { text: 'Created', value: 'creationTimeStamp' },
         { text: 'Election Name', value: 'electionName' },
+        { text: 'Created', value: 'creationTimeStamp' },
+        { text: 'Election ID', value: 'electionId', sortable: false },
         { text: 'Total Votes', value: 'totalVotes' },
         { text: 'Registered', value: 'registeredVoters' },
         { text: 'Status', value: 'status' }
@@ -161,9 +161,7 @@ export default {
       this.changeViewDetails(index)
     },
     changeViewDetails (params) {
-      console.log('changed to index: ' + params)
       this.viewindex = params
-      console.log('changed to election id: ' + this.elections[this.viewindex].electionName)
     },
     closeDetails () {
       this.cardleftview = ''

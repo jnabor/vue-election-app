@@ -75,8 +75,8 @@ resources:
             AttributeType: S
           - AttributeName: creationTimeStamp
             AttributeType: S
-#          - AttributeName: electionName
-#            AttributeType: S
+          - AttributeName: electionName
+            AttributeType: S
 #          - AttributeName: startDate
 #            AttributeType: S
 #          - AttributeName: endDate
@@ -88,7 +88,7 @@ resources:
 #          - AttributeName: totalVotes
 #            AttributeType: N
 #          - AttributeName: positions
-#            AttributeType: SS
+#            AttributeType: S
 #          - AttributeName: results
 #            AttributeType: M
         KeySchema:
@@ -96,6 +96,15 @@ resources:
             KeyType: HASH
           - AttributeName: creationTimeStamp
             KeyType: RANGE
+        LocalSecondaryIndexes:
+          - IndexName: "nameLSI"
+            KeySchema:
+            - AttributeName: electionId
+              KeyType: HASH
+            - AttributeName: electionName
+              KeyType: RANGE
+            Projection:
+              ProjectionType: "ALL"
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5

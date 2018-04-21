@@ -55,14 +55,14 @@ export default {
     return {
       tab: null,
       fields: [
-        { label: 'Election ID', value: this.details.electionId },
-        { label: 'Creation Date', value: this.details.creationTimeStamp },
-        { label: 'Election Name', value: this.details.electionName },
-        { label: 'Total Votes', value: this.details.totalVotes },
-        { label: 'Registered Voters', value: this.details.registeredVoters },
-        { label: 'Status', value: this.details.status }
+        { label: 'Election Name', value: '' },
+        { label: 'Creation Date', value: '' },
+        { label: 'Election ID', value: '' },
+        { label: 'Total Votes', value: '' },
+        { label: 'Registered Voters', value: '' },
+        { label: 'Status', value: '' }
       ],
-      positions: this.details.positions,
+      positions: [],
       text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     }
   },
@@ -74,13 +74,24 @@ export default {
       this.fields[4].value = this.details.totalVotes
       this.fields[4].value = this.details.registeredVoters
       this.fields[5].value = this.details.status
-      this.positions = this.details.positions
+      let posJSON = JSON.parse(this.details.positions)
+      this.positions = posJSON.positions
     }
   },
   methods: {
     close: function () {
       this.$emit('close')
     }
+  },
+  created: function () {
+    this.fields[0].value = this.details.electionId
+    this.fields[1].value = this.details.creationTimeStamp
+    this.fields[2].value = this.details.electionName
+    this.fields[4].value = this.details.totalVotes
+    this.fields[4].value = this.details.registeredVoters
+    this.fields[5].value = this.details.status
+    let posJSON = JSON.parse(this.details.positions)
+    this.positions = posJSON.positions
   }
 }
 </script>
