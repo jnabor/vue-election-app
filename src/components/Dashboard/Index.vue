@@ -57,7 +57,7 @@
                       <v-icon>edit</v-icon>
                     </v-btn>
                     <v-dialog v-model="deleteDialog" persistent max-width="500px">
-                      <v-btn flat icon slot="activator" class="mx-0" light>
+                      <v-btn flat icon slot="activator" class="mx-0" @click.native="deleteId = props.item.electionId" light>
                         <v-icon>delete</v-icon>
                       </v-btn>
                       <v-card>
@@ -91,12 +91,19 @@
                         </v-list>
                         <v-divider></v-divider>
                         <v-card-text>
-                              Enter Election ID to Confirm delete
+                          <div color="warning">
+                            <v-alert outline color="warning" icon="priority_high" :value="true">
+                              Enter election ID below to confirm
+                            </v-alert>
+                            <v-text-field v-model="challenge"></v-text-field>
+                          </div>
+                          {{ challenge }}
+                          {{ deleteId }}
                         </v-card-text>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn flat @click.native="deleteDialog = false">Cancel</v-btn>
-                          <v-btn flat @click.native="deleteElection(props.item.electionId)">Delete</v-btn>
+                          <v-btn flat @click.native="deleteDialog = false; challenge = ''">Cancel</v-btn>
+                          <v-btn :disabled="!allowDelete" flat @click.native="deleteElection(props.item.electionId)">Delete</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -148,6 +155,9 @@ export default {
       deleteDialog: false,
       editDialog: false,
       electionName: '',
+      challenge: '',
+      deleteId: '',
+      allowDelete: false,
       headers: [
         { text: 'Election Name', value: 'electionName' },
         { text: 'Creation Time', value: 'creationTimeStamp' },
@@ -176,6 +186,13 @@ export default {
       this.sidelinks = []
       for (var key in this.elections) {
         this.sidelinks.push({ 'title': this.elections[key].electionName })
+      }
+    },
+    challenge () {
+      if (this.challenge.trim() === this.deleteId.trim()) {
+        this.allowDelete = true
+      } else {
+        this.allowDelete = false
       }
     }
   },
