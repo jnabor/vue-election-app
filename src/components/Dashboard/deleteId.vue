@@ -1,6 +1,6 @@
 <template>
   <div class="mt-1 pa-1">
-    <v-dialog v-model="show" persistent max-width="500px">
+    <v-dialog v-model="dialog" persistent max-width="500px">
       <v-card>
         <v-card-title><h4>Delete Election</h4></v-card-title>
         <v-divider></v-divider>
@@ -31,19 +31,19 @@
           </v-list-tile>
         </v-list>
         <v-divider></v-divider>
-          <v-card-text>
+        <v-card-text>
             <div color="warning">
               <v-alert outline color="warning" icon="priority_high" :value="true">
                 Enter election ID below to confirm
               </v-alert>
               <v-text-field v-model="challenge"></v-text-field>
             </div>
-          </v-card-text>
-          <v-card-actions>
+        </v-card-text>
+        <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn flat @click.native="close()">Cancel</v-btn>
             <v-btn :disabled="!allowDelete" flat @click.native="deleteElection()">Delete</v-btn>
-          </v-card-actions>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -56,7 +56,6 @@ export default {
   },
   data: () => {
     return {
-      show: false,
       challenge: '',
       allowDelete: false
     }
@@ -68,9 +67,6 @@ export default {
       } else {
         this.allowDelete = false
       }
-    },
-    dialog () {
-      this.show = this.dialog
     }
   },
   methods: {

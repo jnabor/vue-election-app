@@ -97,7 +97,7 @@ const actions = {
         state.loadingCandidates = false
       })
   },
-  addElection ({ state, commit, dispatch }, payload) {
+  addElection ({ dispatch }, payload) {
     console.log(payload)
     let electionId = Math.random().toString(36).substring(7) + Date.now().toString()
     let creationTimeStamp = Date.now().toString()
@@ -129,6 +129,29 @@ const actions = {
       TableName: config.databaseName + config.electionTable
     }
     axios.post('/additem', payloaddb)
+      .then(res => {
+        console.log(res)
+        dispatch('fetchElections')
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  },
+  deleteElection ({ dispatch }, payload) {
+    console.log('delete election payload: ' + JSON.stringify(payload))
+    let payloaddb = {
+      Key: {
+        electionId: {
+          S: payload.electionId
+        },
+        creationTimeStamp: {
+          S: payload.creationTimeStamp
+        }
+      },
+      ReturnConsumedCapacity: 'TOTAL',
+      TableName: config.databaseName + config.electionTable
+    }
+    axios.post('/deleteitem', payloaddb)
       .then(res => {
         console.log(res)
         dispatch('fetchElections')

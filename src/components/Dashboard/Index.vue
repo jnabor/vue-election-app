@@ -154,14 +154,19 @@ export default {
     deleteElection () {
       this.deleteDialog = false
       console.log('delete election id:' + JSON.stringify(this.deleteItem.electionId))
-
-      // todo: delete election id from elections table
+      let payload = {
+        electionId: this.deleteItem.electionId,
+        creationTimeStamp: this.deleteItem.creationTimeStamp
+      }
+      // delete election id from elections table
+      this.$store.dispatch('deleteElection', payload)
       // todo: delete election id from candidates table
       // todo: delete election id from votes table
       // todo: delete election id from registered voters table
+      this.deleteItem = {}
     },
     close () {
-      this.dialog = false
+      this.addDialog = false
       this.electionName = ''
     },
     addElection () {
