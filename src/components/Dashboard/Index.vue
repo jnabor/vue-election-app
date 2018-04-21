@@ -53,64 +53,22 @@
                   <td class="text-xs-left">{{ props.item.totalVotes }}</td>
                   <td class="text-xs-left">{{ props.item.registeredVoters }}</td>
                   <td class="text-xs-left layout ma-0 pa-0">
-                    <v-btn flat icon class="mx-0" @click="editElection(props.item.electionId)">
+                    <v-btn flat icon class="mx-0" @click="editElection(props.item)">
                       <v-icon>edit</v-icon>
                     </v-btn>
-                    <v-dialog v-model="deleteDialog" persistent max-width="500px">
-                      <v-btn flat icon slot="activator" class="mx-0" @click.native="deleteId = props.item.electionId" light>
-                        <v-icon>delete</v-icon>
-                      </v-btn>
-                      <v-card>
-                        <v-card-title><h4>Delete Election</h4></v-card-title>
-                        <v-divider></v-divider>
-                        <v-list dense>
-                          <v-list-tile>
-                            <v-list-tile-content>Election ID:</v-list-tile-content>
-                            <v-list-tile-content class="align-end">{{ props.item.electionId }}</v-list-tile-content>
-                          </v-list-tile>
-                          <v-list-tile>
-                            <v-list-tile-content>Election Name:</v-list-tile-content>
-                            <v-list-tile-content class="align-end">{{ props.item.electionName }}</v-list-tile-content>
-                          </v-list-tile>
-                          <v-list-tile>
-                            <v-list-tile-content>Creation Time Stamp:</v-list-tile-content>
-                            <v-list-tile-content class="align-end">{{ props.item.creationTimeStamp }}</v-list-tile-content>
-                          </v-list-tile>
-                          <v-list-tile>
-                            <v-list-tile-content>Votes Submitted:</v-list-tile-content>
-                            <v-list-tile-content class="align-end">{{ props.item.totalVotes }}</v-list-tile-content>
-                          </v-list-tile>
-                          <v-list-tile>
-                            <v-list-tile-content>Registered Voters:</v-list-tile-content>
-                            <v-list-tile-content class="align-end">{{ props.item.registeredVoters }}</v-list-tile-content>
-                          </v-list-tile>
-                          <v-list-tile>
-                            <v-list-tile-content>Status:</v-list-tile-content>
-                            <v-list-tile-content class="align-end">{{ props.item.status }}</v-list-tile-content>
-                          </v-list-tile>
-                        </v-list>
-                        <v-divider></v-divider>
-                        <v-card-text>
-                          <div color="warning">
-                            <v-alert outline color="warning" icon="priority_high" :value="true">
-                              Enter election ID below to confirm
-                            </v-alert>
-                            <v-text-field v-model="challenge"></v-text-field>
-                          </div>
-                          {{ challenge }}
-                          {{ deleteId }}
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn flat @click.native="deleteDialog = false; challenge = ''">Cancel</v-btn>
-                          <v-btn :disabled="!allowDelete" flat @click.native="deleteElection(props.item.electionId)">Delete</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
+                    <v-btn flat icon class="mx-0" @click="showDelete(props.item)">
+                      <v-icon>delete</v-icon>
+                    </v-btn>
                   </td>
                 </tr>
               </template>
             </v-data-table>
+            <app-deleteId
+              :dialog="deleteDialog"
+              :election="deleteItem"
+              @close="deleteDialog = false; deleteItem = {}"
+              @delete="deleteElection()">
+            </app-deleteId>
           </div>
         </div>
         </app-wrapper>
@@ -139,14 +97,14 @@
 import wrapper from '../wrapper'
 import election from './election'
 import candidates from './candidates'
-import sidemenu from './sidemenu'
+import deleteId from './deleteId'
 
 export default {
   components: {
     'app-wrapper': wrapper,
     'app-election': election,
     'app-candidates': candidates,
-    'app-sidemenu': sidemenu
+    'app-deleteId': deleteId
   },
   data: () => {
     return {
@@ -155,9 +113,7 @@ export default {
       deleteDialog: false,
       editDialog: false,
       electionName: '',
-      challenge: '',
-      deleteId: '',
-      allowDelete: false,
+      deleteItem: {},
       headers: [
         { text: 'Election Name', value: 'electionName' },
         { text: 'Creation Time', value: 'creationTimeStamp' },
@@ -187,16 +143,23 @@ export default {
       for (var key in this.elections) {
         this.sidelinks.push({ 'title': this.elections[key].electionName })
       }
-    },
-    challenge () {
-      if (this.challenge.trim() === this.deleteId.trim()) {
-        this.allowDelete = true
-      } else {
-        this.allowDelete = false
-      }
     }
   },
   methods: {
+    showDelete (param) {
+      this.deleteItem = param
+      this.deleteDialog = true
+      console.log('show delete election:' + param.electionId)
+    },
+    deleteElection () {
+      this.deleteDialog = false
+      console.log('delete election id:' + JSON.stringify(this.deleteItem.electionId))
+
+      // todo: delete election id from elections table
+      // todo: delete election id from candidates table
+      // todo: delete election id from votes table
+      // todo: delete election id from registered voters table
+    },
     close () {
       this.dialog = false
       this.electionName = ''
@@ -209,16 +172,8 @@ export default {
       this.close()
     },
     editElection (item) {
-      console.log('edit item:' + JSON.stringify(item))
-    },
-    deleteElection (item) {
-      this.deleteDialog = false
-      console.log('delete item:' + JSON.stringify(item))
-
-      // todo: delete election id from elections table
-      // todo: delete election id from candidates table
-      // todo: delete election id from votes table
-      // todo: delete election id from registered voters table
+      console.log('edit electionId:' + JSON.stringify(item.electionId))
+      console.log('edit electionName:' + JSON.stringify(item.electionName))
     }
   },
   created () {
@@ -229,15 +184,4 @@ export default {
 }
 </script>
 <style scoped>
-.cardcontainer {
-  overflow: auto;
-}
-.cardleft {
-  float: left;
-  width: 30%;
-}
-.cardright {
-  float: right;
-  width: 70%;
-}
 </style>
