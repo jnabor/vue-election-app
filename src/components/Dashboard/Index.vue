@@ -15,7 +15,7 @@
         <section>
         <app-wrapper>
         <div class="mt-5">
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="addDialog" max-width="500px">
             <v-btn color="accent" slot="activator" class="mb-3" light>Create New</v-btn>
             <v-card >
               <v-card-title>
@@ -38,39 +38,72 @@
             </v-card>
           </v-dialog>
         </div>
-        <div class="cardcontainer mt-1 pa-1">
-          <div :class="cardleftview">
+        <div class="mt-1 pa-1">
+          <div>
             <v-data-table
-              v-if="master"
-              :headers="headersElectionDetailed"
+              :headers="headers"
               :items="elections"
               :loading="loadingElections"
               class="elevation-1">
               <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
               <template slot="items" slot-scope="props">
-                <tr @click="viewDetails(props.item.electionId)">
+                <tr>
                   <td class="text-xs-left">{{ props.item.electionName      }}</td>
-                  <td class="text-xs-left">{{ props.item.creationTimeStamp }}</td>
-                  <td class="text-xs-left">{{ props.item.electionId        }}</td>
-                  <td class="text-xs-left">{{ props.item.registeredVoters  }}</td>
-                  <td class="text-xs-left">{{ props.item.totalVotes        }}</td>
-                  <td class="text-xs-left">{{ props.item.status }}</td>
+                  <td class="text-xs-left hidden-xs-only">{{ props.item.creationTimeStamp }}</td>
+                  <td class="text-xs-left">{{ props.item.totalVotes }}</td>
+                  <td class="text-xs-left">{{ props.item.registeredVoters }}</td>
+                  <td class="text-xs-left layout ma-0 pa-0">
+                    <v-btn flat icon class="mx-0" @click="editElection(props.item.electionId)">
+                      <v-icon>edit</v-icon>
+                    </v-btn>
+                    <v-dialog v-model="deleteDialog" persistent max-width="500px">
+                      <v-btn flat icon slot="activator" class="mx-0" light>
+                        <v-icon>delete</v-icon>
+                      </v-btn>
+                      <v-card>
+                        <v-card-title><h4>Delete Election</h4></v-card-title>
+                        <v-divider></v-divider>
+                        <v-list dense>
+                          <v-list-tile>
+                            <v-list-tile-content>Election ID:</v-list-tile-content>
+                            <v-list-tile-content class="align-end">{{ props.item.electionId }}</v-list-tile-content>
+                          </v-list-tile>
+                          <v-list-tile>
+                            <v-list-tile-content>Election Name:</v-list-tile-content>
+                            <v-list-tile-content class="align-end">{{ props.item.electionName }}</v-list-tile-content>
+                          </v-list-tile>
+                          <v-list-tile>
+                            <v-list-tile-content>Creation Time Stamp:</v-list-tile-content>
+                            <v-list-tile-content class="align-end">{{ props.item.creationTimeStamp }}</v-list-tile-content>
+                          </v-list-tile>
+                          <v-list-tile>
+                            <v-list-tile-content>Votes Submitted:</v-list-tile-content>
+                            <v-list-tile-content class="align-end">{{ props.item.totalVotes }}</v-list-tile-content>
+                          </v-list-tile>
+                          <v-list-tile>
+                            <v-list-tile-content>Registered Voters:</v-list-tile-content>
+                            <v-list-tile-content class="align-end">{{ props.item.registeredVoters }}</v-list-tile-content>
+                          </v-list-tile>
+                          <v-list-tile>
+                            <v-list-tile-content>Status:</v-list-tile-content>
+                            <v-list-tile-content class="align-end">{{ props.item.status }}</v-list-tile-content>
+                          </v-list-tile>
+                        </v-list>
+                        <v-divider></v-divider>
+                        <v-card-text>
+                              Enter Election ID to Confirm delete
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn flat @click.native="deleteDialog = false">Cancel</v-btn>
+                          <v-btn flat @click.native="deleteElection(props.item.electionId)">Delete</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </td>
                 </tr>
               </template>
             </v-data-table>
-            <app-sidemenu
-              v-if="detail"
-              :header="'Election Name'"
-              :current="viewindex"
-              :links="sidelinks"
-              @click="changeViewDetails($event)">
-            </app-sidemenu>
-          </div>
-          <div v-if="detail" :class="cardrightview">
-            <app-election
-              :details="electionProp"
-              @close="closeDetails()">
-            </app-election>
           </div>
         </div>
         </app-wrapper>
@@ -111,22 +144,17 @@ export default {
   data: () => {
     return {
       tab: null,
-      viewindex: 0,
-      cardleftview: '',
-      cardrightview: 'cardright',
-      detail: false,
-      master: true,
-      dialog: false,
+      addDialog: false,
+      deleteDialog: false,
+      editDialog: false,
       electionName: '',
-      headersElectionDetailed: [
+      headers: [
         { text: 'Election Name', value: 'electionName' },
-        { text: 'Created', value: 'creationTimeStamp' },
-        { text: 'Election ID', value: 'electionId', sortable: false },
+        { text: 'Creation Time', value: 'creationTimeStamp' },
         { text: 'Total Votes', value: 'totalVotes' },
         { text: 'Registered', value: 'registeredVoters' },
-        { text: 'Status', value: 'status' }
-      ],
-      sidelinks: []
+        { text: 'Actions', value: 'name', sortable: false }
+      ]
     }
   },
   computed: {
@@ -152,24 +180,6 @@ export default {
     }
   },
   methods: {
-    viewDetails (param) {
-      let index = this.elections.findIndex(x => x.electionId === param)
-      this.cardleftview = 'cardleft'
-      this.cardrightview = 'cardright'
-      this.detail = true
-      this.master = false
-      this.changeViewDetails(index)
-    },
-    changeViewDetails (params) {
-      this.viewindex = params
-    },
-    closeDetails () {
-      this.cardleftview = ''
-      this.cardrightview = ''
-      this.detail = false
-      this.master = true
-      this.viewindex = 0
-    },
     close () {
       this.dialog = false
       this.electionName = ''
@@ -180,6 +190,18 @@ export default {
       }
       this.$store.dispatch('addElection', payload)
       this.close()
+    },
+    editElection (item) {
+      console.log('edit item:' + JSON.stringify(item))
+    },
+    deleteElection (item) {
+      this.deleteDialog = false
+      console.log('delete item:' + JSON.stringify(item))
+
+      // todo: delete election id from elections table
+      // todo: delete election id from candidates table
+      // todo: delete election id from votes table
+      // todo: delete election id from registered voters table
     }
   },
   created () {

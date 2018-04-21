@@ -68,10 +68,10 @@ export default {
   },
   watch: {
     details () {
-      this.fields[0].value = this.details.electionId
+      this.fields[0].value = this.details.electionName
       this.fields[1].value = this.details.creationTimeStamp
-      this.fields[2].value = this.details.electionName
-      this.fields[4].value = this.details.totalVotes
+      this.fields[2].value = this.details.electionId
+      this.fields[3].value = this.details.totalVotes
       this.fields[4].value = this.details.registeredVoters
       this.fields[5].value = this.details.status
       let posJSON = JSON.parse(this.details.positions)
