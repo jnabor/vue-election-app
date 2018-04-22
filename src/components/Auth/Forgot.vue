@@ -7,7 +7,7 @@
             <v-flex xl2 lg3 md4 sm4 class="hidden-xs-only">
               <v-card class="elevation-0 pa-2 mr-2">
                 <v-card-media >
-                <img class="aws-logo" src="../../static/aws_cognito.png">
+                <img class="aws-logo" src="/static/aws_cognito.png">
                 </v-card-media>
               </v-card>
             </v-flex>
@@ -104,8 +104,8 @@
 </template>
 
 <script>
-import router from '../routes'
-import config from '../config'
+import router from '../../routes'
+import config from '../../config'
 var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
 var userPool = []
 

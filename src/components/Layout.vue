@@ -106,15 +106,7 @@
     </v-toolbar>
 
     <v-content>
-      <v-container>
-        <v-layout justify-center align-center>
-          <v-flex>
-            <div class="ma-0 pa-0 maincontent">
-              <router-view></router-view>
-            </div>
-          </v-flex>
-        </v-layout>
-      </v-container>
+      <router-view></router-view>
     </v-content>
 
     <v-footer fixed app>

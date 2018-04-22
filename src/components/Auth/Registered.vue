@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import router from '../routes'
+import router from '../../routes'
 
 export default {
   methods: {
