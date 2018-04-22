@@ -18,9 +18,9 @@
           <v-alert outline type="success" dismissible class="mb-4 mt-0" v-model="codesent">
             A confirmation was code sent to your email.
           </v-alert>
-          <template v-if="!codesent">
+          <div v-show="!codesent">
             <h4 class="subheading mb-2">Find your cognito account</h4>
-            <v-form  v-model="valid">
+            <v-form  v-model="validemail">
               <v-text-field
                 label="Enter E-mail"
                 v-model="email"
@@ -42,15 +42,15 @@
             <div class="accent--text">
               A confirmation code will be sent to your email address.
             </div>
-          </template>
-          <template v-else>
+          </div>
+          <div v-show="codesent">
             <h4 class="subheading mb-2 accent--text">Confirm password change</h4>
-            <v-form  v-model="valid">
+            <v-form  v-model="validcode">
               <v-text-field
                 label="Confirmation Code"
                 v-model="code"
                 :rules="codeRules"
-                required>
+                required clearable>
               </v-text-field>
               <v-text-field
                 label="New Password"
@@ -73,7 +73,7 @@
               Confirm
             <span slot="loader">Updating password...</span>
             </v-btn>
-          </template>
+          </div>
         </v-card-text>
       </v-card>
     </transition>
@@ -101,7 +101,8 @@ export default {
       showerr: false,
       errcode: '',
       errmsg: '',
-      valid: false,
+      validemail: false,
+      validcode: false,
       email: '',
       emailRules: [
         (v) => !!v || 'E-mail is required',
