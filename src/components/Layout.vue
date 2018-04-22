@@ -1,78 +1,129 @@
 <template>
   <v-app>
 
-  <v-toolbar color="primary">
-    <i class="material-icons white--text ml-2 ml-4">fingerprint</i>
-    <v-toolbar-title class="white--text hidden-xs-only">Election App</v-toolbar-title>
-    <v-spacer></v-spacer>
-    <v-btn icon @click="navigate('home')">
-      <v-icon class="white--text">home</v-icon>
-    </v-btn>
-
-    <v-menu  v-if="isAuthenticated" bottom left class="mr-4 hidden-sm-and-up">
-      <v-btn icon slot="activator">
-        <v-icon class="white--text">person</v-icon>
-      </v-btn>
-      <v-list>
-        <v-list-tile @click="navigate('profile')">
-          <v-list-tile-title>Profile</v-list-tile-title>
+    <v-navigation-drawer
+      fixed clipped
+      v-model="drawer" app>
+      <v-list dense>
+        <v-subheader class="mt-3 title">ELECTION DASHBOARD</v-subheader>
+        <v-list-tile @click="navigate('dashboard')">
+          <v-list-tile-action>
+            <v-icon>fingerprint</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="subheading">
+              Elections
+            </v-list-tile-title>
+          </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="navigate('signout')">
-          <v-list-tile-title>Sign Out</v-list-tile-title>
+        <v-list-tile @click="drawer = drawer">
+          <v-list-tile-action>
+            <v-icon>people</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="subheading">
+              Candidates
+            </v-list-tile-title>
+          </v-list-tile-content>
         </v-list-tile>
-      </v-list>
-    </v-menu>
-    <v-menu  v-if="isAuthenticated" bottom left class="mr-4 hidden-xs-only">
-      <v-btn depressed small color="primary" slot="activator">
-        {{ username }}
-        <v-icon class="white--text">arrow_drop_down</v-icon>
-      </v-btn>
-      <v-list>
-        <v-list-tile @click="navigate('profile')">
-          <v-list-tile-title>Profile</v-list-tile-title>
+        <v-list-tile @click="drawer = drawer">
+          <v-list-tile-action>
+            <v-icon>verified_user</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="subheading">
+              Registered Voters
+            </v-list-tile-title>
+          </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="navigate('signout')">
-          <v-list-tile-title>Sign Out</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-menu>
-    <v-btn class="hidden-xs-only white--text" @click="navigate('dashboard')" flat>Dashboard</v-btn>
-    <v-btn v-if="!isAuthenticated" class="hidden-xs-only white--text" @click="navigate('signin')" flat>Sign In</v-btn>
-    <v-btn v-if="!isAuthenticated" class="hidden-xs-only white--text mr-4" @click="navigate('register')" flat>Register</v-btn>
-    <v-menu v-if="!isAuthenticated" bottom left class="hidden-sm-and-up">
-      <v-btn icon slot="activator" >
-        <v-icon class="white--text">more_vert</v-icon>
-      </v-btn>
-      <v-list>
-        <v-list-tile
-          v-if="!isAuthenticated"
-          @click="navigate('signin')">
-          <v-list-tile-title >
-            Sign In
-          </v-list-tile-title>
-        </v-list-tile>
-        <v-list-tile
-          v-if="!isAuthenticated"
-          @click="navigate('register')">
-          <v-list-tile-title>
-            Register
-          </v-list-tile-title>
+        <v-list-tile @click="drawer = drawer">
+          <v-list-tile-action>
+            <v-icon>touch_app</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="subheading">
+              Votes
+            </v-list-tile-title>
+          </v-list-tile-content>
         </v-list-tile>
       </v-list>
-    </v-menu>
-  </v-toolbar>
+      <v-subheader class="mt-3 title">RESULTS</v-subheader>
+      <v-subheader class="mt-3 title">STATISTICS</v-subheader>
+    </v-navigation-drawer>
 
-  <v-content>
-    <router-view></router-view>
-  </v-content>
+    <v-toolbar
+      color="primary"
+      fixed clipped-left app>
+      <v-toolbar-side-icon class="white--text" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title class="white--text hidden-xs-only">Election App</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn v-if="isAuthenticated" class="white--text" @click="navigate('dashboard')" flat>Dashboard</v-btn>
+      <v-btn icon @click="navigate('home')">
+        <v-icon class="white--text">home</v-icon>
+      </v-btn>
+      <v-menu  v-if="isAuthenticated" bottom left class="mr-4 hidden-sm-and-up">
+        <v-btn icon slot="activator">
+          <v-icon class="white--text">person</v-icon>
+        </v-btn>
+        <v-list>
+          <v-list-tile @click="navigate('profile')">
+            <v-list-tile-title>Profile</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile @click="navigate('signout')">
+            <v-list-tile-title>Sign Out</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+      <v-menu  v-if="isAuthenticated" bottom left class="mr-4 hidden-xs-only">
+        <v-btn depressed small color="primary" slot="activator">
+          {{ username }}
+          <v-icon class="white--text">arrow_drop_down</v-icon>
+        </v-btn>
+        <v-list>
+          <v-list-tile @click="navigate('profile')">
+            <v-list-tile-title>Profile</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile @click="navigate('signout')">
+            <v-list-tile-title>Sign Out</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+      <v-btn v-if="!isAuthenticated" class="hidden-xs-only white--text" @click="navigate('signin')" flat>Sign In</v-btn>
+      <v-menu v-if="!isAuthenticated" bottom left class="hidden-sm-and-up">
+        <v-btn icon slot="activator" >
+          <v-icon class="white--text">more_vert</v-icon>
+        </v-btn>
+        <v-list>
+          <v-list-tile
+            v-if="!isAuthenticated"
+            @click="navigate('signin')">
+            <v-list-tile-title >
+              Sign In
+            </v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+    </v-toolbar>
 
-  <v-footer fixed app>
-    <v-layout column align-center justify-center>
-      <div class="ml-3">
-        <span>&copy; 2018 <a href="http://sonabstudios.com">SonabStudios&trade;</a> is a trademark of Jayson Nabor</span>
-      </div>
-    </v-layout>
-  </v-footer>
+    <v-content>
+      <v-container>
+        <v-layout justify-center align-center>
+          <v-flex>
+            <div class="ma-0 pa-0 maincontent">
+              <router-view></router-view>
+            </div>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+
+    <v-footer fixed app>
+      <v-layout column align-center justify-center>
+        <div class="ml-3">
+          <span>&copy; 2018 <a href="http://sonabstudios.com">SonabStudios&trade;</a> is a trademark of Jayson Nabor</span>
+        </div>
+      </v-layout>
+    </v-footer>
 
   </v-app>
 </template>
@@ -83,7 +134,8 @@ import router from '../routes'
 export default {
   data: () => {
     return {
-      username: ''
+      username: '',
+      drawer: false
     }
   },
   computed: {
@@ -99,10 +151,13 @@ export default {
       console.log('navigating to ' + path)
       if (path === 'signout') {
         this.$store.dispatch('signOut')
+        this.drawer = false
       } else if (path === 'dashboard') {
+        this.drawer = true
         router.push('/dashboard')
       } else {
         router.push('/' + path)
+        this.drawer = false
       }
     }
   },
@@ -116,5 +171,8 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
+.maincontent {
+  border: 1px solid red;
+}
 </style>

@@ -95,16 +95,14 @@
 </template>
 <script>
 import wrapper from '../wrapper'
-import election from './election'
-import candidates from './candidates'
-import deleteId from './deleteId'
+import deleteView from './deleteView'
+import editView from './editView'
 
 export default {
   components: {
     'app-wrapper': wrapper,
-    'app-election': election,
-    'app-candidates': candidates,
-    'app-deleteId': deleteId
+    'app-delete': deleteView,
+    'app-edit': editView
   },
   data: () => {
     return {
