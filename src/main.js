@@ -8,11 +8,6 @@ import AppLayout from './components/Layout.vue'
 import AppHome from './components/Home.vue'
 import AppSignin from './components/Auth/Signin.vue'
 import AppRegister from './components/Auth/Register.vue'
-import AppRegistered from './components/Auth/Registered.vue'
-import AppForgot from './components/Auth/Forgot.vue'
-import AppConfirm from './components/Auth/Confirm.vue'
-import AppChanged from './components/Auth/Changed.vue'
-import AppProfile from './components/Profile/Index.vue'
 import { store } from './store/index'
 import axios from 'axios'
 import config from './config'
@@ -38,11 +33,6 @@ Vue.component('app-layout', AppLayout)
 Vue.component('app-home', AppHome)
 Vue.component('app-signin', AppSignin)
 Vue.component('app-register', AppRegister)
-Vue.component('app-registered', AppRegistered)
-Vue.component('app-forgot', AppForgot)
-Vue.component('app-confirm', AppConfirm)
-Vue.component('app-changed', AppChanged)
-Vue.component('app-profile', AppProfile)
 
 /* eslint-disable no-new */
 new Vue({

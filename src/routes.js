@@ -26,10 +26,10 @@ export default new Router({
     { path: '/confirm', name: 'Confirm', component: Confirm },
     { path: '/changed', name: 'Changed', component: Changed },
     { path: '/profile', name: 'Profile', component: Profile },
-    { path: '/election', name: 'Election', component: Election },
-    { path: '/candidates', name: 'Candidates', component: Candidates },
-    { path: '/voters', name: 'Registered', component: Voters },
-    { path: '/votes', name: 'Votes', component: Votes }
+    { path: '/dash-election', name: 'Election', component: Election },
+    { path: '/dash-candidates', name: 'Candidates', component: Candidates },
+    { path: '/dash-voters', name: 'Voters', component: Voters },
+    { path: '/dash-votes', name: 'Votes', component: Votes }
   ],
   mode: 'history'
 })

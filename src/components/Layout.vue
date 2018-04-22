@@ -11,7 +11,7 @@
       <v-divider class="mt-3"></v-divider>
       <v-subheader>ELECTIONS</v-subheader>
       <v-list>
-        <v-list-tile @click="navigate('election')">
+        <v-list-tile @click="navigate('dash-election')">
           <v-list-tile-action>
             <v-icon>fingerprint</v-icon>
           </v-list-tile-action>
@@ -21,7 +21,7 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="navigate('candidates')">
+        <v-list-tile @click="navigate('dash-candidates')">
           <v-list-tile-action>
             <v-icon>people</v-icon>
           </v-list-tile-action>
@@ -31,7 +31,7 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="navigate('voters')">
+        <v-list-tile @click="navigate('dash-voters')">
           <v-list-tile-action>
             <v-icon>verified_user</v-icon>
           </v-list-tile-action>
@@ -41,7 +41,7 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="navigate('votes')">
+        <v-list-tile @click="navigate('dash-votes')">
           <v-list-tile-action>
             <v-icon>touch_app</v-icon>
           </v-list-tile-action>
@@ -134,7 +134,7 @@ export default {
   data: () => {
     return {
       username: '',
-      drawer: true
+      drawer: false
     }
   },
   computed: {
@@ -147,14 +147,7 @@ export default {
   },
   methods: {
     navigate: function (path) {
-      console.log('navigating to ' + path)
-      this.drawer = true
-      if (path === 'signout') {
-        this.$store.dispatch('signOut')
-        this.drawer = false
-      } else {
-        router.push('/' + path)
-      }
+      router.push('/' + path)
     }
   },
   watch: {
@@ -163,6 +156,9 @@ export default {
       var str = this.email
       var index = str.indexOf('@')
       this.username = str.substring(0, index)
+    },
+    $route (to, from) {
+      this.drawer = to.path.includes('dash') || false
     }
   }
 }
