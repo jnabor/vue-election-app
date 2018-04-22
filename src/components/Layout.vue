@@ -21,7 +21,7 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="navigate('election')">
+        <v-list-tile @click="navigate('candidates')">
           <v-list-tile-action>
             <v-icon>people</v-icon>
           </v-list-tile-action>
@@ -31,7 +31,7 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="navigate('election')">
+        <v-list-tile @click="navigate('voters')">
           <v-list-tile-action>
             <v-icon>verified_user</v-icon>
           </v-list-tile-action>
@@ -41,7 +41,7 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="navigate('election')">
+        <v-list-tile @click="navigate('votes')">
           <v-list-tile-action>
             <v-icon>touch_app</v-icon>
           </v-list-tile-action>
@@ -148,15 +148,12 @@ export default {
   methods: {
     navigate: function (path) {
       console.log('navigating to ' + path)
+      this.drawer = true
       if (path === 'signout') {
         this.$store.dispatch('signOut')
         this.drawer = false
-      } else if (path === 'election') {
-        this.drawer = true
-        router.push('/election')
       } else {
         router.push('/' + path)
-        this.drawer = false
       }
     }
   },

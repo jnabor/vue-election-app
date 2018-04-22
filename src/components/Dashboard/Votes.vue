@@ -2,7 +2,7 @@
 <app-wrapper>
   <v-toolbar color="secondary" class="elevation-0 ma-0 pa-0">
     <v-toolbar-title>
-      ELECTIONS
+      VOTES
     </v-toolbar-title>
   </v-toolbar>
 
@@ -26,6 +26,7 @@ export default {
   methods: {
   },
   created: () => {
+
   }
 }
 </script>
