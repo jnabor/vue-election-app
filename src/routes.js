@@ -8,7 +8,7 @@ import Forgot from '@/components/Auth/Forgot'
 import Confirm from '@/components/Auth/Confirm'
 import Changed from '@/components/Auth/Changed'
 import Profile from '@/components/Profile/Index'
-import Dashboard from '@/components/Dashboard/Index'
+import Election from '@/components/Dashboard/Election'
 
 Vue.use(Router)
 
@@ -23,7 +23,7 @@ export default new Router({
     { path: '/confirm', name: 'Confirm', component: Confirm },
     { path: '/changed', name: 'Changed', component: Changed },
     { path: '/profile', name: 'Profile', component: Profile },
-    { path: '/dashboard', name: 'Dashboard', component: Dashboard }
+    { path: '/election', name: 'Election', component: Election }
   ],
   mode: 'history'
 })
