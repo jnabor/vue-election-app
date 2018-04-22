@@ -1,115 +1,99 @@
 <template>
-  <v-container grid-list-md class="mt-3">
-    <v-layout row wrap>
-      <v-flex xl12 lg12 md12 sm12 xs12>
-        <v-card class="pa-4 ml-4 mr-4">
-          <v-layout row justify-center>
-            <v-flex xl2 lg3 md4 sm4 class="hidden-xs-only">
-              <v-card class="elevation-0 pa-2 mr-2">
-                <v-card-media >
-                <img class="aws-logo" src="/static/aws_cognito.png">
-                </v-card-media>
-              </v-card>
-            </v-flex>
-            <v-flex xl4 lg5 md6 sm6>
-              <transition appear name="fadeout">
-              <v-card class="elevation-0 pa-2 ml-1 mr-1">
-                <v-alert outline type="error" dismissible class="ml-3 mr-3" v-model="showerr">
-                  {{ errmsg }}
-                </v-alert>
-                <v-alert outline type="success" dismissible class="ml-3 mr-3" v-model="codesent">
-                  A confirmation was code sent to your email.
-                </v-alert>
-
-                <!-- search for user account -->
-                <template v-if="!codesent">
-                  <v-card-title primary-title>
-                    <div>
-                      <h4 class="headline mb-0">Find your cognito account</h4>
-                    </div>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-form  v-model="valid">
-                      <v-text-field
-                      label="Enter E-mail"
-                      v-model="email"
-                      :rules="emailRules"
-                      required>
-                      </v-text-field>
-                    </v-form>
-                    <v-btn
-                      block
-                      :loading="loading"
-                      @click.native="onFind()"
-                      :disabled="!valid"
-                      class="mt-3 mb-3"
-                      light
-                      color="secondary">
-                      Find
-                      <span slot="loader">Verifying account...</span>
-                    </v-btn>
-                    <div>
-                      A confirmation code will be sent to your email address.
-                    </div>
-                  </v-card-text>
-                </template>
-
-                <!-- enter confirmation code and new password -->
-                <template v-if="codesent">
-                  <v-card-title primary-title>
-                    <div>
-                      <h4 class="headline mb-0">Confirm password change</h4>
-                    </div>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-form  v-model="valid">
-                      <v-text-field
-                        label="Confirmation Code"
-                        v-model="code"
-                        :rules="codeRules"
-                        required>
-                      </v-text-field>
-                      <v-text-field
-                        label="New Password"
-                        v-model="password"
-                        :rules="passRules"
-                        :append-icon="hidepw ? 'visibility' : 'visibility_off'"
-                        :append-icon-cb="() => (hidepw = !hidepw)"
-                        :type="hidepw ? 'password' : 'text'"
-                        required>
-                      </v-text-field>
-                    </v-form>
-                    <v-btn
-                      block
-                      :loading="loading"
-                      @click.native="onSubmit()"
-                      :disabled="!valid"
-                      class="mt-3 mb-3"
-                      light
-                      color="secondary">
-                      Confirm
-                    <span slot="loader">Updating password...</span>
-                    </v-btn>
-                  </v-card-text>
-                </template>
-
-              </v-card>
-              </transition>
-            </v-flex>
-          </v-layout>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <app-wrapper>
+    <transition appear name="fadeout">
+      <v-card class="pa-2">
+        <v-card-media class="mt-4" height="80" contain>
+          <img class="aws-logo" src="/static/aws_cognito.png">
+        </v-card-media>
+        <v-card-title primary-title>
+          <div>
+            <h4 class="headline mb-0">RESET PASSWORD</h4>
+            <h4 class="subheading mb-0">in Election App with AWS Cognito</h4>
+          </div>
+        </v-card-title>
+        <v-card-text>
+          <v-alert outline type="error" dismissible class="mb-4 mt-0" v-model="showerr">
+            {{ errmsg }}
+          </v-alert>
+          <v-alert outline type="success" dismissible class="mb-4 mt-0" v-model="codesent">
+            A confirmation was code sent to your email.
+          </v-alert>
+          <template v-if="!codesent">
+            <h4 class="subheading mb-2">Find your cognito account</h4>
+            <v-form  v-model="valid">
+              <v-text-field
+                label="Enter E-mail"
+                v-model="email"
+                :rules="emailRules"
+                required clearable>
+              </v-text-field>
+            </v-form>
+            <v-btn
+              block
+              :loading="loading"
+              @click.native="onFind()"
+              :disabled="!validemail"
+              class="mt-3 mb-3"
+              light
+              color="secondary">
+              Find
+              <span slot="loader">Verifying account...</span>
+            </v-btn>
+            <div class="accent--text">
+              A confirmation code will be sent to your email address.
+            </div>
+          </template>
+          <template v-else>
+            <h4 class="subheading mb-2 accent--text">Confirm password change</h4>
+            <v-form  v-model="valid">
+              <v-text-field
+                label="Confirmation Code"
+                v-model="code"
+                :rules="codeRules"
+                required>
+              </v-text-field>
+              <v-text-field
+                label="New Password"
+                v-model="password"
+                :rules="passRules"
+                :append-icon="hidepw ? 'visibility' : 'visibility_off'"
+                :append-icon-cb="() => (hidepw = !hidepw)"
+                :type="hidepw ? 'password' : 'text'"
+                required>
+              </v-text-field>
+            </v-form>
+            <v-btn
+              block
+              :loading="loading"
+              @click.native="onSubmit()"
+              :disabled="!validcode"
+              class="mt-3 mb-3"
+              light
+              color="secondary">
+              Confirm
+            <span slot="loader">Updating password...</span>
+            </v-btn>
+          </template>
+        </v-card-text>
+      </v-card>
+    </transition>
+    <div class="mt-2 ml-2 mr-2 caption">
+      By signing up, you agree to the <router-link :to="''">Terms of Service</router-link> and <router-link :to="''">Privacy Policy</router-link>, including Cookie Use.
+    </div>
+  </app-wrapper>
 </template>
 
 <script>
+import wrapper from './wrapper'
 import router from '../../routes'
 import config from '../../config'
 var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
 var userPool = []
 
 export default {
+  components: {
+    'app-wrapper': wrapper
+  },
   data: () => {
     return {
       codesent: false,
@@ -160,7 +144,6 @@ export default {
 
       cognitoUser.confirmPassword(this.code, this.password, {
         onSuccess: (data) => {
-          // successfully initiated reset password request
           console.log('forgot password confirmed: ' + JSON.stringify(data))
           this[l] = false
           this.loader = null
@@ -192,23 +175,22 @@ export default {
 
       cognitoUser.forgotPassword({
         onSuccess: (data) => {
-          // successfully initiated reset password request
           console.log('forgot password initiated: ' + JSON.stringify(data))
           this[l] = false
           this.loader = null
         },
         onFailure: (err) => {
           var code = JSON.stringify(err.code)
-          console.log('forgot password error: ' + code)
+          console.error('forgot password error: ' + code)
           this.errcode = code
           this[l] = false
           this.loader = null
         },
-        // Optional automatic callback
         inputVerificationCode: (data) => {
           var result = JSON.stringify(data)
           console.log('Code sent to: ' + result)
           this.codesent = true
+          this.valid = false
           this[l] = false
           this.loader = null
         }

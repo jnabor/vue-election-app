@@ -20,7 +20,7 @@
               label="E-mail"
               v-model="email"
               :rules="[emailrules.required, emailrules.email]"
-              required>
+              required clearable>
             </v-text-field>
             <v-text-field
               label="Password"
@@ -44,12 +44,12 @@
             <span slot="loader">Connecting...</span>
           </v-btn>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="ml-2 mb-2">
           <v-btn flat color="accent" :to="'/signin'">Sign In</v-btn>
         </v-card-actions>
       </v-card>
     </transition>
-    <div class="mt-2 ml-2 mr-2">
+    <div class="mt-2 ml-2 mr-2 caption">
       By signing up, you agree to the <router-link :to="''">Terms of Service</router-link> and <router-link :to="''">Privacy Policy</router-link>, including Cookie Use.
     </div>
   </app-wrapper>
@@ -123,7 +123,7 @@ export default {
           this.callback = true
           console.log('register callback')
           if (err) {
-            console.log('registration error: ' + JSON.stringify(err))
+            console.error('registration error: ' + JSON.stringify(err))
             this.errcode = JSON.stringify(err.code)
           } else {
             console.log('registration success: ' + JSON.stringify(result))

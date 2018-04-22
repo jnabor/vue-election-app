@@ -20,7 +20,7 @@
               label="E-mail"
               v-model="email"
               :rules="[emailrules.required, emailrules.email]"
-              required>
+              required clearable>
             </v-text-field>
             <v-text-field
               label="Password"
@@ -45,13 +45,13 @@
             <span slot="loader">Connecting...</span>
           </v-btn>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="ml-2 mb-2">
           <v-btn flat :to="'/forgot'">Forgot Password?</v-btn>
           <v-btn flat color="accent" :to="'/register'">Register</v-btn>
         </v-card-actions>
       </v-card>
     </transition>
-    <div class="mt-3 ml-2 mr-2">
+    <div class="mt-3 ml-2 mr-2 caption">
       By signing in, you agree to the <router-link :to="''">Terms of Service</router-link> and <router-link :to="''">Privacy Policy</router-link>, including Cookie Use.
     </div>
   </app-wrapper>
