@@ -64,7 +64,9 @@
       <v-toolbar-side-icon class="white--text" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title class="white--text hidden-xs-only">Election App</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-if="isAuthenticated" class="white--text" @click="navigate('election')" flat>Dashboard</v-btn>
+      <v-btn icon @click="navigate('dash-election')">
+        <v-icon class="white--text">fingerprint</v-icon>
+      </v-btn>
       <v-btn icon @click="navigate('home')">
         <v-icon class="white--text">home</v-icon>
       </v-btn>
@@ -131,10 +133,13 @@
 import router from '../routes'
 
 export default {
+  props: {
+    sidebar: Boolean
+  },
   data: () => {
     return {
       username: '',
-      drawer: false
+      drawer: this.sidebar
     }
   },
   computed: {
