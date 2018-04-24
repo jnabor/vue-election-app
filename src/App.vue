@@ -2,7 +2,8 @@
   <div id="app">
     <v-app>
       <app-layout
-        :sidebar="show">
+        :sidebar="show"
+        :path="path">
       </app-layout>
     </v-app>
   </div>
@@ -13,15 +14,14 @@ export default {
   name: 'App',
   data: () => {
     return {
-      show: false
+      show: false,
+      path: ''
     }
   },
   created () {
-    let path = JSON.stringify(this.$route.path)
+    this.path = JSON.stringify(this.$route.path)
     this.$store.dispatch('tryAutoSignIn')
-    console.log(path)
-    this.show = path.includes('dash') || false
-    console.log(this.show)
+    this.show = this.path.includes('dash') || false
   }
 }
 </script>

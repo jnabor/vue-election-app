@@ -9,11 +9,11 @@
         <div class="my-2">Powered by <a href="https://vuejs.org/">Vue.js</a> and <a href="https://vuetifyjs.com/en/">Vuetify.js</a></div>
       </div>
       <v-divider class="mt-3"></v-divider>
-      <v-subheader>ELECTIONS</v-subheader>
+      <v-subheader>ADMINISTRATION</v-subheader>
       <v-list>
-        <v-list-tile @click="navigate('dash-election')">
+        <v-list-tile :color="active[0].color" @click="navigate('dash-election')">
           <v-list-tile-action>
-            <v-icon>fingerprint</v-icon>
+            <v-icon :color="active[0].color">fingerprint</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>
@@ -21,19 +21,19 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="navigate('dash-candidates')">
+        <v-list-tile :color="active[1].color" @click="navigate('dash-candidates')">
           <v-list-tile-action>
-            <v-icon>people</v-icon>
+            <v-icon :color="active[1].color">people</v-icon>
           </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>
+          <v-list-tile-content >
+            <v-list-tile-title >
               Candidates
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="navigate('dash-voters')">
+        <v-list-tile :color="active[2].color" @click="navigate('dash-voters')">
           <v-list-tile-action>
-            <v-icon>verified_user</v-icon>
+            <v-icon :color="active[2].color">verified_user</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>
@@ -41,9 +41,9 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile @click="navigate('dash-votes')">
+        <v-list-tile :color="active[3].color" @click="navigate('dash-votes')">
           <v-list-tile-action>
-            <v-icon>touch_app</v-icon>
+            <v-icon :color="active[3].color">touch_app</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>
@@ -134,12 +134,19 @@ import router from '../routes'
 
 export default {
   props: {
-    sidebar: Boolean
+    sidebar: Boolean,
+    path: String
   },
   data: () => {
     return {
       username: '',
-      drawer: this.sidebar
+      drawer: this.sidebar,
+      active: [
+        { path: 'election', color: '' },
+        { path: 'candidates', color: '' },
+        { path: 'voters', color: '' },
+        { path: 'votes', color: '' }
+      ]
     }
   },
   computed: {
@@ -148,11 +155,6 @@ export default {
     },
     email: function () {
       return this.$store.state.auth.username
-    }
-  },
-  methods: {
-    navigate: function (path) {
-      router.push('/' + path)
     }
   },
   watch: {
@@ -164,7 +166,25 @@ export default {
     },
     $route (to, from) {
       this.drawer = to.path.includes('dash') || false
+      this.setActive(to.path)
     }
+  },
+  methods: {
+    navigate: function (path) {
+      router.push('/' + path)
+    },
+    setActive: function (path) {
+      this.active = this.active.map((style) => {
+        if (path.includes(style.path)) {
+          return { path: style.path, color: 'primary' }
+        } else {
+          return { path: style.path, color: '' }
+        }
+      })
+    }
+  },
+  created: function () {
+    this.setActive(this.path)
   }
 }
 </script>

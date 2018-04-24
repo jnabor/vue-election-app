@@ -1,7 +1,7 @@
 <template>
   <app-wrapper>
     <transition appear name="fadeout">
-      <v-card class="pa-2">
+      <v-card class="pa-0 ma-0">
         <v-card-media class="mt-4" height="80" contain>
           <img class="aws-logo" src="/static/aws_cognito.png">
         </v-card-media>
