@@ -31,6 +31,7 @@ export default {
     },
     navSignOut: function () {
       this.$store.dispatch('signOut')
+      router.push('/')
     }
   }
 }

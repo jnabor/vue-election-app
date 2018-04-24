@@ -64,7 +64,7 @@
       <v-toolbar-side-icon class="white--text" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title class="white--text hidden-xs-only">Election App</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon @click="navigate('dash-election')">
+      <v-btn  v-if="isAuthenticated" icon @click="navigate('dash-election')">
         <v-icon class="white--text">fingerprint</v-icon>
       </v-btn>
       <v-btn icon @click="navigate('home')">
@@ -92,7 +92,7 @@
           <v-list-tile @click="navigate('profile')">
             <v-list-tile-title>Profile</v-list-tile-title>
           </v-list-tile>
-          <v-list-tile @click="navigate('signout')">
+          <v-list-tile @click="navSignOut()">
             <v-list-tile-title>Sign Out</v-list-tile-title>
           </v-list-tile>
         </v-list>
@@ -170,13 +170,17 @@ export default {
     }
   },
   methods: {
+    navSignOut: function () {
+      this.$store.dispatch('signOut')
+      router.push('/')
+    },
     navigate: function (path) {
       router.push('/' + path)
     },
     setActive: function (path) {
       this.active = this.active.map((style) => {
         if (path.includes(style.path)) {
-          return { path: style.path, color: 'primary' }
+          return { path: style.path, color: 'accent' }
         } else {
           return { path: style.path, color: '' }
         }
