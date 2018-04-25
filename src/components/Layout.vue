@@ -1,8 +1,8 @@
 <template>
   <v-app>
-
     <v-navigation-drawer
       fixed clipped
+      mobile-break-point="960"
       v-model="drawer" app>
       <div class="caption my-4 mx-3">
         <div class="my-2">Under Development by <a href="https://www.sonabstudios.com">SonabStudios&trade;</a></div>
@@ -57,7 +57,6 @@
       <v-divider></v-divider>
       <v-subheader>STATISTICS</v-subheader>
     </v-navigation-drawer>
-
     <v-toolbar
       color="primary"
       fixed clipped-left app>
@@ -113,11 +112,9 @@
         </v-list>
       </v-menu>
     </v-toolbar>
-
     <v-content>
       <router-view></router-view>
     </v-content>
-
     <v-footer fixed app>
       <v-layout column align-center justify-center>
         <div class="ml-3">
@@ -125,7 +122,6 @@
         </div>
       </v-layout>
     </v-footer>
-
   </v-app>
 </template>
 
@@ -165,7 +161,10 @@ export default {
       this.username = str.substring(0, index)
     },
     $route (to, from) {
-      this.drawer = to.path.includes('dash') || false
+      console.log('window.width: ' + window.innerWidth)
+      if (window.innerWidth >= 960) {
+        this.drawer = to.path.includes('dash') || false
+      }
       this.setActive(to.path)
     }
   },
@@ -180,10 +179,11 @@ export default {
     setActive: function (path) {
       this.active = this.active.map((style) => {
         if (path.includes(style.path)) {
-          return { path: style.path, color: 'accent' }
+          style.color = 'accent'
         } else {
-          return { path: style.path, color: '' }
+          style.color = ''
         }
+        return style
       })
     }
   },
