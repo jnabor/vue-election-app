@@ -41,7 +41,7 @@
 
         <div class="mt-1 pa-1">
           <div>
-            <v-data-table
+            <v-data-table dark
               :headers="headers"
               :items="elections"
               :loading="loadingElections"

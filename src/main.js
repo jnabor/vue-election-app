@@ -17,9 +17,9 @@ import 'vuetify/dist/vuetify.min.css'
 axios.defaults.baseURL = config.apiBaseUrl
 Vue.use(Vuetify, {
   theme: {
-    primary: colors.deepPurple.darken1,
-    secondary: colors.deepPurple.lighten5,
-    accent: colors.amber.lighten2,
+    primary: colors.yellow.darken1,
+    secondary: colors.yellow.lighten5,
+    accent: colors.yellow.accent4,
     error: '#f44336',
     info: '#2196F3',
     success: '#4CAF50',

@@ -18,8 +18,8 @@
               :loading="loadingElections"
               class="elevation-1">
               <template slot="items" slot-scope="props">
-                <tr>
-                  <td class="text-xs-left">{{ props.item.electionName      }}</td>
+                <tr @click="viewElection(props.item.electionId)">
+                  <td class="text-xs-left">{{ props.item.electionName }}</td>
                   <td class="text-xs-left hidden-xs-only">{{ props.item.creationTimeStamp }}</td>
                   <td class="text-xs-left hidden-md-and-down">{{ props.item.electionId }}</td>
                   <td class="text-xs-left">{{ props.item.totalVotes }}</td>
@@ -28,6 +28,30 @@
                 </tr>
               </template>
             </v-data-table>
+            <v-dialog
+              v-model="dialog"
+              :fullscreen="fullscreen"
+              max-width="800"
+              transition="dialog-bottom-transition"
+              scrollable>
+              <v-card>
+                <v-toolbar card dark color="primary">
+                  <v-toolbar-title>Election Settings</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                  <v-btn icon @click.native="dialog = false">
+                    <v-icon>close</v-icon>
+                  </v-btn>
+                </v-toolbar>
+                <v-card-text>
+                  sdasdasdasd
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
+                  <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Agree</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-card>
         </v-flex>
       </v-layout>
@@ -44,6 +68,8 @@ export default {
   },
   data: () => {
     return {
+      dialog: false,
+      fullscreen: true,
       rppi: [ 10, 20, 30, { 'text': 'All', 'value': -1 } ],
       headers: [],
       headersXs: [
@@ -91,7 +117,8 @@ export default {
   },
   methods: {
     viewElection (param) {
-
+      console.log('view election: ' + param)
+      this.dialog = true
     },
     changeSort (column) {
       if (this.pagination.sortBy === column) {
@@ -104,12 +131,16 @@ export default {
     setHeaders (param) {
       if (param === 'xs') {
         this.headers = this.headersXs
+        this.fullscreen = true
       } else if (param === 'sm') {
         this.headers = this.headersSm
+        this.fullscreen = true
       } else if (param === 'md') {
         this.headers = this.headersMd
+        this.fullscreen = false
       } else {
         this.headers = this.headersAll
+        this.fullscreen = false
       }
     }
   },
