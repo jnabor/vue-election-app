@@ -5,17 +5,14 @@
         <v-card class="elevation-0 transparent pa-4 ml-4 mr-4">
           <v-layout row justify-center>
             <v-flex xl4 lg4 md4 sm4 class="hidden-xs-only">
-              <v-card class="elevation-0 mr-2 transparent">
-                <div class="headline mb-2">User Profile</div>
-                <div class="body-1">Manage your basic information: your name, email, and phone number, etc. Help others find you and make it easier to get in touch.</div>
-                <!-- <v-btn small @click="getAttributes()">GET</v-btn> -->
-              </v-card>
+              <v-avatar
+                :size="200"
+                class="grey lighten-4">
+                <img src="/static/avatar_placeholder.png" alt="avatar">
+              </v-avatar>
             </v-flex>
             <v-flex xl8 lg8 md8 sm8>
               <v-card class="mb-2">
-                <v-toolbar dense class="elevation-1">
-                  <v-toolbar-title>Personal Details</v-toolbar-title>
-                </v-toolbar>
                 <app-user-name
                   :name="userModel.name"
                   @updateName="updateName($event)">
@@ -296,5 +293,9 @@ export default {
     position: absolute;
     top: 0px;
     right: 10px;
+}
+.avatar {
+  height: 100%;
+  width: 100%;
 }
 </style>

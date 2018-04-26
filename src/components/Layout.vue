@@ -60,10 +60,10 @@
     <v-toolbar
       color="primary"
       fixed clipped-left app>
-      <v-toolbar-side-icon class="white--text" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon v-if="isAuthenticated" class="white--text" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title class="white--text hidden-xs-only">Election App</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn  v-if="isAuthenticated" icon @click="navigate('dash-election')">
+      <v-btn v-if="isAuthenticated" icon @click="navigate('dash-election')">
         <v-icon class="white--text">fingerprint</v-icon>
       </v-btn>
       <v-btn icon @click="navigate('home')">
@@ -118,7 +118,7 @@
     <v-footer fixed app>
       <v-layout column align-center justify-center>
         <div class="ml-3">
-          <span>&copy; 2018 <a href="https://www.sonabstudios.com">SonabStudios&trade;</a> is a trademark of Jayson Nabor</span>
+          <span>&copy; 2018 <a href="https://www.sonabstudios.com">SonabStudios&trade;</a> Jayson Nabor&trade;</span>
         </div>
       </v-layout>
     </v-footer>
@@ -161,11 +161,7 @@ export default {
       this.username = str.substring(0, index)
     },
     $route (to, from) {
-      console.log('window.width: ' + window.innerWidth)
-      if (window.innerWidth >= 960) {
-        this.drawer = to.path.includes('dash') || false
-      }
-      this.setActive(to.path)
+      this.updateSideBar(to.path)
     }
   },
   methods: {
@@ -185,10 +181,20 @@ export default {
         }
         return style
       })
+    },
+    updateSideBar (path) {
+      console.log('window.width: ' + window.innerWidth)
+      if (window.innerWidth >= 960) {
+        this.drawer = path.includes('dash') || false
+      } else {
+        this.drawer = false
+      }
+      this.setActive(path)
     }
   },
   created: function () {
     this.setActive(this.path)
+    this.updateSideBar(this.path)
   }
 }
 </script>

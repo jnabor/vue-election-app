@@ -19,6 +19,7 @@ Vue.use(Vuetify, {
   theme: {
     primary: colors.yellow.darken1,
     secondary: colors.yellow.lighten5,
+    tertiary: colors.indigo.lighten2,
     accent: colors.yellow.accent4,
     error: '#f44336',
     info: '#2196F3',

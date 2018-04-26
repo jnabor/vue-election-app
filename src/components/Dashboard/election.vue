@@ -18,7 +18,7 @@
               :loading="loadingElections"
               class="elevation-1">
               <template slot="items" slot-scope="props">
-                <tr @click="viewElection(props.item.electionId)">
+                <tr @click="viewElection(props.item)">
                   <td class="text-xs-left">{{ props.item.electionName }}</td>
                   <td class="text-xs-left hidden-xs-only">{{ props.item.creationTimeStamp }}</td>
                   <td class="text-xs-left hidden-md-and-down">{{ props.item.electionId }}</td>
@@ -29,7 +29,7 @@
               </template>
             </v-data-table>
             <v-dialog
-              v-model="dialog"
+              v-model="dialog.show"
               :fullscreen="fullscreen"
               max-width="800"
               transition="dialog-bottom-transition"
@@ -38,17 +38,19 @@
                 <v-toolbar card dark color="primary">
                   <v-toolbar-title>Election Settings</v-toolbar-title>
                   <v-spacer></v-spacer>
-                  <v-btn icon @click.native="dialog = false">
+                  <v-btn icon @click.native="dialog.show = false">
                     <v-icon>close</v-icon>
                   </v-btn>
                 </v-toolbar>
                 <v-card-text>
-                  sdasdasdasd
+                  {{ dialog.election.electionId }}<br/>
+                  {{ dialog.election.electionName }}<br/>
+                  {{ dialog.election.creationTimeStamp }}<br/>
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Disagree</v-btn>
-                  <v-btn color="green darken-1" flat="flat" @click.native="dialog = false">Agree</v-btn>
+                  <v-btn color="green darken-1" flat="flat" @click.native="dialog.show = false">Disagree</v-btn>
+                  <v-btn color="green darken-1" flat="flat" @click.native="dialog.show = false">Agree</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -68,7 +70,10 @@ export default {
   },
   data: () => {
     return {
-      dialog: false,
+      dialog: {
+        show: false,
+        election: {}
+      },
       fullscreen: true,
       rppi: [ 10, 20, 30, { 'text': 'All', 'value': -1 } ],
       headers: [],
@@ -118,7 +123,8 @@ export default {
   methods: {
     viewElection (param) {
       console.log('view election: ' + param)
-      this.dialog = true
+      this.dialog.show = true
+      this.dialog.election = param
     },
     changeSort (column) {
       if (this.pagination.sortBy === column) {
@@ -134,7 +140,7 @@ export default {
         this.fullscreen = true
       } else if (param === 'sm') {
         this.headers = this.headersSm
-        this.fullscreen = true
+        this.fullscreen = false
       } else if (param === 'md') {
         this.headers = this.headersMd
         this.fullscreen = false
