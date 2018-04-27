@@ -1,22 +1,38 @@
 <template>
   <v-container grid-list-md class="mt-3">
     <v-layout row wrap>
-      <v-flex xl12 lg12 md12 sm12 xs12>
+      <v-flex xs12>
         <v-card class="elevation-0 transparent pa-4 ml-4 mr-4">
-          <v-layout row justify-center>
-            <v-flex xl4 lg4 md4 sm4 class="hidden-xs-only">
-              <v-avatar
-                :size="200"
-                class="grey lighten-4">
-                <img src="/static/avatar_placeholder.png" alt="avatar">
-              </v-avatar>
+          <v-layout row wrap justify-center>
+            <v-flex md4 sm12>
+              <v-layout justify-center>
+                <div class="pa-4">
+                  <v-avatar color="primary" size="120">
+                    <img src="/static/avatar_placeholder.png" alt="avatar">
+                  </v-avatar>
+                </div>
+              </v-layout>
             </v-flex>
-            <v-flex xl8 lg8 md8 sm8>
+            <v-flex md8 sm12>
               <v-card class="mb-2">
-                <app-user-name
+                <v-list two-line>
+              <app-user-name
                   :name="userModel.name"
                   @updateName="updateName($event)">
                 </app-user-name>
+                  <v-divider></v-divider>
+                  <v-list-tile>
+                    <v-list-tile-content>
+                      <v-list-tile-sub-title>Subtitle</v-list-tile-sub-title>
+                      <v-list-tile-title>Title</v-list-tile-title>
+                    </v-list-tile-content>
+                    <v-list-tile-action>
+                      <v-icon>edit</v-icon>
+                    </v-list-tile-action>
+                  </v-list-tile>
+
+                <!--
+
                 <v-divider></v-divider>
                 <app-user-email
                   :email="userModel.emailAddress">
@@ -44,6 +60,8 @@
                   :caption="'Business Address'"
                   @updateAddress="updateAddress($event, 'business')">
                 </app-address>
+                -->
+                </v-list>
               </v-card>
               <v-card class="mb-2 mt-4">
                 <v-toolbar dense class="elevation-1">
@@ -284,18 +302,4 @@ export default {
 }
 </script>
 <style scoped>
-.tool {
-    position: relative;
-    padding: 0px;
-    margin: 0px;
-}
-.topright {
-    position: absolute;
-    top: 0px;
-    right: 10px;
-}
-.avatar {
-  height: 100%;
-  width: 100%;
-}
 </style>

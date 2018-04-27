@@ -1,18 +1,17 @@
 <template>
 <div>
-  <v-card-text class="pl-4 pr-4">
-    <div class="tool a-0 ma-0">
-      <div class="caption mb-1">Name</div>
-    </div>
-    <div>
-      <div class="title">{{ fullNameUp === '  ' ? '...' : fullNameUp }}</div>
-      <v-spacer></v-spacer>
+  <v-list-tile>
+    <v-list-tile-content>
+      <v-list-tile-sub-title>Name</v-list-tile-sub-title>
+      <v-list-tile-title>{{ fullNameUp === '  ' ? '...' : fullNameUp }}</v-list-tile-title>
+    </v-list-tile-content>
+    <v-list-tile-action>
       <v-btn icon flat class="pa-0 ma-0 topright" @click="dialog = !dialog">
-        <v-icon v-if="fullNameUp !== '  '" color="tertiary">edit</v-icon>
+        <v-icon v-if="fullNameUp !== '  '" color="grey lighten-2">edit</v-icon>
         <v-icon v-else color="tertiary">mdi-plus-circle-outline</v-icon>
       </v-btn>
-    </div>
-  </v-card-text>
+    </v-list-tile-action>
+  </v-list-tile>
   <v-dialog
     v-model="dialog"
     :fullscreen="fullscreen"
