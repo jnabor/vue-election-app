@@ -19,8 +19,12 @@
     transition="dialog-bottom-transition"
     scrollable>
     <v-card>
-      <v-toolbar class="elevation-0">
+      <v-toolbar class="elevation-0 white--text" color="primary">
         <v-toolbar-title>Edit Name</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon @click.native="dialog = false" dark>
+          <v-icon>close</v-icon>
+        </v-btn>
       </v-toolbar>
       <v-card-text>
         <v-text-field

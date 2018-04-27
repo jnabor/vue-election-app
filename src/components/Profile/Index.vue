@@ -1,10 +1,10 @@
 <template>
   <v-container grid-list-md class="mt-3">
     <v-layout row wrap>
-      <v-flex xs12>
-        <v-card class="elevation-0 transparent pa-4 ml-4 mr-4">
+      <v-flex md12 sm12 xs12>
+        <v-card class="elevation-0 transparent pa-2 ma-0">
           <v-layout row wrap justify-center>
-            <v-flex md4 sm12>
+            <v-flex sm4 xs12>
               <v-layout justify-center>
                 <div class="pa-4">
                   <v-avatar color="primary" size="120">
@@ -13,7 +13,7 @@
                 </div>
               </v-layout>
             </v-flex>
-            <v-flex md8 sm12>
+            <v-flex sm8 xs12>
               <v-card class="mb-2">
                 <v-list two-line>
                   <app-user-name
@@ -31,25 +31,26 @@
                     @updateBirthDate="updateBirthDate($event)">
                   </app-birth-date>
                   <v-divider></v-divider>
+                </v-list>
+                <v-list>
                   <app-phone-number
                     :phone="userModel.phoneNumber"
                     @updatePhoneNumber="updatePhone($event)">
                   </app-phone-number>
                   <v-divider></v-divider>
-                <!--
-
-                <app-address
-                  :address="userModel.homeAddress"
-                  :caption="'Home Address'"
-                  @updateAddress="updateAddress($event, 'home')">
-                </app-address>
-                <v-divider></v-divider>
-                <app-address
-                  :address="userModel.businessAddress"
-                  :caption="'Business Address'"
-                  @updateAddress="updateAddress($event, 'business')">
-                </app-address>
-                -->
+                </v-list>
+                <v-list>
+                  <app-address
+                    :address="userModel.homeAddress"
+                    :caption="'Home Address'"
+                    @updateAddress="updateAddress($event, 'home')">
+                  </app-address>
+                  <v-divider></v-divider>
+                  <app-address
+                    :address="userModel.businessAddress"
+                    :caption="'Business Address'"
+                    @updateAddress="updateAddress($event, 'business')">
+                  </app-address>
                 </v-list>
               </v-card>
               <v-card class="mb-2 mt-4">
