@@ -6,9 +6,9 @@
       <v-list-tile-title>{{ fullNameUp === '  ' ? '...' : fullNameUp }}</v-list-tile-title>
     </v-list-tile-content>
     <v-list-tile-action>
-      <v-btn icon flat class="pa-0 ma-0 topright" @click="dialog = !dialog">
+      <v-btn icon flat class="pa-0 ma-0" @click="dialog = !dialog">
         <v-icon v-if="fullNameUp !== '  '" color="grey lighten-2">edit</v-icon>
-        <v-icon v-else color="tertiary">mdi-plus-circle-outline</v-icon>
+        <v-icon v-else color="tertiary">add</v-icon>
       </v-btn>
     </v-list-tile-action>
   </v-list-tile>
@@ -115,14 +115,4 @@ export default {
 }
 </script>
 <style scoped>
-.tool {
-    position: relative;
-    padding: 0px;
-    margin: 0px;
-}
-.topright {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-}
 </style>

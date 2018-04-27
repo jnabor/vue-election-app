@@ -16,34 +16,22 @@
             <v-flex md8 sm12>
               <v-card class="mb-2">
                 <v-list two-line>
-              <app-user-name
-                  :name="userModel.name"
-                  @updateName="updateName($event)">
-                </app-user-name>
+                  <app-user-name
+                    :name="userModel.name"
+                    @updateName="updateName($event)">
+                  </app-user-name>
                   <v-divider></v-divider>
-                  <v-list-tile>
-                    <v-list-tile-content>
-                      <v-list-tile-sub-title>Subtitle</v-list-tile-sub-title>
-                      <v-list-tile-title>Title</v-list-tile-title>
-                    </v-list-tile-content>
-                    <v-list-tile-action>
-                      <v-icon>edit</v-icon>
-                    </v-list-tile-action>
-                  </v-list-tile>
-
+                  <app-user-email
+                    :email="userModel.emailAddress">
+                  </app-user-email>
+                  <v-divider></v-divider>
+                  <app-birth-date
+                    :birthdate="userModel.birthDate"
+                    :caption="'Birth Date'"
+                    @updateBirthDate="updateBirthDate($event)">
+                  </app-birth-date>
+                  <v-divider></v-divider>
                 <!--
-
-                <v-divider></v-divider>
-                <app-user-email
-                  :email="userModel.emailAddress">
-                </app-user-email>
-                <v-divider></v-divider>
-                <app-birth-date
-                  :birthdate="userModel.birthDate"
-                  :caption="'Birth Date'"
-                  @updateBirthDate="updateBirthDate($event)">
-                </app-birth-date>
-                <v-divider></v-divider>
                 <app-phone-number
                   :phone="userModel.phoneNumber"
                   @updatePhoneNumber="updatePhone($event)">

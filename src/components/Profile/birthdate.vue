@@ -1,35 +1,45 @@
 <template>
 <div>
-  <v-card-text class="pl-4 pr-4">
-    <div class="tool a-0 ma-0">
-      <div class="caption mb-1">
+  <v-list-tile>
+    <v-list-tile-content>
+      <v-list-tile-sub-title>
         <v-icon small class="mr-1">date_range</v-icon>
         {{ caption }}
-      </div>
-      <v-spacer></v-spacer>
-      <v-btn icon flat small class="pa-0 ma-0 topright" @click="showEditView = !showEditView">
-        <v-icon v-if="birthDateUpdate !== ''" small color="indigo lighten-1">edit</v-icon>
-        <v-icon v-else small color="indigo lighten-1">mdi-plus-circle-outline</v-icon>
+      </v-list-tile-sub-title>
+      <v-list-tile-title>{{ birthDateUpdate === '' ? '...' : birthDateUpdate }}</v-list-tile-title>
+    </v-list-tile-content>
+    <v-list-tile-action>
+      <v-btn icon flat class="pa-0 ma-0" @click="dialog = !dialog">
+        <v-icon v-if="birthDateUpdate !== ''" color="grey lighten-2">edit</v-icon>
+        <v-icon v-else color="grey lighten-2">add</v-icon>
       </v-btn>
-    </div>
-    <div class="body-2">{{ birthDateUpdate === '' ? '...' : birthDateUpdate }}</div>
-  </v-card-text>
-  <div v-if="showEditView" class="pt-2 pl-2 pr-2 pb-2 indigo lighten-5">
-    <v-card-text class="indigo lighten-5">
-      <v-date-picker
-        full-width
-        class="mb-3 grey lighten-4 black--text"
-        v-model="birthDateUpdate"
-        :max="new Date().toISOString().substr(0, 10)">
-      </v-date-picker>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn class="ml-4" small :disabled="!enableSave" @click="cancelEdit()">CANCEL</v-btn>
-      <v-spacer></v-spacer>
-      <v-btn small  @click="closeEdit()" >CLOSE</v-btn>
-      <v-btn class="mr-4" small :disabled="!enableSave" @click="updateAttribute()" color="success">SAVE</v-btn>
-    </v-card-actions>
-  </div>
+    </v-list-tile-action>
+  </v-list-tile>
+  <v-dialog
+    v-model="dialog"
+    :fullscreen="fullscreen"
+    max-width="500"
+    transition="dialog-bottom-transition"
+    scrollable>
+    <v-card>
+      <v-toolbar class="elevation-0">
+        <v-toolbar-title>Edit Date</v-toolbar-title>
+      </v-toolbar>
+      <v-card-text class="indigo lighten-5">
+        <v-date-picker
+          full-width
+          class="mb-3 grey lighten-4 black--text"
+          v-model="birthDateUpdate"
+          :max="new Date().toISOString().substr(0, 10)">
+        </v-date-picker>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn class="mx-3 mb-2" @click="cancelEdit()">CANCEL</v-btn>
+        <v-btn class="mx-3 mb-2" :disabled="!enableSave" @click="updateAttribute()" color="success">SAVE</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </div>
 </template>
 
@@ -41,22 +51,28 @@ export default {
   },
   data: function () {
     return {
+      dialog: false,
       birthDateUpdate: '',
-      showEditView: false,
+      fullscreen: true,
       enableSave: false
     }
   },
   methods: {
     cancelEdit: function () {
       this.birthDateUpdate = JSON.parse(JSON.stringify(this.birthdate))
-    },
-    closeEdit: function () {
-      this.cancelEdit()
-      this.showEditView = false
+      this.dialog = false
     },
     updateAttribute: function () {
       this.$emit('updateBirthDate', this.birthDateUpdate)
       this.enableSave = false
+      this.dialog = false
+    },
+    setHeaders (param) {
+      if (param === 'xs') {
+        this.fullscreen = true
+      } else {
+        this.fullscreen = false
+      }
     }
   },
   computed: {
@@ -65,6 +81,9 @@ export default {
     },
     birthDateProp: function () {
       return this.birthdate
+    },
+    breakpoint () {
+      return this.$vuetify.breakpoint.name
     }
   },
   watch: {
@@ -77,19 +96,15 @@ export default {
     },
     birthDateProp: function () {
       this.birthDateUpdate = JSON.parse(JSON.stringify(this.birthdate))
+    },
+    breakpoint () {
+      this.setHeaders(this.breakpoint)
     }
+  },
+  created () {
+    this.setHeaders(this.breakpoint)
   }
 }
 </script>
 <style scoped>
-.tool {
-    position: relative;
-    padding: 0px;
-    margin: 0px;
-}
-.topright {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-}
 </style>
