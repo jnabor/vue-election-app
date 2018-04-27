@@ -31,12 +31,13 @@
                     @updateBirthDate="updateBirthDate($event)">
                   </app-birth-date>
                   <v-divider></v-divider>
+                  <app-phone-number
+                    :phone="userModel.phoneNumber"
+                    @updatePhoneNumber="updatePhone($event)">
+                  </app-phone-number>
+                  <v-divider></v-divider>
                 <!--
-                <app-phone-number
-                  :phone="userModel.phoneNumber"
-                  @updatePhoneNumber="updatePhone($event)">
-                </app-phone-number>
-                <v-divider></v-divider>
+
                 <app-address
                   :address="userModel.homeAddress"
                   :caption="'Home Address'"

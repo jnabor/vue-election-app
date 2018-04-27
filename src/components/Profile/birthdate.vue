@@ -25,7 +25,7 @@
       <v-toolbar class="elevation-0">
         <v-toolbar-title>Edit Date</v-toolbar-title>
       </v-toolbar>
-      <v-card-text class="indigo lighten-5">
+      <v-card-text>
         <v-date-picker
           full-width
           class="mb-3 grey lighten-4 black--text"
