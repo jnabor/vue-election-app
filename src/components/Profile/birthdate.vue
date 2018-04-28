@@ -3,15 +3,15 @@
   <v-list-tile>
     <v-list-tile-content>
       <v-list-tile-sub-title>
-        <v-icon small class="mr-1">date_range</v-icon>
+        <v-icon class="mr-1">date_range</v-icon>
         {{ caption }}
       </v-list-tile-sub-title>
       <v-list-tile-title>{{ birthDateUpdate === '' ? '...' : birthDateUpdate }}</v-list-tile-title>
     </v-list-tile-content>
     <v-list-tile-action>
       <v-btn icon flat class="pa-0 ma-0" @click="dialog = !dialog">
-        <v-icon v-if="birthDateUpdate !== ''" color="grey lighten-2">edit</v-icon>
-        <v-icon v-else color="grey lighten-2">add</v-icon>
+        <v-icon v-if="birthDateUpdate !== ''" color="editicon">edit</v-icon>
+        <v-icon v-else color="editicon">add</v-icon>
       </v-btn>
     </v-list-tile-action>
   </v-list-tile>

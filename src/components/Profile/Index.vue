@@ -53,12 +53,12 @@
                   </app-address>
                 </v-list>
               </v-card>
-              <v-card class="mb-2 mt-4">
-                <v-toolbar dense class="elevation-1">
+              <v-card class="mt-4">
+                <v-toolbar dense class="elevation-0">
                   <v-toolbar-title>Custom Attributes</v-toolbar-title>
                   <v-spacer></v-spacer>
-                  <v-btn icon small dark color="indigo mr-4" @click="addCustomForm =! addCustomForm">
-                    <v-icon dark small>add</v-icon>
+                  <v-btn icon flat class="mr-3" @click="addCustomForm =! addCustomForm">
+                    <v-icon color="editicon">add</v-icon>
                   </v-btn>
                 </v-toolbar>
                 <template v-for="(item, index) in userModel.custom">
@@ -72,19 +72,14 @@
                   </app-custom>
                 </template>
               </v-card>
-              <v-dialog v-model="addCustomForm" max-width="500px">
-                <v-card>
-                <v-toolbar dense class="elevation-0">
-                  <v-toolbar-title>Add Custom Attribute</v-toolbar-title>
-                </v-toolbar>
-                 <app-custom
-                    :obj="{ prop1: '', prop2: '', prop3: '', prop4: '', prop5: '' }"
-                    :newEntry="true"
-                    @add="addCustom($event)"
-                    @close="addCustomForm =! addCustomForm"
-                    :caption="'Custom Attribute'">
-                  </app-custom>
-                </v-card>
+              <v-dialog v-if="addCustomForm" max-width="500px">
+                <app-custom
+                  :obj="{ prop1: '', prop2: '', prop3: '', prop4: '', prop5: '' }"
+                  :newEntry="true"
+                  @add="addCustom($event)"
+                  @close="addCustomForm =! addCustomForm"
+                  :caption="'Custom Attribute'">
+                </app-custom>
               </v-dialog>
             </v-flex>
           </v-layout>

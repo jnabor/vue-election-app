@@ -2,7 +2,7 @@
   <v-list-tile>
     <v-list-tile-content>
       <v-list-tile-sub-title>
-        <v-icon small class="mr-1">email</v-icon>
+        <v-icon class="mr-1">email</v-icon>
         Email Address
       </v-list-tile-sub-title>
       <v-list-tile-title>{{ emailUp === '  ' ? '...' : emailUp }}</v-list-tile-title>

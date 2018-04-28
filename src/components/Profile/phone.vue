@@ -3,16 +3,16 @@
   <v-list-tile>
     <v-list-tile-content>
       <v-list-tile-sub-title class="ma-0 pa-0">
-        <v-icon small class="mr-1">phone</v-icon>
+        <v-icon class="mr-1">phone</v-icon>
         Phone Numbers
       </v-list-tile-sub-title>
     </v-list-tile-content>
     <v-list-tile-action>
       <v-btn icon flat class="pa-0 ma-0" @click="dialog = !dialog">
         <v-icon v-if="phoneUpdate.mobile === '' && phoneUpdate.business === '' && phoneUpdate.home === ''"
-          color="grey lighten-2">add
+          color="editicon">add
         </v-icon>
-        <v-icon v-else color="grey lighten-2">edit</v-icon>
+        <v-icon v-else color="editicon">edit</v-icon>
       </v-btn>
     </v-list-tile-action>
   </v-list-tile>
