@@ -9,10 +9,14 @@ const state = {
   cognitoUser: '',
   username: '',
   errcode: '',
+  attributes: {},
   authenticated: false
 }
 
 const getters = {
+  getUserAttributes (state) {
+    return state.attributes
+  }
 }
 
 const mutations = {
@@ -21,6 +25,13 @@ const mutations = {
     state.authenticated = false
     state.username = ''
     state.userPool = []
+  },
+  setAttributes (state, attributes) {
+    state.attributes = attributes
+    state.username = state.attributes.filter(function (Obj) {
+      return Obj.Name === 'email'
+    })[0].Value
+    console.log('attributes: ' + state.attributes)
   },
   signIn (state) {
     state.authenticated = true
@@ -35,9 +46,6 @@ const mutations = {
     state.authDetails = new AmazonCognitoIdentity.AuthenticationDetails(authData)
     state.userData = { Username: authData.Username, Pool: state.userPool }
     state.cognitoUser = new AmazonCognitoIdentity.CognitoUser(state.userData)
-  },
-  setUsername (state, payload) {
-    state.username = payload
   },
   setError (state, payload) {
     state.errcode = payload
@@ -56,8 +64,8 @@ const actions = {
       onSuccess: (result) => {
         console.log('sign in success')
         commit('signIn')
-        commit('setUsername', authData.Username)
         router.push('/profile')
+        dispatch('getUserAttributes')
         dispatch('setLogoutTimer', 3600)
       },
       onFailure: (err) => {
@@ -73,25 +81,23 @@ const actions = {
       commit('setCognitoUser', cognitoUser)
       state.cognitoUser.getSession(function (err, session) {
         if (err) {
-          console.log(JSON.stringify(err))
+          console.error(JSON.stringify(err))
         } else {
           commit('signIn')
-          state.cognitoUser.getUserAttributes(function (err, attributes) {
-            if (err) {
-              console.log(JSON.stringify(err))
-            } else {
-              console.log(attributes)
-              for (let attribute of attributes) {
-                if (attribute.Name === 'email') {
-                  commit('setUsername', attribute.Value)
-                }
-              }
-            }
-          })
+          dispatch('getUserAttributes')
           dispatch('setLogoutTimer', 3600)
         }
       })
     }
+  },
+  getUserAttributes ({ commit, dispatch }) {
+    state.cognitoUser.getUserAttributes(function (err, attributes) {
+      if (err) {
+        console.error(JSON.stringify(err))
+      } else {
+        commit('setAttributes', attributes)
+      }
+    })
   },
   setLogoutTimer ({ state, commit, dispatch }, expirationTime) {
     setTimeout(() => {

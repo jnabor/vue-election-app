@@ -35,7 +35,7 @@
               :disabled="!validemail"
               class="mt-3 mb-3"
               light
-              color="secondary">
+              color="submit">
               Find
               <span slot="loader">Verifying account...</span>
             </v-btn>
@@ -69,7 +69,7 @@
               :disabled="!validcode"
               class="mt-3 mb-3"
               light
-              color="secondary">
+              color="submit">
               Confirm
             <span slot="loader">Updating password...</span>
             </v-btn>

@@ -32,7 +32,7 @@
             :disabled="!valid"
             class="mt-3 mb-3"
             light
-            color="secondary">
+            color="submit">
             Confirm
             <span slot="loader">Connecting...</span>
           </v-btn>

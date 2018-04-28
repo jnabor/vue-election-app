@@ -21,6 +21,7 @@ Vue.use(Vuetify, {
     secondary: colors.yellow.lighten5,
     tertiary: colors.indigo.lighten2,
     accent: colors.yellow.accent4,
+    submit: colors.yellow.darken1,
     editicon: colors.grey.lighten2,
     error: '#f44336',
     info: '#2196F3',
