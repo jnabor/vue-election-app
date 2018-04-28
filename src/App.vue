@@ -19,8 +19,8 @@ export default {
     }
   },
   created () {
-    this.path = JSON.stringify(this.$route.path)
     this.$store.dispatch('tryAutoSignIn')
+    this.path = JSON.stringify(this.$route.path)
     this.show = this.path.includes('dash') || false
   }
 }

@@ -9,12 +9,12 @@ const state = {
   cognitoUser: '',
   username: '',
   errcode: '',
-  attributes: {},
+  attributes: [],
   authenticated: false
 }
 
 const getters = {
-  getUserAttributes (state) {
+  getStateAttributes (state) {
     return state.attributes
   }
 }
@@ -31,7 +31,6 @@ const mutations = {
     state.username = state.attributes.filter(function (Obj) {
       return Obj.Name === 'email'
     })[0].Value
-    console.log('attributes: ' + state.attributes)
   },
   signIn (state) {
     state.authenticated = true

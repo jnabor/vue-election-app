@@ -123,17 +123,24 @@ export default {
   },
   methods: {
     getAttributes: function () {
-      console.log('getting attributes from server...')
-      this.$store.state.auth.cognitoUser.getUserAttributes((err, result) => {
-        if (err) {
-          console.log('get attribute error: ' + err)
-          return
-        }
+      if (this.$store.getters.getStateAttributes.length < 1) {
+        console.log('getting attributes from server...')
+        this.$store.state.auth.cognitoUser.getUserAttributes((err, result) => {
+          if (err) {
+            console.log('get attribute error: ' + err)
+          } else {
+            this.$store.commit('setAttributes', result)
+            this.mapAttributes(result)
+          }
+        })
+      } else {
+        console.log('getting attributes from central state...')
+        let result = this.$store.getters.getStateAttributes
         this.mapAttributes(result)
-      })
+      }
     },
     mapAttributes: function (result) {
-      console.log('mapping attributes...')
+      console.log('mapping: ' + result)
       for (let attribute of result) {
         if (attribute.Name === 'given_name') {
           this.userModel.name.first = attribute.Value
@@ -154,7 +161,6 @@ export default {
         } else if (attribute.Name === 'custom:custom_attribute') {
           this.userModel.custom = JSON.parse(attribute.Value)
         }
-        console.log('property:' + attribute.Name + ' value:' + attribute.Value)
       }
     },
     updateName: function (name) {
