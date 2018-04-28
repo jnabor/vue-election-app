@@ -117,6 +117,7 @@ export default {
     }
   },
   created () {
+    this.nameUpdate = JSON.parse(JSON.stringify(this.name))
     this.setHeaders(this.breakpoint)
   }
 }

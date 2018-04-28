@@ -138,6 +138,7 @@ export default {
     }
   },
   created () {
+    this.phoneUpdate = JSON.parse(JSON.stringify(this.phone))
     this.setHeaders(this.breakpoint)
   }
 }

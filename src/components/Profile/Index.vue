@@ -54,7 +54,7 @@
                 </v-list>
               </v-card>
               <v-card class="mt-4">
-                <v-toolbar dense class="elevation-0">
+                <v-toolbar dense class="elevation-0 grey--text">
                   <v-toolbar-title>Custom Attributes</v-toolbar-title>
                   <v-spacer></v-spacer>
                   <v-btn icon flat class="mr-3" @click="addCustomForm =! addCustomForm">
@@ -140,7 +140,6 @@ export default {
       }
     },
     mapAttributes: function (result) {
-      console.log('mapping: ' + result)
       for (let attribute of result) {
         if (attribute.Name === 'given_name') {
           this.userModel.name.first = attribute.Value

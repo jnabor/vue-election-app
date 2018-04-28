@@ -106,6 +106,7 @@ export default {
     }
   },
   created () {
+    this.birthDateUpdate = JSON.parse(JSON.stringify(this.birthdate))
     this.setHeaders(this.breakpoint)
   }
 }

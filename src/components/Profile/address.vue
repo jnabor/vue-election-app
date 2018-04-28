@@ -142,6 +142,7 @@ export default {
     }
   },
   created () {
+    this.addressUpdate = JSON.parse(JSON.stringify(this.address))
     this.setHeaders(this.breakpoint)
   }
 }
