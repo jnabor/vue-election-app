@@ -51,14 +51,16 @@
           label="Property 5">
         </v-text-field>
       </v-card-text>
-      <v-card-actions>
-        <v-btn v-if="!newEntry" icon flat color="editicon" class="mx-3 mb-2" @click="deleteAttribute()">
-          <v-icon medium>delete</v-icon>
-        </v-btn>
-        <v-spacer></v-spacer>
-        <v-btn class="mx-3 mb-2" @click="cancelEdit()">CANCEL</v-btn>
-        <v-btn class="mx-3 mb-2" :disabled="!enableSave" @click="updateAttribute()" color="success">SAVE</v-btn>
-      </v-card-actions>
+      <div>
+        <v-card-actions>
+          <v-btn v-if="!newEntry" icon flat color="editicon" class="mx-3 mb-2" @click="deleteAttribute()">
+            <v-icon medium>delete</v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-btn class="mx-3 mb-2" @click="cancelEdit()">CANCEL</v-btn>
+          <v-btn class="mx-3 mb-2" :disabled="!enableSave" @click="updateAttribute()" color="success">SAVE</v-btn>
+        </v-card-actions>
+      </div>
     </v-card>
   </v-dialog>
 </div>

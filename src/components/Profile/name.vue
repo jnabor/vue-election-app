@@ -43,11 +43,13 @@
           label="Last Name">
         </v-text-field>
       </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn class="mx-3 mb-2" @click="cancelEdit()">CANCEL</v-btn>
-        <v-btn class="mx-3 mb-2" :disabled="!enableSave" @click="updateAttribute()" color="success">SAVE</v-btn>
-      </v-card-actions>
+      <div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="mx-3 mb-2" @click="cancelEdit()">CANCEL</v-btn>
+          <v-btn class="mx-3 mb-2" :disabled="!enableSave" @click="updateAttribute()" color="success">SAVE</v-btn>
+        </v-card-actions>
+      </div>
     </v-card>
   </v-dialog>
 </div>
