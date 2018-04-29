@@ -23,15 +23,10 @@ export default {
   },
   methods: {
     navSignIn: function () {
-      console.log('navigating to sign in')
-      router.push('/signin')
+      router.push('/auth-signin')
     }
   }
 }
 </script>
-
-<style>
-.aws-logo {
-  max-height: 80px;
-}
+<style scoped>
 </style>

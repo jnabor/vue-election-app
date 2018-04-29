@@ -1,7 +1,7 @@
 <template>
   <app-wrapper>
     <transition appear name="fadeout">
-      <v-card class="pa-0 ma-0">
+      <v-card class="pa-2">
         <v-card-media class="mt-4" height="80" contain>
           <img class="aws-logo" src="/static/aws_cognito.png">
         </v-card-media>
@@ -38,32 +38,30 @@
             :loading="loading"
             @click.native="onSubmit()"
             :disabled="!valid"
-            class="mt-3 mb-3"
-            light
+            class="mt-3 mb-3 white--text"
             color="submit">
             Sign In
             <span slot="loader">Connecting...</span>
           </v-btn>
         </v-card-text>
         <v-card-actions class="ml-2 mb-2">
-          <v-btn flat :to="'/forgot'">Forgot Password?</v-btn>
-          <v-btn flat color="accent" :to="'/register'">Register</v-btn>
+          <v-btn flat small color="accent" :to="'/register'">Register</v-btn>
+          <v-btn flat small :to="'/forgot'">Forgot Password?</v-btn>
         </v-card-actions>
       </v-card>
     </transition>
-    <div class="mt-3 ml-2 mr-2 caption">
-      By signing in, you agree to the <router-link :to="''">Terms of Service</router-link> and <router-link :to="''">Privacy Policy</router-link>, including Cookie Use.
-    </div>
+    <app-terms></app-terms>
   </app-wrapper>
 </template>
 
 <script>
-import router from '../../routes'
 import wrapper from './wrapper'
+import terms from './terms'
 
 export default {
   components: {
-    'app-wrapper': wrapper
+    'app-wrapper': wrapper,
+    'app-terms': terms
   },
   data: function () {
     return {
@@ -107,9 +105,6 @@ export default {
       }
       this.$store.dispatch('signIn', authData)
     },
-    navRreset: function () {
-      router.push('/forgot')
-    },
     getMessage: function () {
       return this.message
     }
@@ -142,18 +137,5 @@ export default {
   }
 }
 </script>
-
 <style scoped>
-.aws-logo {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  align-items: left;
-}
-a {
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
-}
 </style>

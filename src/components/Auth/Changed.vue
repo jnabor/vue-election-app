@@ -30,7 +30,4 @@ export default {
 }
 </script>
 <style>
-.aws-logo {
-  max-height: 80px;
-}
 </style>

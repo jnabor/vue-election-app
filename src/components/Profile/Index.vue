@@ -26,9 +26,9 @@
                   </app-user-email>
                   <v-divider></v-divider>
                   <app-birth-date
-                    :birthdate="userModel.birthDate"
+                    :date="userModel.birthDate"
                     :caption="'Birth Date'"
-                    @updateBirthDate="updateBirthDate($event)">
+                    @update="updateBirthDate($event)">
                   </app-birth-date>
                   <v-divider></v-divider>
                 </v-list>
@@ -92,7 +92,7 @@
 <script>
 import userName from './name.vue'
 import userEmail from './email.vue'
-import birthDate from './birthdate.vue'
+import birthDate from './datefield.vue'
 import phoneNumber from './phone.vue'
 import address from './address.vue'
 import custom from './custom.vue'

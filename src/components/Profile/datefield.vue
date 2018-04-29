@@ -6,11 +6,11 @@
         <v-icon class="mr-1">date_range</v-icon>
         {{ caption }}
       </v-list-tile-sub-title>
-      <v-list-tile-title>{{ birthDateUpdate === '' ? '...' : birthDateUpdate }}</v-list-tile-title>
+      <v-list-tile-title>{{ dateUpdate === '' ? '...' : dateUpdate }}</v-list-tile-title>
     </v-list-tile-content>
     <v-list-tile-action>
       <v-btn icon flat class="pa-0 ma-0" @click="dialog = !dialog">
-        <v-icon v-if="birthDateUpdate !== ''" color="editicon">edit</v-icon>
+        <v-icon v-if="dateUpdate !== ''" color="editicon">edit</v-icon>
         <v-icon v-else color="editicon">add</v-icon>
       </v-btn>
     </v-list-tile-action>
@@ -23,7 +23,7 @@
     scrollable>
     <v-card>
       <v-toolbar class="elevation-0 white--text" color="primary">
-        <v-toolbar-title>Edit Date</v-toolbar-title>
+        <v-toolbar-title>Edit {{ caption }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click.native="dialog = false" dark>
           <v-icon>close</v-icon>
@@ -33,7 +33,7 @@
         <v-date-picker
           full-width
           class="mb-3 grey lighten-4 black--text"
-          v-model="birthDateUpdate"
+          v-model="dateUpdate"
           :max="new Date().toISOString().substr(0, 10)">
         </v-date-picker>
       </v-card-text>
@@ -53,23 +53,23 @@
 export default {
   props: {
     caption: String,
-    birthdate: String
+    date: String
   },
   data: function () {
     return {
       dialog: false,
-      birthDateUpdate: '',
+      dateUpdate: '',
       fullscreen: true,
       enableSave: false
     }
   },
   methods: {
     cancelEdit: function () {
-      this.birthDateUpdate = JSON.parse(JSON.stringify(this.birthdate))
+      this.dateUpdate = JSON.parse(JSON.stringify(this.date))
       this.dialog = false
     },
     updateAttribute: function () {
-      this.$emit('updateBirthDate', this.birthDateUpdate)
+      this.$emit('update', this.dateUpdate)
       this.enableSave = false
       this.dialog = false
     },
@@ -82,33 +82,33 @@ export default {
     }
   },
   computed: {
-    birthDateUp: function () {
-      return this.birthDateUpdate
+    dateUp: function () {
+      return this.dateUpdate
     },
-    birthDateProp: function () {
-      return this.birthdate
+    dateProp: function () {
+      return this.date
     },
     breakpoint () {
       return this.$vuetify.breakpoint.name
     }
   },
   watch: {
-    birthDateUp: function () {
-      if (this.birthDateUpdate !== this.birthdate) {
+    dateUp: function () {
+      if (this.dateUpdate !== this.date) {
         this.enableSave = true
       } else {
         this.enableSave = false
       }
     },
-    birthDateProp: function () {
-      this.birthDateUpdate = JSON.parse(JSON.stringify(this.birthdate))
+    dateProp: function () {
+      this.dateUpdate = JSON.parse(JSON.stringify(this.date))
     },
     breakpoint () {
       this.setHeaders(this.breakpoint)
     }
   },
   created () {
-    this.birthDateUpdate = JSON.parse(JSON.stringify(this.birthdate))
+    this.dateUpdate = JSON.parse(JSON.stringify(this.date))
     this.setHeaders(this.breakpoint)
   }
 }

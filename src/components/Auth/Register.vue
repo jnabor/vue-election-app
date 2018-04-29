@@ -37,26 +37,25 @@
             :loading="loading"
             @click.native="onSubmit()"
             :disabled="!valid"
-            class="mt-3 mb-3"
-            light
+            class="mt-3 mb-3 white--text"
             color="submit">
             Sign Up
             <span slot="loader">Connecting...</span>
           </v-btn>
         </v-card-text>
         <v-card-actions class="ml-2 mb-2">
-          <v-btn flat color="accent" :to="'/signin'">Sign In</v-btn>
+          <v-btn flat small color="accent" :to="'/signin'">Sign In</v-btn>
+          <v-btn flat small :to="'/auth-confirm'">Resend Confirmation</v-btn>
         </v-card-actions>
       </v-card>
     </transition>
-    <div class="mt-2 ml-2 mr-2 caption">
-      By signing up, you agree to the <router-link :to="''">Terms of Service</router-link> and <router-link :to="''">Privacy Policy</router-link>, including Cookie Use.
-    </div>
+    <app-terms></app-terms>
   </app-wrapper>
 </template>
 
 <script>
 import wrapper from './wrapper'
+import terms from './terms'
 import router from '../../routes'
 import config from '../../config'
 var AmazonCognitoIdentity = require('amazon-cognito-identity-js')
@@ -70,7 +69,8 @@ var dataEmail = {
 
 export default {
   components: {
-    'app-wrapper': wrapper
+    'app-wrapper': wrapper,
+    'app-terms': terms
   },
   data: function () {
     return {
@@ -138,9 +138,6 @@ export default {
         }
       })
     },
-    navRreset: function () {
-      router.push('/reset')
-    },
     getMessage: function () {
       return this.message
     }
@@ -163,18 +160,4 @@ export default {
 </script>
 
 <style scoped>
-.aws-logo {
-  width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-a {
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
 </style>

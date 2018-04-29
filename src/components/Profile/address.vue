@@ -29,7 +29,7 @@
     scrollable>
     <v-card>
       <v-toolbar class="elevation-0 white--text" color="primary">
-        <v-toolbar-title>Edit Name</v-toolbar-title>
+        <v-toolbar-title>Edit {{ caption }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon @click.native="dialog = false" dark>
           <v-icon>close</v-icon>
@@ -101,7 +101,7 @@ export default {
       this.dialog = false
     },
     updateAttribute: function () {
-      this.$emit('updateAddress', this.addressUpdate)
+      this.$emit('update', this.addressUpdate)
       this.enableSave = false
       this.dialog = false
     },

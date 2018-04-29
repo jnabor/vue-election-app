@@ -32,6 +32,9 @@ const mutations = {
       return Obj.Name === 'email'
     })[0].Value
   },
+  setUsername (state, payload) {
+    state.username = payload
+  },
   signIn (state) {
     state.authenticated = true
   },

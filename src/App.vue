@@ -25,19 +25,23 @@ export default {
   }
 }
 </script>
-
 <style>
-
 body {
   margin: 0px;
   padding: 0px;
 }
+.aws-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  align-items: left;
+}
 
+/*
 .fadeout-enter-active, .fadeout-leave-active {
-  transition: opacity 1s;
+  transition: opacity 0.1s;
 }
 .fadeout-enter, .fadeout-leave-to {
   opacity: 0;
-}
-
+} */
 </style>
